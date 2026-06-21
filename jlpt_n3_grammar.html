@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JLPT N3 최다 빈출 문형</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap');
+
 
   :root {
     --bg: #F5F3FF;
@@ -29,7 +29,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Noto Sans KR', 'Noto Sans JP', sans-serif;
+    font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
@@ -54,7 +54,7 @@
   }
 
   .logo {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
     font-weight: 700;
     font-size: 1.1rem;
     color: white;
@@ -204,7 +204,7 @@
     font-size: 1.05rem;
     font-weight: 700;
     color: var(--purple);
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
     margin-bottom: 2px;
   }
   .meaning {
@@ -214,7 +214,7 @@
   }
   .example-jp {
     font-size: 0.9rem;
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
     color: var(--text);
     line-height: 1.6;
   }
@@ -325,7 +325,7 @@
   .fc-hint { font-size: 0.75rem; opacity: 0.6; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.1em; }
 
   .fc-pattern {
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 10px;
@@ -347,7 +347,7 @@
   }
 
   .fc-example-jp {
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
     font-size: 0.95rem;
     color: var(--text);
     line-height: 1.7;
@@ -447,7 +447,7 @@
   }
 
   .quiz-question {
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
     font-size: 1.05rem;
     line-height: 1.8;
     color: var(--text);
@@ -484,7 +484,7 @@
     background: var(--bg);
     border: 2px solid var(--border);
     border-radius: var(--radius-sm);
-    font-family: 'Noto Sans JP', 'Noto Sans KR', sans-serif;
+    font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
     font-size: 0.9rem;
     cursor: pointer;
     text-align: center;
@@ -534,7 +534,7 @@
     box-shadow: var(--shadow);
   }
   .stat-num {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
     font-size: 2rem;
     font-weight: 700;
     color: var(--purple);
@@ -559,7 +559,7 @@
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 0.82rem;
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
     font-weight: 600;
   }
   .tag.mastered-tag { background: var(--surface2); color: var(--purple); }
@@ -591,7 +591,7 @@
   }
   .result-emoji { font-size: 3rem; margin-bottom: 12px; }
   .result-title { font-size: 1.4rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 8px; }
-  .result-score { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 700; color: var(--purple); }
+  .result-score { font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; font-size: 3rem; font-weight: 700; color: var(--purple); }
   .result-detail { font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; margin-bottom: 20px; }
 
   /* responsive tweaks */
@@ -609,6 +609,9 @@
     <div class="progress-info">
       완료 <strong id="masteredCount">0</strong> / <span id="totalCount">0</span>
     </div>
+  </div>
+  <div style="max-width:900px;margin:6px auto 0;display:flex;justify-content:flex-end;">
+    <span id="syncStatus" style="font-size:0.72rem;color:rgba(255,255,255,0.7);">⏳ 불러오는 중...</span>
   </div>
   <div class="progress-bar-wrap">
     <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
@@ -769,10 +772,76 @@ const GRAMMAR = [
   { pattern: "〜(ら)れる", meaning: "〜되다, 〜히다, 〜함을 당하다, 〜받다", exJP: "さっきからずっと誰かに見られている気がする。", exKR: "아까부터 계속 누군가가 보고 있는 느낌이 든다." },
 ];
 
+// ========= GitHub Sync Config =========
+const GH_TOKEN = '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';
+const GH_OWNER = 'hunsak';
+const GH_REPO  = 'jlpt-n3';
+const GH_FILE  = 'progress.json';
+const GH_API   = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
+
+let _fileSha = null;
+
+function showSyncStatus(msg, color) {
+  const el = document.getElementById('syncStatus');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = color || 'rgba(255,255,255,0.7)';
+}
+
+async function loadFromGitHub() {
+  showSyncStatus('⏳ 불러오는 중...', 'rgba(255,255,255,0.7)');
+  try {
+    const res = await fetch(GH_API, {
+      headers: { Authorization: `token ${GH_TOKEN}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (res.status === 404) {
+      _fileSha = null;
+      showSyncStatus('☁️ 새 진도 시작', 'rgba(255,255,255,0.6)');
+      return [];
+    }
+    if (!res.ok) throw new Error('GitHub 응답 오류');
+    const json = await res.json();
+    _fileSha = json.sha;
+    const decoded = JSON.parse(atob(json.content.replace(/\n/g,'')));
+    showSyncStatus('✅ 동기화됨', '#06D6A0');
+    return decoded.mastered || [];
+  } catch(e) {
+    showSyncStatus('⚠️ 오프라인 모드', '#FFD166');
+    try { return JSON.parse(localStorage.getItem('n3_mastered') || '[]'); } catch(_) { return []; }
+  }
+}
+
+async function saveToGitHub() {
+  showSyncStatus('⏳ 저장 중...', 'rgba(255,255,255,0.7)');
+  const data = { mastered: [...mastered], updatedAt: new Date().toISOString() };
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  try {
+    const body = { message: 'Update progress', content };
+    if (_fileSha) body.sha = _fileSha;
+    const res = await fetch(GH_API, {
+      method: 'PUT',
+      headers: {
+        Authorization: `token ${GH_TOKEN}`,
+        Accept: 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error('저장 실패');
+    const json = await res.json();
+    _fileSha = json.content.sha;
+    showSyncStatus('✅ 저장됨', '#06D6A0');
+    try { localStorage.setItem('n3_mastered', JSON.stringify([...mastered])); } catch(_) {}
+  } catch(e) {
+    showSyncStatus('⚠️ 저장 실패 (로컬만)', '#EF476F');
+    try { localStorage.setItem('n3_mastered', JSON.stringify([...mastered])); } catch(_) {}
+  }
+}
+
 // State
-let mastered = new Set(JSON.parse(localStorage.getItem('n3_mastered') || '[]'));
+let mastered = new Set();
 let fcIndex = 0;
-let fcMode = 'jp'; // jp or kr
+let fcMode = 'jp';
 let fcFlipped = false;
 let fcOrder = [];
 let quizData = [];
@@ -781,8 +850,8 @@ let quizCorrect = 0;
 let quizAnswered = false;
 
 function saveMastered() {
-  localStorage.setItem('n3_mastered', JSON.stringify([...mastered]));
   updateProgress();
+  saveToGitHub();
 }
 
 function updateProgress() {
@@ -1062,8 +1131,12 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 });
 
 // ========= INIT =========
-updateProgress();
-renderList();
+(async () => {
+  const saved = await loadFromGitHub();
+  mastered = new Set(saved);
+  updateProgress();
+  renderList();
+})();
 </script>
 </body>
 </html>
