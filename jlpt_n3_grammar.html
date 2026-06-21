@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JLPT N3 최다 빈출 문형</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap');
+
+  :root {
+    --bg: #F5F3FF;
+    --surface: #FFFFFF;
+    --surface2: #EDE9FD;
+    --purple: #4B3F8D;
+    --purple-light: #7B6FBD;
+    --purple-dark: #2D2540;
+    --accent: #FFD166;
+    --accent2: #06D6A0;
+    --red: #EF476F;
+    --text: #1A1530;
+    --text-muted: #6B6580;
+    --border: #D4CEEE;
+    --shadow: 0 2px 12px rgba(75,63,141,0.10);
+    --shadow-lg: 0 8px 32px rgba(75,63,141,0.18);
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple) 60%, var(--purple-light) 100%);
+    padding: 20px 24px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(45,37,64,0.25);
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: white;
+    letter-spacing: -0.02em;
+  }
+  .logo span {
+    background: var(--accent);
+    color: var(--purple-dark);
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-right: 6px;
+    font-size: 0.85rem;
+  }
+
+  .progress-info {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.75);
+    text-align: right;
+  }
+  .progress-info strong {
+    color: var(--accent);
+    font-size: 1rem;
+  }
+
+  .progress-bar-wrap {
+    max-width: 900px;
+    margin: 10px auto 0;
+    background: rgba(255,255,255,0.2);
+    border-radius: 99px;
+    height: 5px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  /* ===== TABS ===== */
+  .tabs-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 16px 16px 0;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 8px;
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 5px;
+    box-shadow: var(--shadow);
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 10px 8px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+  .tab-btn.active {
+    background: var(--purple);
+    color: white;
+    box-shadow: 0 2px 8px rgba(75,63,141,0.30);
+  }
+  .tab-btn:not(.active):hover { background: var(--surface2); color: var(--purple); }
+
+  .tab-icon { font-size: 1rem; }
+
+  /* ===== MAIN ===== */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ===== LIST VIEW ===== */
+  .search-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .search-input {
+    flex: 1;
+    padding: 10px 16px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 0.9rem;
+    background: var(--surface);
+    color: var(--text);
+    transition: border 0.2s;
+    outline: none;
+  }
+  .search-input:focus { border-color: var(--purple-light); }
+
+  .reset-btn {
+    padding: 10px 16px;
+    background: var(--surface2);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--purple);
+    font-weight: 600;
+    font-size: 0.82rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .reset-btn:hover { background: var(--border); }
+
+  .grammar-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .grammar-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--border);
+    transition: border-color 0.2s, transform 0.15s;
+    cursor: pointer;
+  }
+  .grammar-card:hover { transform: translateX(3px); border-left-color: var(--purple-light); }
+  .grammar-card.mastered { border-left-color: var(--accent2); background: #F0FDF9; }
+
+  .card-left {}
+
+  .pattern {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--purple);
+    font-family: 'Noto Sans JP', sans-serif;
+    margin-bottom: 2px;
+  }
+  .meaning {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .example-jp {
+    font-size: 0.9rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .example-kr {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  .card-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    min-width: 44px;
+  }
+
+  .check-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .check-btn.done { background: var(--accent2); border-color: var(--accent2); color: white; }
+  .check-btn:not(.done):hover { border-color: var(--accent2); color: var(--accent2); }
+
+  /* ===== FLASHCARD VIEW ===== */
+  .fc-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .fc-counter {
+    font-weight: 700;
+    color: var(--purple);
+    font-size: 0.95rem;
+  }
+
+  .fc-mode-btn {
+    padding: 6px 14px;
+    border: 2px solid var(--purple);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--purple);
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .fc-mode-btn.active { background: var(--purple); color: white; }
+
+  .flashcard-scene {
+    perspective: 1000px;
+    height: 320px;
+    margin-bottom: 20px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 500px) {
+    .flashcard-scene { height: 280px; }
+  }
+
+  .flashcard {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
+  }
+  .flashcard.flipped { transform: rotateY(180deg); }
+
+  .fc-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .fc-front {
+    background: linear-gradient(145deg, var(--purple) 0%, var(--purple-dark) 100%);
+    color: white;
+  }
+
+  .fc-back {
+    background: var(--surface);
+    transform: rotateY(180deg);
+    color: var(--text);
+  }
+
+  .fc-hint { font-size: 0.75rem; opacity: 0.6; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.1em; }
+
+  .fc-pattern {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .fc-meaning-hint {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    background: rgba(255,255,255,0.15);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  .fc-meaning {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--purple);
+    margin-bottom: 12px;
+  }
+
+  .fc-example-jp {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.7;
+    margin-bottom: 8px;
+    background: var(--surface2);
+    padding: 10px 14px;
+    border-radius: 10px;
+    width: 100%;
+  }
+
+  .fc-example-kr {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .fc-nav {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .nav-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .nav-btn.prev { background: var(--surface2); color: var(--purple); }
+  .nav-btn.next { background: var(--purple); color: white; }
+  .nav-btn:hover { filter: brightness(0.93); }
+
+  .fc-result-btns {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .result-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .result-btn.good { background: var(--accent2); color: white; }
+  .result-btn.bad { background: var(--red); color: white; }
+  .result-btn:hover { filter: brightness(0.9); }
+
+  /* ===== QUIZ VIEW ===== */
+  .quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .quiz-score { font-weight: 700; color: var(--purple); }
+  .quiz-start-btn, .quiz-next-btn {
+    padding: 10px 22px;
+    background: var(--purple);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .quiz-start-btn:hover, .quiz-next-btn:hover { background: var(--purple-dark); }
+
+  .quiz-question-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 16px;
+  }
+
+  .quiz-type-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--purple-light);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .quiz-question {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .quiz-question .blank {
+    display: inline-block;
+    min-width: 80px;
+    border-bottom: 3px solid var(--purple);
+    color: var(--purple);
+    font-weight: 700;
+    text-align: center;
+    margin: 0 4px;
+  }
+
+  .quiz-kr {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  @media (max-width: 400px) {
+    .quiz-options { grid-template-columns: 1fr; }
+  }
+
+  .quiz-option {
+    padding: 12px 14px;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'Noto Sans JP', 'Noto Sans KR', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    font-weight: 500;
+  }
+  .quiz-option:hover:not(:disabled) { border-color: var(--purple-light); background: var(--surface2); }
+  .quiz-option.correct { background: #D1FAE5; border-color: var(--accent2); color: #065F46; }
+  .quiz-option.wrong { background: #FEE2E2; border-color: var(--red); color: #991B1B; }
+  .quiz-option:disabled { cursor: default; }
+
+  .quiz-feedback {
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-top: 8px;
+    display: none;
+  }
+  .quiz-feedback.correct-fb { background: #D1FAE5; color: #065F46; border-left: 4px solid var(--accent2); }
+  .quiz-feedback.wrong-fb { background: #FEE2E2; color: #991B1B; border-left: 4px solid var(--red); }
+
+  .quiz-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+  }
+  .quiz-empty .big { font-size: 2.5rem; margin-bottom: 10px; }
+
+  /* ===== STATS VIEW ===== */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 400px) {
+    .stats-grid { grid-template-columns: 1fr; }
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 18px 14px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--purple);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 0.78rem; color: var(--text-muted); }
+
+  .mastered-list-title {
+    font-weight: 700;
+    color: var(--purple-dark);
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+  }
+
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tag {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 600;
+  }
+  .tag.mastered-tag { background: var(--surface2); color: var(--purple); }
+  .tag.not-yet-tag { background: #FEE2E2; color: #991B1B; }
+
+  .reset-all-btn {
+    margin-top: 20px;
+    padding: 12px;
+    width: 100%;
+    background: transparent;
+    border: 2px solid var(--red);
+    color: var(--red);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .reset-all-btn:hover { background: var(--red); color: white; }
+
+  /* ===== QUIZ RESULT ===== */
+  .quiz-result {
+    text-align: center;
+    padding: 30px 20px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+  }
+  .result-emoji { font-size: 3rem; margin-bottom: 12px; }
+  .result-title { font-size: 1.4rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 8px; }
+  .result-score { font-family: 'Space Grotesk', sans-serif; font-size: 3rem; font-weight: 700; color: var(--purple); }
+  .result-detail { font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; margin-bottom: 20px; }
+
+  /* responsive tweaks */
+  @media (max-width: 600px) {
+    .fc-pattern { font-size: 1.5rem; }
+    .pattern { font-size: 0.98rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo"><span>N3</span>최다 빈출 문형</div>
+    <div class="progress-info">
+      완료 <strong id="masteredCount">0</strong> / <span id="totalCount">0</span>
+    </div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</header>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab-btn active" data-view="list"><span class="tab-icon">📋</span> 목록</button>
+    <button class="tab-btn" data-view="flashcard"><span class="tab-icon">🃏</span> 플래시카드</button>
+    <button class="tab-btn" data-view="quiz"><span class="tab-icon">✏️</span> 퀴즈</button>
+    <button class="tab-btn" data-view="stats"><span class="tab-icon">📊</span> 통계</button>
+  </div>
+</div>
+
+<main>
+
+  <!-- LIST VIEW -->
+  <div class="view active" id="view-list">
+    <div class="search-row">
+      <input class="search-input" type="text" id="searchInput" placeholder="문형 또는 뜻 검색...">
+      <button class="reset-btn" onclick="clearSearch()">초기화</button>
+    </div>
+    <div class="grammar-list" id="grammarList"></div>
+  </div>
+
+  <!-- FLASHCARD VIEW -->
+  <div class="view" id="view-flashcard">
+    <div class="fc-controls">
+      <div class="fc-counter">
+        <span id="fcCurrent">1</span> / <span id="fcTotal">0</span>
+      </div>
+      <div style="display:flex; gap:6px">
+        <button class="fc-mode-btn active" id="fcModeJP" onclick="setFCMode('jp')">日→한</button>
+        <button class="fc-mode-btn" id="fcModeKR" onclick="setFCMode('kr')">한→日</button>
+      </div>
+    </div>
+
+    <div class="flashcard-scene" onclick="flipCard()">
+      <div class="flashcard" id="flashcard">
+        <div class="fc-face fc-front" id="fcFront">
+          <div class="fc-hint">탭해서 뒤집기</div>
+          <div class="fc-pattern" id="fcFrontPattern"></div>
+          <div class="fc-meaning-hint" id="fcFrontHint"></div>
+        </div>
+        <div class="fc-face fc-back" id="fcBack">
+          <div class="fc-meaning" id="fcBackMeaning"></div>
+          <div class="fc-example-jp" id="fcBackExJP"></div>
+          <div class="fc-example-kr" id="fcBackExKR"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="fcResultBtns" class="fc-result-btns" style="display:none;">
+      <button class="result-btn bad" onclick="fcAnswer(false)">❌ 다시</button>
+      <button class="result-btn good" onclick="fcAnswer(true)">✅ 알았어!</button>
+    </div>
+
+    <div class="fc-nav">
+      <button class="nav-btn prev" onclick="fcPrev()">◀ 이전</button>
+      <button class="nav-btn next" onclick="fcNext()">다음 ▶</button>
+    </div>
+  </div>
+
+  <!-- QUIZ VIEW -->
+  <div class="view" id="view-quiz">
+    <div class="quiz-header">
+      <div class="quiz-score">정답률: <span id="quizScoreText">-</span></div>
+      <button class="quiz-start-btn" onclick="startQuiz()">새 퀴즈 시작</button>
+    </div>
+    <div id="quizArea">
+      <div class="quiz-empty">
+        <div class="big">✏️</div>
+        <div>퀴즈를 시작해 보세요!</div>
+        <div style="font-size:0.8rem;margin-top:8px;color:var(--text-muted)">문형 보기, 뜻 맞추기 등 다양한 문제가 출제됩니다</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS VIEW -->
+  <div class="view" id="view-stats">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num" id="statTotal">0</div>
+        <div class="stat-label">전체 문형</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statMastered" style="color:var(--accent2)">0</div>
+        <div class="stat-label">✅ 완료</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statRemain" style="color:var(--red)">0</div>
+        <div class="stat-label">📚 남은 것</div>
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:14px;">
+      <div class="mastered-list-title">✅ 완료한 문형</div>
+      <div class="tag-cloud" id="masteredTagCloud"><span style="color:var(--text-muted);font-size:0.85rem;">아직 없어요!</span></div>
+    </div>
+
+    <div style="background:var(--surface);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);">
+      <div class="mastered-list-title">📚 아직 공부할 문형</div>
+      <div class="tag-cloud" id="remainTagCloud"></div>
+    </div>
+
+    <button class="reset-all-btn" onclick="resetAll()">🗑 모든 진도 초기화</button>
+  </div>
+
+</main>
+
+<script>
+const GRAMMAR = [
+  { pattern: "〜うちに / 〜ないうちに", meaning: "〜하는 동안에 / 〜하기 전에", exJP: "いいアイデアは忘れないうちにメモしておこう。", exKR: "좋은 아이디어는 잊어버리기 전에 메모해 두자." },
+  { pattern: "お(ご)〜する(いたす)", meaning: "〜하다, 〜해 드리다", exJP: "必要な書類は期限までにお送りします。", exKR: "필요한 서류는 기한까지 보내드리겠습니다." },
+  { pattern: "〜おかげで / 〜おかげだ", meaning: "〜덕분에 / 〜덕분이다", exJP: "スマホの地図のおかげで、道に迷わなかった。", exKR: "스마트폰 지도 덕분에 길을 헤매지 않았다." },
+  { pattern: "〜がする", meaning: "〜가 나다(냄새, 소리, 향기 등)", exJP: "この辺はいつもコーヒーのにおいがする。", exKR: "이 주변은 항상 커피 냄새가 난다." },
+  { pattern: "〜かもしれない", meaning: "〜일지도 모른다, 〜일 수도 있다", exJP: "意外と簡単かもしれないから、やってみよう。", exKR: "의외로 간단할 수도 있으니까 해 보자." },
+  { pattern: "〜がる / 〜がっている", meaning: "〜해 하다 / 〜해 하고 있다", exJP: "周りの人が嫌がる行動はやめた方がいい。", exKR: "주변 사람들이 싫어하는 행동은 그만두는 편이 좋다." },
+  { pattern: "〜くらい〜はない・ほど〜はない", meaning: "〜만큼 〜은 없다", exJP: "真夏のビールほどおいしいものはない。", exKR: "한여름의 맥주만큼 맛있는 것은 없다." },
+  { pattern: "〜ことで", meaning: "〜의 건으로, 〜의 일로, 〜로 인해", exJP: "今回の取引のことで、お電話いたしました。", exKR: "이번 거래 건으로 전화 드렸습니다." },
+  { pattern: "〜ことになる", meaning: "〜하기로 되다", exJP: "この試験にパスしないと留年することになる。", exKR: "이 시험에 통과하지 못하면 유급하게 된다." },
+  { pattern: "〜(さ)せていただけませんか", meaning: "〜에게 해 주시지 않겠습니까?", exJP: "もう一点、ご質問させていただけませんか。", exKR: "한 가지 더 질문하게 해 주시지 않겠습니까?" },
+  { pattern: "〜(さ)せてください / (さ)せないでください", meaning: "〜하게 해 주세요 / 〜하지 않게 해 주세요", exJP: "急用で行けなくなったので、キャンセルさせてください。", exKR: "급한 일 때문에 못 가게 되었으니 취소시켜 주세요." },
+  { pattern: "〜(さ)せてやる・〜(さ)せてあげる", meaning: "〜하게 해 주다(나→남)", exJP: "たまには思いっ切り泣かせてあげた方がいいと思う。", exKR: "가끔은 마음껏 울게 해 주는 편이 좋다고 생각한다." },
+  { pattern: "〜そうだ", meaning: "〜일 것 같다, 〜해 보이다(추측, 양태)", exJP: "元気そうな赤ちゃんですね。男の子ですか。", exKR: "건강해 보이는 아기네요. 남자 아이입니까?" },
+  { pattern: "〜だけで(は)なく(て)", meaning: "〜뿐만 아니라", exJP: "ここはおいしいだけではなく、値段も手頃です。", exKR: "이곳은 맛있을 뿐만 아니라 가격도 적당합니다." },
+  { pattern: "〜たばかりだ", meaning: "막 〜했다, 〜한 지 얼마 안 되다", exJP: "空港に着いたばかりです。今からそちらに向かいます。", exKR: "공항에 막 도착했습니다. 지금 그쪽으로 가겠습니다." },
+  { pattern: "〜ため(に)", meaning: "〜을 위해(목적), 〜때문에(이유)", exJP: "EJUは日本の大学に留学するための試験です。", exKR: "EJU는 일본 대학에 유학하기 위한 시험입니다." },
+  { pattern: "〜たら", meaning: "〜하면", exJP: "今の状況をどうしたらいいのかまったく分からない。", exKR: "지금 상황을 어떻게 하면 좋을지 전혀 모르겠다." },
+  { pattern: "〜だろうと思う / 〜かと思う", meaning: "〜일 것이라고 생각하다 / 〜인가라고 생각하다", exJP: "真冬のロシアは寒くて死ぬかと思った。", exKR: "한겨울의 러시아는 추워서 죽을 뻔했다." },
+  { pattern: "〜って(〜んだって)", meaning: "〜라고, 〜라는, 〜래, 〜하대, 〜라도, 〜은, 〜라고?", exJP: "「TSUTAYA」っていう本屋、知っている？\n誰だって、失敗する時はある。", exKR: "'쓰타야'라고 하는 서점, 알아?\n누구라도 실패할 때는 있다." },
+  { pattern: "〜ていく / てくる", meaning: "〜해 가다 / 〜해 오다", exJP: "これからも世界の人口は増えていくでしょう。", exKR: "앞으로도 세계 인구는 늘어 가겠지요." },
+  { pattern: "〜てくださいませんか・〜ていただけませんか", meaning: "〜해 주시지 않겠습니까?", exJP: "ちょっとだけ、手を貸していただけませんか。", exKR: "조금만 거들어 주시지 않겠습니까?" },
+  { pattern: "〜てほしい / 〜ないでほしい", meaning: "〜해 주길 바란다 / 〜하지 않기를 바란다", exJP: "学生のみなさんにはいろいろな経験をしてほしい。", exKR: "학생 여러분이 여러 가지 경험을 하길 바란다." },
+  { pattern: "〜てもらえませんか・〜てくれませんか", meaning: "〜해 줄 수 없겠습니까?", exJP: "もっと分かりやすく説明してもらえませんか。", exKR: "좀 더 알기 쉽게 설명해 줄 수 없겠습니까?" },
+  { pattern: "〜という / 〜というような", meaning: "〜라고 하는, 〜라는 / 〜라는 (듯한)", exJP: "ここは石垣という有名な島だけど、知ってる？", exKR: "여기는 '이시가키'라고 하는 유명한 섬인데 알아?" },
+  { pattern: "〜ところだ", meaning: "〜하려는 참이다, 막 〜한 참이다", exJP: "その書類なら、たった今、鈴木さんに渡したところだよ。", exKR: "그 서류라면 지금 스즈키 씨에게 막 건네 준 참이야." },
+  { pattern: "〜として / 〜としては / 〜としても", meaning: "〜로서 / 〜로서는 / 〜로서도", exJP: "プロとしての初優勝にみんな喜んでいる。", exKR: "프로로서의 첫 우승에 모두 기뻐하고 있다." },
+  { pattern: "〜なら", meaning: "〜할 거라면, 〜라면", exJP: "携帯を買うなら、安い店を紹介します。", exKR: "휴대폰을 살 거라면 싼 가게를 소개하겠습니다." },
+  { pattern: "〜なんか・〜なんで・〜など", meaning: "〜같은 것, 〜따위", exJP: "私なんかにこんな幸せが來ることはないと思っていた。", exKR: "나 따위에게 이런 행복이 찾아올 일은 없을 거라고 생각했다." },
+  { pattern: "〜に比べて / 〜と比べて", meaning: "〜에 비해서 / 〜와 비교해서", exJP: "寮は一般のマンションと比べて家賃がやすい。", exKR: "기숙사는 일반 아파트와 비교해서 집세가 싸다." },
+  { pattern: "〜にしたがって・〜にしたがい", meaning: "〜에 따라서", exJP: "息子は成長するにしたがって、男らしくなってきた。", exKR: "아들은 성장함에 따라서 남자다워졌다." },
+  { pattern: "〜について", meaning: "〜에 대해서", exJP: "プライベートについてのご質問はご遠慮ください。", exKR: "프라이버시에 대한 질문은 삼가 주세요." },
+  { pattern: "〜にとって / 〜にとっても", meaning: "〜에게 있어서 / 〜에게 있어서도", exJP: "外国人にとってそれは確かに差別である。", exKR: "외국인에게 있어 그것은 분명히 차별이다." },
+  { pattern: "〜によって・〜により / による", meaning: "〜에 의해, 〜에 따라 / 〜에 의한, 〜에 따른", exJP: "最近、未成年者による事件が増えている。", exKR: "최근에 미성년자에 의한 사건이 증가하고 있다." },
+  { pattern: "〜んだ(〜んだ)", meaning: "〜인 것이다", exJP: "せっかく海外に来たのだから、思いっきり楽しもう。", exKR: "모처럼 해외에 온 것이니까 마음껏 즐기자." },
+  { pattern: "〜ば 〜ほど", meaning: "〜하면 〜할수록", exJP: "給料は高ければ高いほどいいものです。", exKR: "급여는 비싸면 비쌀수록 좋은 법입니다." },
+  { pattern: "〜はずがない", meaning: "〜일 리가 없다, 〜할 리가 없다", exJP: "優しい彼が人にそんなひどいこと言うはずがない。", exKR: "상냥한 그가 남에게 그런 심한 말을 할 리가 없다." },
+  { pattern: "〜はずだ", meaning: "당연히 〜할 것이다, 분명 〜임이 틀림없다", exJP: "私の財布、ここに置いたはずなんだけど、ないわ。", exKR: "내 지갑, 여기에 둔 것이 틀림없는데, 없어." },
+  { pattern: "〜まま(で)", meaning: "〜한 채(로)", exJP: "このお寺は年月が経っても昔のままです。", exKR: "이 절은 세월이 지나도 옛날 그대로입니다." },
+  { pattern: "〜ようだ", meaning: "〜인 것 같다(추측)", exJP: "最近、彼と親しくなったような気がします。", exKR: "요즘 그와 친해진 것 같은 느낌이 듭니다." },
+  { pattern: "〜(よ)うとする / 〜(よ)うとしない", meaning: "〜하려고 하다 / 〜하려고 하지 않다", exJP: "6時を過ぎたのに、誰も家に帰ろうとしない。", exKR: "6시를 넘겼는데도 아무도 집에 돌아가려고 하지 않는다." },
+  { pattern: "〜ように・〜みたいに / 〜ような・〜みたいな", meaning: "〜같이, 〜처럼 / 〜같은", exJP: "パク・ボゴムさんは歌手みたいに歌がうまいです。", exKR: "박보검 씨는 가수처럼 노래를 잘합니다." },
+  { pattern: "〜ように", meaning: "〜하도록 / 〜하기를", exJP: "外国人でも分かるようにひらがなで書いてください。", exKR: "외국인이라도 알 수 있도록 히라가나로 써 주세요." },
+  { pattern: "〜ようにする", meaning: "〜하도록 하다", exJP: "いやだったこと、過ぎたことは早く忘れるようにしている。", exKR: "싫었던 일, 지나간 일은 가능한 한 빨리 잊도록 하고 있다." },
+  { pattern: "〜ようになる", meaning: "〜하게 되다", exJP: "手を当てると自動的に動くようになっている。", exKR: "손을 대면 자동적으로 움직이게 되어 있다." },
+  { pattern: "〜(ら)れる", meaning: "〜되다, 〜히다, 〜함을 당하다, 〜받다", exJP: "さっきからずっと誰かに見られている気がする。", exKR: "아까부터 계속 누군가가 보고 있는 느낌이 든다." },
+];
+
+// State
+let mastered = new Set(JSON.parse(localStorage.getItem('n3_mastered') || '[]'));
+let fcIndex = 0;
+let fcMode = 'jp'; // jp or kr
+let fcFlipped = false;
+let fcOrder = [];
+let quizData = [];
+let quizIndex = 0;
+let quizCorrect = 0;
+let quizAnswered = false;
+
+function saveMastered() {
+  localStorage.setItem('n3_mastered', JSON.stringify([...mastered]));
+  updateProgress();
+}
+
+function updateProgress() {
+  const m = mastered.size;
+  const t = GRAMMAR.length;
+  document.getElementById('masteredCount').textContent = m;
+  document.getElementById('totalCount').textContent = t;
+  document.getElementById('progressFill').style.width = (m / t * 100) + '%';
+}
+
+// ========= LIST VIEW =========
+function renderList(filter = '') {
+  const list = document.getElementById('grammarList');
+  list.innerHTML = '';
+  const q = filter.toLowerCase();
+  GRAMMAR.forEach((g, i) => {
+    if (q && !g.pattern.toLowerCase().includes(q) && !g.meaning.toLowerCase().includes(q) && !g.exJP.toLowerCase().includes(q)) return;
+    const isMastered = mastered.has(i);
+    const card = document.createElement('div');
+    card.className = 'grammar-card' + (isMastered ? ' mastered' : '');
+    card.innerHTML = `
+      <div class="card-left">
+        <div class="pattern">${g.pattern}</div>
+        <div class="meaning">${g.meaning}</div>
+        <div class="example-jp">${g.exJP.replace(/\n/g,'<br>')}</div>
+        <div class="example-kr">${g.exKR.replace(/\n/g,'<br>')}</div>
+      </div>
+      <div class="card-right">
+        <button class="check-btn ${isMastered ? 'done' : ''}" onclick="toggleMastered(event,${i})" title="완료 표시">✓</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function toggleMastered(e, i) {
+  e.stopPropagation();
+  if (mastered.has(i)) mastered.delete(i);
+  else mastered.add(i);
+  saveMastered();
+  renderList(document.getElementById('searchInput').value);
+  if (document.getElementById('view-stats').classList.contains('active')) renderStats();
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  renderList();
+}
+
+document.getElementById('searchInput').addEventListener('input', e => renderList(e.target.value));
+
+// ========= FLASHCARD VIEW =========
+function initFlashcards() {
+  fcOrder = GRAMMAR.map((_, i) => i);
+  // shuffle
+  for (let i = fcOrder.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [fcOrder[i], fcOrder[j]] = [fcOrder[j], fcOrder[i]];
+  }
+  fcIndex = 0;
+  document.getElementById('fcTotal').textContent = fcOrder.length;
+  showFC();
+}
+
+function setFCMode(mode) {
+  fcMode = mode;
+  document.getElementById('fcModeJP').classList.toggle('active', mode === 'jp');
+  document.getElementById('fcModeKR').classList.toggle('active', mode === 'kr');
+  document.getElementById('flashcard').classList.remove('flipped');
+  fcFlipped = false;
+  document.getElementById('fcResultBtns').style.display = 'none';
+  showFC();
+}
+
+function showFC() {
+  const g = GRAMMAR[fcOrder[fcIndex]];
+  document.getElementById('fcCurrent').textContent = fcIndex + 1;
+  if (fcMode === 'jp') {
+    document.getElementById('fcFrontPattern').textContent = g.pattern;
+    document.getElementById('fcFrontHint').textContent = '뜻은?';
+    document.getElementById('fcBackMeaning').textContent = g.meaning;
+  } else {
+    document.getElementById('fcFrontPattern').textContent = g.meaning;
+    document.getElementById('fcFrontHint').textContent = '일본어 문형은?';
+    document.getElementById('fcBackMeaning').textContent = g.pattern;
+  }
+  document.getElementById('fcBackExJP').textContent = g.exJP;
+  document.getElementById('fcBackExKR').textContent = g.exKR;
+  document.getElementById('flashcard').classList.remove('flipped');
+  document.getElementById('fcResultBtns').style.display = 'none';
+  fcFlipped = false;
+}
+
+function flipCard() {
+  fcFlipped = !fcFlipped;
+  document.getElementById('flashcard').classList.toggle('flipped', fcFlipped);
+  if (fcFlipped) {
+    document.getElementById('fcResultBtns').style.display = 'flex';
+  }
+}
+
+function fcAnswer(correct) {
+  if (correct) mastered.add(fcOrder[fcIndex]);
+  else mastered.delete(fcOrder[fcIndex]);
+  saveMastered();
+  fcNext();
+}
+
+function fcNext() {
+  if (fcIndex < fcOrder.length - 1) {
+    fcIndex++;
+    showFC();
+  } else {
+    // end
+    document.getElementById('fcFrontPattern').textContent = '🎉 완료!';
+    document.getElementById('fcFrontHint').textContent = '처음부터 다시 하려면 아래 버튼을';
+    document.getElementById('flashcard').classList.remove('flipped');
+    document.getElementById('fcResultBtns').style.display = 'none';
+  }
+}
+
+function fcPrev() {
+  if (fcIndex > 0) {
+    fcIndex--;
+    showFC();
+  }
+}
+
+// ========= QUIZ VIEW =========
+function startQuiz() {
+  // build 10 questions
+  const pool = [...GRAMMAR];
+  const shuffled = pool.sort(() => Math.random() - 0.5).slice(0, 10);
+  quizData = shuffled.map(g => makeQuestion(g));
+  quizIndex = 0;
+  quizCorrect = 0;
+  quizAnswered = false;
+  document.getElementById('quizScoreText').textContent = '-';
+  showQuizQ();
+}
+
+function makeQuestion(g) {
+  // Random type: 0=meaning from pattern, 1=pattern from meaning, 2=choose example
+  const type = Math.floor(Math.random() * 2);
+  let q, answer, distractors;
+  if (type === 0) {
+    q = { prompt: g.pattern, kr: g.exKR, label: '다음 문형의 뜻은?', isKR: false };
+    answer = g.meaning;
+    distractors = GRAMMAR.filter(x => x.pattern !== g.pattern)
+      .sort(() => Math.random() - 0.5).slice(0, 3).map(x => x.meaning);
+  } else {
+    q = { prompt: g.meaning, kr: g.exKR, label: '다음 뜻의 일본어 문형은?', isKR: true };
+    answer = g.pattern;
+    distractors = GRAMMAR.filter(x => x.meaning !== g.meaning)
+      .sort(() => Math.random() - 0.5).slice(0, 3).map(x => x.pattern);
+  }
+  const options = [answer, ...distractors].sort(() => Math.random() - 0.5);
+  return { ...q, answer, options, exJP: g.exJP, exKR: g.exKR };
+}
+
+function showQuizQ() {
+  if (quizIndex >= quizData.length) {
+    showQuizResult();
+    return;
+  }
+  const q = quizData[quizIndex];
+  quizAnswered = false;
+  const area = document.getElementById('quizArea');
+  area.innerHTML = `
+    <div class="quiz-question-card">
+      <div class="quiz-type-label">${quizIndex + 1} / ${quizData.length} · ${q.label}</div>
+      <div class="quiz-question">${q.prompt.replace(/\n/g,'<br>')}</div>
+      <div class="quiz-kr">${q.kr}</div>
+      <div class="quiz-options" id="quizOptions">
+        ${q.options.map((opt, i) => `<button class="quiz-option" onclick="selectOption(${i})">${opt}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+    <div style="text-align:right;margin-top:10px">
+      <button class="quiz-next-btn" id="quizNextBtn" onclick="nextQuizQ()" style="display:none">다음 ▶</button>
+    </div>
+  `;
+}
+
+function selectOption(idx) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  const q = quizData[quizIndex];
+  const opts = document.querySelectorAll('.quiz-option');
+  const selected = opts[idx].textContent.trim();
+  const correct = selected === q.answer;
+  if (correct) quizCorrect++;
+
+  opts.forEach(btn => {
+    btn.disabled = true;
+    if (btn.textContent.trim() === q.answer) btn.classList.add('correct');
+    else if (btn === opts[idx] && !correct) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('quizFeedback');
+  fb.style.display = 'block';
+  if (correct) {
+    fb.className = 'quiz-feedback correct-fb';
+    fb.innerHTML = `✅ 정답! <br><strong>예문:</strong> ${q.exJP}<br>${q.exKR}`;
+  } else {
+    fb.className = 'quiz-feedback wrong-fb';
+    fb.innerHTML = `❌ 오답! 정답: <strong>${q.answer}</strong><br>${q.exJP}<br>${q.exKR}`;
+  }
+  document.getElementById('quizNextBtn').style.display = 'inline-block';
+  document.getElementById('quizScoreText').textContent = `${quizCorrect}/${quizIndex + 1}`;
+}
+
+function nextQuizQ() {
+  quizIndex++;
+  showQuizQ();
+}
+
+function showQuizResult() {
+  const pct = Math.round(quizCorrect / quizData.length * 100);
+  let emoji = pct >= 80 ? '🎉' : pct >= 50 ? '😊' : '😅';
+  let msg = pct >= 80 ? '훌륭해요!' : pct >= 50 ? '잘 하고 있어요!' : '조금 더 연습해봐요!';
+  document.getElementById('quizArea').innerHTML = `
+    <div class="quiz-result">
+      <div class="result-emoji">${emoji}</div>
+      <div class="result-title">${msg}</div>
+      <div class="result-score">${pct}%</div>
+      <div class="result-detail">${quizCorrect} / ${quizData.length} 정답</div>
+      <button class="quiz-start-btn" onclick="startQuiz()">다시 도전!</button>
+    </div>
+  `;
+  document.getElementById('quizScoreText').textContent = `${quizCorrect}/${quizData.length}`;
+}
+
+// ========= STATS VIEW =========
+function renderStats() {
+  const t = GRAMMAR.length;
+  const m = mastered.size;
+  document.getElementById('statTotal').textContent = t;
+  document.getElementById('statMastered').textContent = m;
+  document.getElementById('statRemain').textContent = t - m;
+
+  const mc = document.getElementById('masteredTagCloud');
+  const rc = document.getElementById('remainTagCloud');
+  mc.innerHTML = '';
+  rc.innerHTML = '';
+
+  let hasMastered = false;
+  GRAMMAR.forEach((g, i) => {
+    const tag = document.createElement('span');
+    tag.className = 'tag ' + (mastered.has(i) ? 'mastered-tag' : 'not-yet-tag');
+    tag.textContent = g.pattern;
+    if (mastered.has(i)) { mc.appendChild(tag); hasMastered = true; }
+    else rc.appendChild(tag);
+  });
+  if (!hasMastered) mc.innerHTML = '<span style="color:var(--text-muted);font-size:0.85rem;">아직 없어요!</span>';
+}
+
+function resetAll() {
+  if (!confirm('모든 진도를 초기화할까요?')) return;
+  mastered.clear();
+  saveMastered();
+  renderList();
+  renderStats();
+}
+
+// ========= TABS =========
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    btn.classList.add('active');
+    const viewId = 'view-' + btn.dataset.view;
+    document.getElementById(viewId).classList.add('active');
+    if (btn.dataset.view === 'flashcard') initFlashcards();
+    if (btn.dataset.view === 'stats') renderStats();
+  });
+});
+
+// ========= INIT =========
+updateProgress();
+renderList();
+</script>
+</body>
+</html>
