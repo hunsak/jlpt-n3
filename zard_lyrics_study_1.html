@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>少女の頃に戻ったみたいに ― ZARD 歌詞ノート</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap');
+
+  :root{
+    --night: #171a2e;
+    --night-deep: #0e1022;
+    --mist: #cfd3ef;
+    --mist-dim: #8b8fb8;
+    --gold: #e8c07d;
+    --blush: #e59aa0;
+    --line: rgba(207,211,239,0.14);
+    --glow: 0 0 40px rgba(232,192,125,0.15);
+  }
+
+  *{ box-sizing: border-box; }
+
+  html,body{
+    margin:0; padding:0;
+    background: radial-gradient(ellipse at 20% 0%, #232848 0%, var(--night) 45%, var(--night-deep) 100%);
+    color: var(--mist);
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    min-height:100vh;
+  }
+
+  /* drifting memory particles */
+  .sky{
+    position: fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none;
+  }
+  .star{
+    position:absolute; width:3px; height:3px; border-radius:50%;
+    background: var(--gold); opacity:0.35;
+    animation: drift linear infinite;
+  }
+  @keyframes drift{
+    0%{ transform: translateY(0) translateX(0); opacity:0; }
+    10%{ opacity:0.5; }
+    90%{ opacity:0.5; }
+    100%{ transform: translateY(-120vh) translateX(20px); opacity:0; }
+  }
+
+  .wrap{ position:relative; z-index:1; max-width: 760px; margin: 0 auto; padding: 64px 24px 120px; }
+
+  header{ text-align:center; margin-bottom: 48px; }
+  .eyebrow{
+    font-size: 12px; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--blush); margin-bottom: 14px; font-weight:500;
+  }
+  h1{
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 600;
+    font-size: clamp(28px, 6vw, 44px);
+    color: #fdfbf5;
+    margin: 0 0 8px;
+    letter-spacing: 0.02em;
+  }
+  .sub{
+    font-size: 14px; color: var(--mist-dim); font-weight:300;
+  }
+
+  /* controls */
+  .controls{
+    display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
+    margin: 32px 0 44px;
+  }
+  .toggle{
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    color: var(--mist);
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    cursor:pointer;
+    transition: all 0.25s ease;
+    font-family: inherit;
+  }
+  .toggle:hover{ background: rgba(232,192,125,0.1); border-color: var(--gold); }
+  .toggle.active{
+    background: var(--gold); color: #24200f; border-color: var(--gold); font-weight:600;
+  }
+
+  /* stanza card */
+  .stanza{
+    margin-bottom: 28px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 28px 26px;
+    backdrop-filter: blur(6px);
+  }
+  .stanza-label{
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--mist-dim); margin-bottom: 18px;
+  }
+
+  .line{
+    margin-bottom: 22px; padding-bottom:18px;
+    border-bottom: 1px dashed rgba(207,211,239,0.08);
+    cursor: pointer;
+  }
+  .line:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0; }
+
+  .jp{
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(20px, 4.4vw, 25px);
+    line-height: 2.15;
+    color: #f3f1ea;
+    letter-spacing: 0.01em;
+  }
+  ruby rt{
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 0.42em;
+    color: var(--gold);
+    opacity: 0.9;
+    user-select:none;
+  }
+  .no-furigana ruby rt{ display:none; }
+
+  .translation{
+    margin-top: 10px;
+    font-size: 14.5px;
+    color: var(--mist-dim);
+    font-style: italic;
+    line-height: 1.5;
+    max-height:0; overflow:hidden; opacity:0;
+    transition: all 0.35s ease;
+  }
+  .line.open .translation{ max-height: 200px; opacity:1; margin-top:12px; }
+
+  .notes{
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--mist);
+    line-height: 1.7;
+    max-height:0; overflow:hidden; opacity:0;
+    transition: all 0.35s ease;
+    border-left: 2px solid var(--blush);
+    padding-left: 0;
+  }
+  .line.open .notes{ max-height: 400px; opacity:1; padding-left: 14px; margin-top:10px; }
+  .notes .word{ color: var(--gold); font-weight:600; }
+  .notes .g{ color: var(--blush); }
+
+  .hint{
+    font-size: 11px; color: var(--mist-dim); opacity:0.55; margin-top: 4px;
+  }
+
+  /* practice mode */
+  .practice-panel{
+    background: rgba(232,192,125,0.05);
+    border: 1px solid rgba(232,192,125,0.25);
+    border-radius: 18px;
+    padding: 26px;
+    margin-top: 10px;
+    text-align:center;
+  }
+  .practice-panel h2{
+    font-family:'Shippori Mincho', serif; font-weight:600; color:#fdfbf5; font-size:20px; margin: 0 0 6px;
+  }
+  .practice-panel p{ color: var(--mist-dim); font-size: 13px; margin: 0 0 20px; }
+
+  .practice-line{
+    font-family:'Shippori Mincho', serif;
+    font-size: 22px;
+    line-height: 2;
+    color: #f3f1ea;
+    min-height: 3.2em;
+    display:flex; align-items:center; justify-content:center; flex-wrap:wrap;
+    gap: 4px;
+    margin-bottom: 18px;
+  }
+  .blank{
+    display:inline-block;
+    min-width: 2.4em;
+    border-bottom: 2px solid var(--blush);
+    color: transparent;
+    transition: color 0.2s;
+  }
+  .blank.revealed{ color: #f3f1ea; border-bottom-color: var(--gold); }
+  .blank:hover{ cursor:pointer; border-bottom-color: var(--gold); }
+
+  .practice-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    background: var(--gold); color:#24200f; border:none; padding: 11px 22px;
+    border-radius: 999px; font-weight:600; font-size:13px; cursor:pointer;
+    font-family: inherit; transition: transform 0.15s ease;
+  }
+  .btn:hover{ transform: translateY(-1px); }
+  .btn.secondary{
+    background: transparent; color: var(--mist); border: 1px solid var(--line);
+  }
+  .progress{
+    font-size: 12px; color: var(--mist-dim); margin-top: 14px;
+  }
+
+  footer{
+    text-align:center; margin-top: 60px; font-size: 12px; color: var(--mist-dim); opacity:0.6;
+  }
+
+  /* speak buttons */
+  .speak-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(232,192,125,0.12); border: 1px solid rgba(232,192,125,0.35);
+    color: var(--gold); font-size: 12px; cursor:pointer; vertical-align: middle;
+    margin-left: 8px; flex: none; transition: all 0.2s ease;
+  }
+  .speak-btn:hover{ background: var(--gold); color:#24200f; }
+  .speak-btn.small{ width:20px; height:20px; font-size:10px; margin-left:6px; }
+  .jp-row{ display:flex; align-items:center; gap:4px; flex-wrap:wrap; }
+  .notes .word-row{ display:flex; align-items:center; gap:2px; margin-bottom:4px; }
+
+  /* flashcards */
+  .flash-section{ margin-top: 60px; }
+  .flash-section .heading{
+    text-align:center; margin-bottom: 22px;
+  }
+  .flash-section h2{
+    font-family:'Shippori Mincho', serif; font-weight:600; color:#fdfbf5; font-size:22px; margin:0 0 6px;
+  }
+  .flash-section p{ color: var(--mist-dim); font-size:13px; margin:0; }
+
+  .flash-controls{
+    display:flex; gap:10px; justify-content:center; margin-bottom: 22px; flex-wrap:wrap;
+  }
+
+  .card-stage{
+    perspective: 1200px;
+    max-width: 480px; margin: 0 auto 20px;
+  }
+  .card{
+    position:relative; width:100%; min-height: 200px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(.4,.2,.2,1);
+    cursor:pointer;
+  }
+  .card.flipped{ transform: rotateY(180deg); }
+  .card-face{
+    position:absolute; inset:0;
+    backface-visibility: hidden;
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.035);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding: 28px 22px; text-align:center;
+    gap: 12px;
+  }
+  .card-face.back{ transform: rotateY(180deg); background: rgba(232,192,125,0.06); }
+  .card-tag{
+    font-size: 10px; letter-spacing:0.2em; text-transform:uppercase; color: var(--blush);
+  }
+  .card-word{
+    font-family:'Shippori Mincho', serif; font-size: 28px; color:#fdfbf5;
+  }
+  .card-gloss{
+    font-size: 15px; color: var(--mist); line-height:1.6;
+  }
+  .card-hint{ font-size: 11px; color: var(--mist-dim); opacity:0.6; }
+
+  .flash-nav{
+    display:flex; gap:10px; justify-content:center; align-items:center; flex-wrap:wrap;
+  }
+  .flash-progress{ font-size:12px; color: var(--mist-dim); text-align:center; margin-top:12px; }
+
+  /* voice selector */
+  .voice-panel{
+    max-width: 620px; margin: 0 auto 40px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px 20px;
+  }
+  .voice-panel summary{
+    cursor:pointer; font-size: 13px; color: var(--gold); font-weight:600;
+    list-style: none; display:flex; align-items:center; justify-content:space-between;
+  }
+  .voice-panel summary::-webkit-details-marker{ display:none; }
+  .voice-panel summary::after{ content:'▾'; color: var(--mist-dim); }
+  .voice-panel[open] summary::after{ content:'▴'; }
+  .voice-body{ margin-top: 16px; }
+  .voice-row{ display:flex; gap:10px; align-items:center; margin-bottom: 12px; flex-wrap:wrap; }
+  select.voice-select{
+    flex:1; min-width: 200px;
+    background: rgba(255,255,255,0.05); color: var(--mist);
+    border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: 13px;
+    font-family: inherit;
+  }
+  .voice-list-count{ font-size:12px; color: var(--mist-dim); margin-top:6px; }
+  .voice-test-input{
+    flex:1; min-width: 160px; background: rgba(255,255,255,0.05); color: var(--mist);
+    border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: 13px;
+    font-family: inherit;
+  }
+
+  /* quiz mode */
+  .quiz-section{ margin-top: 60px; }
+  .quiz-section .heading{ text-align:center; margin-bottom: 22px; }
+  .quiz-section h2{
+    font-family:'Shippori Mincho', serif; font-weight:600; color:#fdfbf5; font-size:22px; margin:0 0 6px;
+  }
+  .quiz-section p{ color: var(--mist-dim); font-size:13px; margin:0; }
+
+  .quiz-controls{
+    display:flex; gap:10px; justify-content:center; margin-bottom: 22px; flex-wrap:wrap;
+  }
+
+  .quiz-card{
+    max-width: 520px; margin: 0 auto 20px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 28px 24px;
+    text-align:center;
+  }
+  .quiz-question-tag{
+    font-size: 11px; letter-spacing:0.2em; text-transform:uppercase; color: var(--blush); margin-bottom:14px;
+  }
+  .quiz-prompt{
+    font-family:'Shippori Mincho', serif; font-size: 24px; color:#fdfbf5; margin-bottom: 26px;
+    line-height: 1.5;
+  }
+  .quiz-options{
+    display:flex; flex-direction:column; gap: 10px;
+  }
+  .quiz-option{
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    color: var(--mist);
+    padding: 13px 16px;
+    border-radius: 12px;
+    font-size: 14.5px;
+    cursor:pointer;
+    text-align:left;
+    font-family: inherit;
+    transition: all 0.2s ease;
+  }
+  .quiz-option:hover{ border-color: var(--gold); }
+  .quiz-option.correct{ background: rgba(120,200,150,0.18); border-color:#7ac896; color:#e6fbee; }
+  .quiz-option.wrong{ background: rgba(220,110,110,0.18); border-color:#dc7070; color:#ffe6e6; }
+  .quiz-option.disabled{ pointer-events:none; opacity:0.85; }
+
+  .quiz-feedback{
+    margin-top: 18px; font-size: 13px; min-height: 18px; color: var(--gold);
+  }
+  .quiz-actions{
+    display:flex; gap:10px; justify-content:center; margin-top: 18px; flex-wrap:wrap;
+  }
+  .quiz-score{
+    text-align:center; font-size: 13px; color: var(--mist-dim); margin-top: 14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="sky" id="sky"></div>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">ZARD Lyric Study</div>
+    <h1>少女の頃に戻ったみたいに</h1>
+    <div class="sub">— as if I'd returned to my girlhood —</div>
+  </header>
+
+  <div class="controls">
+    <button class="toggle active" id="toggleFurigana">ふりがな ON</button>
+    <button class="toggle" id="toggleAll">全部開く / たたむ</button>
+    <button class="toggle" id="scrollPractice">練習モードへ ↓</button>
+  </div>
+
+  <details class="voice-panel" id="voicePanel">
+    <summary>🔊 음성 설정 / 디버그 (탭하여 열기)</summary>
+    <div class="voice-body">
+      <div class="voice-row">
+        <select class="voice-select" id="voiceSelect">
+          <option value="">불러오는 중...</option>
+        </select>
+        <button class="btn secondary" id="refreshVoicesBtn">↻ 새로고침</button>
+      </div>
+      <div class="voice-row">
+        <input class="voice-test-input" id="voiceTestInput" value="やさしく髪を撫でてくれる">
+        <button class="btn" id="voiceTestBtn">테스트 재생</button>
+      </div>
+      <div class="voice-list-count" id="voiceListCount"></div>
+    </div>
+  </details>
+
+  <div id="stanzas"></div>
+
+  <div class="practice-panel" id="practicePanel">
+    <h2>暗記練習 · Memory Practice</h2>
+    <p>단어를 눌러 하나씩 드러내며 가사를 떠올려보세요. 다 맞히면 다음 줄로.</p>
+    <div class="practice-line" id="practiceLine"></div>
+    <div class="practice-actions">
+      <button class="btn" id="revealAllBtn">전체 보기</button>
+      <button class="btn secondary" id="nextLineBtn">다음 줄 →</button>
+      <button class="btn secondary" id="prevLineBtn">← 이전 줄</button>
+    </div>
+    <div class="progress" id="progressLabel"></div>
+  </div>
+
+  <div class="flash-section" id="flashSection">
+    <div class="heading">
+      <h2>単語・文法 フラッシュカード</h2>
+      <p>카드를 클릭하면 뒤집혀서 뜻/문법 설명이 나와요. 스피커 버튼으로 발음도 들을 수 있어요.</p>
+    </div>
+
+    <div class="flash-controls">
+      <button class="toggle active" id="deckVocab">単語 (단어)</button>
+      <button class="toggle" id="deckGrammar">文法 (문법)</button>
+      <button class="toggle" id="deckShuffle">🔀 셔플</button>
+    </div>
+
+    <div class="card-stage">
+      <div class="card" id="flashCard">
+        <div class="card-face front">
+          <div class="card-tag">単語 / 文法</div>
+          <div class="card-word" id="cardFront">—</div>
+          <div class="card-hint">탭하여 뒤집기</div>
+        </div>
+        <div class="card-face back">
+          <div class="card-tag">意味</div>
+          <div class="card-gloss" id="cardBack">—</div>
+          <button class="speak-btn" id="cardSpeakBtn" title="발음 듣기">🔊</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flash-nav">
+      <button class="btn secondary" id="cardPrevBtn">← 이전</button>
+      <button class="btn" id="cardFlipBtn">뒤집기</button>
+      <button class="btn secondary" id="cardNextBtn">다음 →</button>
+    </div>
+    <div class="flash-progress" id="cardProgress"></div>
+  </div>
+
+  <div class="quiz-section" id="quizSection">
+    <div class="heading">
+      <h2>単語・文法 퀴즈</h2>
+      <p>4지선다로 단어와 문법을 테스트해보세요. 정답/오답이 바로 표시돼요.</p>
+    </div>
+
+    <div class="quiz-controls">
+      <button class="toggle active" id="quizDeckAll">전체</button>
+      <button class="toggle" id="quizDeckVocab">単語만</button>
+      <button class="toggle" id="quizDeckGrammar">文法만</button>
+    </div>
+
+    <div class="quiz-card">
+      <div class="quiz-question-tag" id="quizTag">문제</div>
+      <div class="quiz-prompt" id="quizPrompt">—</div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <div class="quiz-actions">
+        <button class="btn" id="quizNextBtn">다음 문제 →</button>
+        <button class="btn secondary" id="quizRestartBtn">↻ 다시 시작</button>
+      </div>
+    </div>
+    <div class="quiz-score" id="quizScore"></div>
+  </div>
+
+  <footer>가사는 사용자가 제공한 원문을 기반으로 학습용으로만 구성되었습니다.</footer>
+
+</div>
+
+<script>
+// ---------- DATA ----------
+// Each stanza is an array of lines. Each line: kanji text with ruby markup, plain text (no ruby, for practice),
+// translation, and notes (array of {word, gloss}).
+
+const stanzas = [
+  {
+    label: "1",
+    lines: [
+      {
+        ruby: "くり<ruby>返<rt>かえ</rt></ruby>し<ruby>見<rt>み</rt></ruby>る<ruby>夢<rt>ゆめ</rt></ruby>に",
+        plain: "くり返し見る夢に",
+        tr: "몇 번이고 되풀이해서 꾸는 꿈 속에서",
+        notes: [
+          {w:"くり返し", g:"반복해서, 되풀이하여 (동사 くり返す의 연용형이 부사처럼 쓰임)"},
+          {w:"夢に", g:"に는 '~안에서, ~라는 상황에서'를 나타내는 조사"}
+        ]
+      },
+      {
+        ruby: "<ruby>目<rt>め</rt></ruby>が<ruby>覚<rt>さ</rt></ruby>めてみると",
+        plain: "目が覚めてみると",
+        tr: "눈을 떠보면 (잠에서 깨어보니)",
+        notes: [
+          {w:"目が覚める", g:"잠에서 깨다 (관용 표현, 目を覚ます의 자동사형)"},
+          {w:"〜てみると", g:"'~해 보니, ~해 봤더니' — てみる(시도)+と(조건)"}
+        ]
+      },
+      {
+        ruby: "<ruby>胸<rt>むね</rt></ruby>の<ruby>動<rt>どう</rt></ruby><ruby>悸<rt>き</rt></ruby>が<br><ruby>早<rt>はや</rt></ruby>いことに<ruby>気付<rt>きづ</rt></ruby>く",
+        plain: "胸の動悸が　早いことに気づく",
+        tr: "가슴 두근거림이 빠르다는 것을 알아차린다",
+        notes: [
+          {w:"動悸", g:"두근거림, 심계항진 (심장이 빨리 뛰는 것)"},
+          {w:"〜ことに気づく", g:"'~라는 것을 깨닫다' — こと는 형용사/동사를 명사화"}
+        ]
+      }
+    ]
+  },
+  {
+    label: "2",
+    lines: [
+      {
+        ruby: "いつも<ruby>白<rt>はく</rt></ruby><ruby>線<rt>せん</rt></ruby><br><ruby>踏<rt>ふ</rt></ruby>みはずして",
+        plain: "いつも白線　踏みはずして",
+        tr: "항상 흰 선을 밟지 못하고 벗어나서",
+        notes: [
+          {w:"白線", g:"흰 선 (역 플랫폼 등의 안전선)"},
+          {w:"踏みはずす", g:"'발을 헛디디다, 선을 밟지 못하고 벗어나다' — 踏む+はずす(빗나가다)의 복합동사"}
+        ]
+      },
+      {
+        ruby: "<ruby>走<rt>はし</rt></ruby>る<ruby>私<rt>わたし</rt></ruby>がいる",
+        plain: "走る私がいる",
+        tr: "달리고 있는 내가 있다",
+        notes: [
+          {w:"〜がいる", g:"'~(하는 사람/나)가 있다' — 자신을 3인칭처럼 관찰하는 표현"}
+        ]
+      },
+      {
+        ruby: "<ruby>何故<rt>なぜ</rt></ruby>？　<ruby>理由<rt>わけ</rt></ruby>もないのに<br><ruby>声<rt>こえ</rt></ruby>をあげて<ruby>泣<rt>な</rt></ruby>きたくなる",
+        plain: "何故？　理由もないのに　声をあげて泣きたくなる",
+        tr: "왜일까? 이유도 없는데 소리 내어 울고 싶어진다",
+        notes: [
+          {w:"〜もないのに", g:"'~조차 없는데도' — もない(전면 부정)+のに(역접)"},
+          {w:"声をあげる", g:"소리를 지르다, 목소리를 높이다"},
+          {w:"泣きたくなる", g:"울고 싶어지다 — 泣く+たい(희망)+くなる(자연스러운 변화)"}
+        ]
+      }
+    ]
+  },
+  {
+    label: "サビ 1 (후렴 1)",
+    lines: [
+      {
+        ruby: "<ruby>幼<rt>おさな</rt></ruby>い　<ruby>少女<rt>しょうじょ</rt></ruby>の<ruby>頃<rt>ころ</rt></ruby>に<ruby>戻<rt>もど</rt></ruby>ったみたいに",
+        plain: "幼い　少女の頃に戻ったみたいに",
+        tr: "어린 소녀 시절로 돌아간 것처럼",
+        notes: [
+          {w:"幼い", g:"어리다, 유년의"},
+          {w:"少女の頃", g:"소녀였던 시절"},
+          {w:"〜みたいに", g:"'~인 것처럼' — みたい(추측/비유)+に(부사화)"}
+        ]
+      },
+      {
+        ruby: "やさしく<ruby>髪<rt>かみ</rt></ruby>を<ruby>撫<rt>な</rt></ruby>でてくれる",
+        plain: "やさしく　髪を撫でてくれる",
+        tr: "다정하게 머리를 쓰다듬어 준다",
+        notes: [
+          {w:"撫でる", g:"쓰다듬다"},
+          {w:"〜てくれる", g:"'(남이 나에게) ~해 주다' — 은혜/호의의 수수 표현"}
+        ]
+      },
+      {
+        ruby: "そんな<ruby>温<rt>あたた</rt></ruby>かい<ruby>手<rt>て</rt></ruby>を<br>いつも<ruby>待<rt>ま</rt></ruby>っていた",
+        plain: "そんな温かい手を　いつも待っていた",
+        tr: "그런 따뜻한 손을 나는 늘 기다리고 있었다",
+        notes: [
+          {w:"温かい手", g:"따뜻한 손"},
+          {w:"〜ていた", g:"과거 계속 (~하고 있었다)"}
+        ]
+      },
+      {
+        ruby: "あなただけは　<ruby>私<rt>わたし</rt></ruby>を<br>やさしい<ruby>人<rt>ひと</rt></ruby>にしてくれる",
+        plain: "あなただけは　私を　やさしい人にしてくれる",
+        tr: "당신만은 나를 다정한 사람으로 만들어준다",
+        notes: [
+          {w:"〜だけは", g:"'~만은' — だけ(한정)+は(대조 강조)"},
+          {w:"〜にする", g:"'~로 만들다' — 명사+に+する"}
+        ]
+      },
+      {
+        ruby: "とても<ruby>大好<rt>だいす</rt></ruby>きよ<br>とても<ruby>大好<rt>だいす</rt></ruby>きよ",
+        plain: "とても大好きよ　とても大好きよ",
+        tr: "정말 정말 좋아해, 정말 정말 좋아해",
+        notes: [
+          {w:"大好き", g:"매우 좋아함 (好き보다 강한 애정 표현)"},
+          {w:"〜よ", g:"문말 조사, 부드러운 강조/전달의 뉘앙스 (여성적 어감)"}
+        ]
+      }
+    ]
+  },
+  {
+    label: "3",
+    lines: [
+      {
+        ruby: "どんなに<ruby>情<rt>じょう</rt></ruby><ruby>熱<rt>ねつ</rt></ruby>かたむけても",
+        plain: "どんなに情熱　かたむけても",
+        tr: "아무리 열정을 쏟아부어도",
+        notes: [
+          {w:"どんなに〜ても", g:"'아무리 ~해도' — 양보 구문"},
+          {w:"傾ける", g:"(마음, 힘 등을) 쏟다, 기울이다"}
+        ]
+      },
+      {
+        ruby: "わかりあえない<ruby>人<rt>ひと</rt></ruby>もいる",
+        plain: "わかりあえない　人もいる",
+        tr: "서로 이해할 수 없는 사람도 있다",
+        notes: [
+          {w:"わかりあう", g:"서로 이해하다 (わかる+合う)"},
+          {w:"〜えない", g:"가능형의 부정, '~할 수 없다'"}
+        ]
+      },
+      {
+        ruby: "そんな<ruby>日<rt>ひ</rt></ruby>は<ruby>心<rt>こころ</rt></ruby>が<br><ruby>曇<rt>くも</rt></ruby>ってしまうわ",
+        plain: "そんな日は　心が　曇ってしまうわ",
+        tr: "그런 날은 마음이 흐려져 버려",
+        notes: [
+          {w:"曇る", g:"흐리다 (날씨→마음이 침울해짐을 비유)"},
+          {w:"〜てしまう", g:"'~해 버리다' — 완료/유감의 뉘앙스"},
+          {w:"〜わ", g:"문말 조사, 여성스러운 부드러운 단정"}
+        ]
+      }
+    ]
+  },
+  {
+    label: "4",
+    lines: [
+      {
+        ruby: "<ruby>恋<rt>こい</rt></ruby>は<ruby>規則<rt>きそく</rt></ruby><ruby>正<rt>ただ</rt></ruby>しい<br>リズムを<ruby>刻<rt>きざ</rt></ruby>まない",
+        plain: "恋は規則正しい　リズムを刻まない",
+        tr: "사랑은 규칙적인 리듬을 새기지 않는다",
+        notes: [
+          {w:"規則正しい", g:"규칙적인, 질서 있는"},
+          {w:"刻む", g:"(리듬 등을) 새기다, 각인하다"}
+        ]
+      },
+      {
+        ruby: "<ruby>心地良<rt>ここちい</rt></ruby>いソファーで<br>また<ruby>眠<rt>ねむ</rt></ruby>ってしまった",
+        plain: "心地良いソファーで　また眠ってしまった",
+        tr: "기분 좋은 소파에서 또 잠들어 버렸다",
+        notes: [
+          {w:"心地良い", g:"기분 좋은, 편안한"},
+          {w:"眠ってしまった", g:"잠들어 버렸다 (무의식중에 잠든 것에 대한 뉘앙스)"}
+        ]
+      }
+    ]
+  },
+  {
+    label: "サビ 2 (후렴 2)",
+    lines: [
+      {
+        ruby: "<ruby>懐<rt>なつ</rt></ruby>かしい　<ruby>少女<rt>しょうじょ</rt></ruby>の<ruby>頃<rt>ころ</rt></ruby>に<ruby>戻<rt>もど</rt></ruby>ったみたいに",
+        plain: "懐かしい　少女の頃に戻ったみたいに",
+        tr: "그리운 소녀 시절로 돌아간 것처럼",
+        notes: [
+          {w:"懐かしい", g:"그립다, 향수를 불러일으키다 (1절의 幼い와 대응되는 자리)"}
+        ]
+      },
+      {
+        ruby: "やさしく<ruby>髪<rt>かみ</rt></ruby>を<ruby>撫<rt>な</rt></ruby>でてくれる",
+        plain: "やさしく　髪を撫でてくれる",
+        tr: "다정하게 머리를 쓰다듬어 준다",
+        notes: []
+      },
+      {
+        ruby: "そんな<ruby>温<rt>あたた</rt></ruby>かい<ruby>手<rt>て</rt></ruby>を<br>いつも<ruby>待<rt>ま</rt></ruby>っていた",
+        plain: "そんな温かい手を　いつも待っていた",
+        tr: "그런 따뜻한 손을 나는 늘 기다리고 있었다",
+        notes: []
+      },
+      {
+        ruby: "あなただけは　<ruby>私<rt>わたし</rt></ruby>を<br>そっと<ruby>包<rt>つつ</rt></ruby>みこんでくれる",
+        plain: "あなただけは　私を　そっと包みこんでくれる",
+        tr: "당신만은 나를 살며시 감싸 안아준다",
+        notes: [
+          {w:"そっと", g:"살며시, 가만히"},
+          {w:"包み込む", g:"감싸 안다, 완전히 감싸다 (包む+込む)"}
+        ]
+      },
+      {
+        ruby: "とても<ruby>愛<rt>あい</rt></ruby>してる<br>とても<ruby>愛<rt>あい</rt></ruby>してる",
+        plain: "とても愛してる　とても愛してる",
+        tr: "정말 사랑해, 정말 사랑해",
+        notes: [
+          {w:"愛してる", g:"愛している의 회화체 축약형 — 사랑하고 있다"}
+        ]
+      }
+    ]
+  },
+  {
+    label: "アウトロ (아웃트로)",
+    lines: [
+      {
+        ruby: "あなただけは　<ruby>私<rt>わたし</rt></ruby>を<br>そっと<ruby>包<rt>つつ</rt></ruby>みこんでくれる",
+        plain: "あなただけは　私を　そっと包みこんでくれる",
+        tr: "당신만은 나를 살며시 감싸 안아준다",
+        notes: []
+      },
+      {
+        ruby: "とても<ruby>愛<rt>あい</rt></ruby>してる　<ruby>赤<rt>あか</rt></ruby>いハートで",
+        plain: "とても愛してる　赤いハートで",
+        tr: "정말 사랑해, 붉은 마음으로",
+        notes: [
+          {w:"赤いハートで", g:"'붉은 하트로' — 순수하고 뜨거운 진심을 상징"}
+        ]
+      },
+      {
+        ruby: "lovin' you　あなたと…",
+        plain: "lovin' you　あなたと…",
+        tr: "lovin' you, 당신과…",
+        notes: [
+          {w:"あなたと", g:"'당신과 (함께)' — と는 '~와 함께'를 나타내는 조사, 말줄임표로 여운을 남김"}
+        ]
+      }
+    ]
+  }
+];
+
+// ---------- TEXT-TO-SPEECH ----------
+let jaVoice = null;
+let manualVoice = null; // user-selected voice object, overrides auto-pick
+let allVoices = [];
+
+const voiceSelect = document.getElementById('voiceSelect');
+const voiceListCount = document.getElementById('voiceListCount');
+
+function populateVoiceList() {
+  if (!window.speechSynthesis) return;
+  allVoices = window.speechSynthesis.getVoices() || [];
+
+  // auto-pick best ja voice: prefer names containing "premium"/"enhanced" hints aren't exposed,
+  // so just prefer any voice whose lang starts with ja
+  jaVoice = allVoices.find(v => v.lang && v.lang.toLowerCase().startsWith('ja')) || null;
+
+  // build dropdown: show ALL voices so user can see exactly what iOS is exposing to the browser
+  voiceSelect.innerHTML = '';
+  if (allVoices.length === 0) {
+    voiceSelect.innerHTML = '<option value="">음성을 찾을 수 없음</option>';
+    voiceListCount.textContent = '이 브라우저/웹뷰에서 인식된 음성이 0개예요. 사파리에서 직접 열어보는 걸 권장해요.';
+    return;
+  }
+
+  const autoOpt = document.createElement('option');
+  autoOpt.value = '__auto__';
+  autoOpt.textContent = '자동 (일본어 음성 자동 선택)';
+  voiceSelect.appendChild(autoOpt);
+
+  allVoices.forEach((v, i) => {
+    const opt = document.createElement('option');
+    opt.value = String(i);
+    opt.textContent = `${v.name} — ${v.lang}${v.localService ? '' : ' (네트워크)'}`;
+    voiceSelect.appendChild(opt);
+  });
+
+  // default selection: auto
+  voiceSelect.value = '__auto__';
+  manualVoice = null;
+
+  const jaCount = allVoices.filter(v => v.lang && v.lang.toLowerCase().startsWith('ja')).length;
+  voiceListCount.textContent = `총 ${allVoices.length}개 음성 인식됨 (그중 일본어 계열 ${jaCount}개). 목록에 원하는 음성이 안 보이면, 설정에서 다운로드했는지 + 선택(체크)했는지 확인해주세요.`;
+}
+
+if (window.speechSynthesis) {
+  populateVoiceList();
+  window.speechSynthesis.onvoiceschanged = populateVoiceList;
+  // iOS Safari sometimes needs a delayed re-check
+  setTimeout(populateVoiceList, 400);
+  setTimeout(populateVoiceList, 1200);
+}
+
+voiceSelect.addEventListener('change', () => {
+  if (voiceSelect.value === '__auto__' || voiceSelect.value === '') {
+    manualVoice = null;
+  } else {
+    manualVoice = allVoices[parseInt(voiceSelect.value, 10)] || null;
+  }
+});
+
+document.getElementById('refreshVoicesBtn').addEventListener('click', populateVoiceList);
+document.getElementById('voiceTestBtn').addEventListener('click', () => {
+  speak(document.getElementById('voiceTestInput').value || 'こんにちは');
+});
+
+function speak(text) {
+  if (!window.speechSynthesis) {
+    alert('이 브라우저는 음성 합성을 지원하지 않아요.');
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const clean = text.replace(/<br\s*\/?>/g, '　').replace(/〜/g, '');
+  const utter = new SpeechSynthesisUtterance(clean);
+  utter.lang = 'ja-JP';
+  const chosen = manualVoice || jaVoice;
+  if (chosen) utter.voice = chosen;
+  utter.rate = 0.85;
+  window.speechSynthesis.speak(utter);
+}
+function makeSpeakBtn(text, small) {
+  const btn = document.createElement('button');
+  btn.className = 'speak-btn' + (small ? ' small' : '');
+  btn.type = 'button';
+  btn.title = '발음 듣기';
+  btn.textContent = '🔊';
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    speak(text);
+  });
+  return btn;
+}
+
+// ---------- RENDER LYRICS ----------
+const stanzasEl = document.getElementById('stanzas');
+let allPlainLines = [];
+let flashcardPool = []; // {word, gloss, isGrammar}
+
+stanzas.forEach((st, sIdx) => {
+  const card = document.createElement('div');
+  card.className = 'stanza';
+
+  const label = document.createElement('div');
+  label.className = 'stanza-label';
+  label.textContent = st.label;
+  card.appendChild(label);
+
+  st.lines.forEach((ln) => {
+    allPlainLines.push(ln.plain);
+
+    const lineEl = document.createElement('div');
+    lineEl.className = 'line';
+
+    const jpRow = document.createElement('div');
+    jpRow.className = 'jp-row';
+    const jp = document.createElement('div');
+    jp.className = 'jp';
+    jp.innerHTML = ln.ruby;
+    jpRow.appendChild(jp);
+    jpRow.appendChild(makeSpeakBtn(ln.plain, false));
+    lineEl.appendChild(jpRow);
+
+    const hint = document.createElement('div');
+    hint.className = 'hint';
+    hint.textContent = '탭하여 뜻/문법 보기';
+    lineEl.appendChild(hint);
+
+    const tr = document.createElement('div');
+    tr.className = 'translation';
+    tr.textContent = ln.tr;
+    lineEl.appendChild(tr);
+
+    if (ln.notes.length) {
+      const notes = document.createElement('div');
+      notes.className = 'notes';
+      ln.notes.forEach(n => {
+        const row = document.createElement('div');
+        row.className = 'word-row';
+        const wordSpan = document.createElement('span');
+        wordSpan.className = 'word';
+        wordSpan.textContent = n.w;
+        row.appendChild(wordSpan);
+        row.appendChild(makeSpeakBtn(n.w, true));
+        const glossSpan = document.createElement('span');
+        glossSpan.textContent = ' — ' + n.g;
+        row.appendChild(glossSpan);
+        notes.appendChild(row);
+
+        // collect for flashcards (dedupe by word)
+        const isGrammar = n.w.startsWith('〜') || n.w.includes('〜');
+        if (!flashcardPool.some(f => f.word === n.w)) {
+          flashcardPool.push({ word: n.w, gloss: n.g, isGrammar });
+        }
+      });
+      lineEl.appendChild(notes);
+    }
+
+    lineEl.addEventListener('click', () => {
+      lineEl.classList.toggle('open');
+    });
+
+    card.appendChild(lineEl);
+  });
+
+  stanzasEl.appendChild(card);
+});
+
+// ---------- FURIGANA TOGGLE ----------
+const furiganaBtn = document.getElementById('toggleFurigana');
+let furiganaOn = true;
+furiganaBtn.addEventListener('click', () => {
+  furiganaOn = !furiganaOn;
+  document.body.classList.toggle('no-furigana', !furiganaOn);
+  furiganaBtn.textContent = furiganaOn ? 'ふりがな ON' : 'ふりがな OFF';
+  furiganaBtn.classList.toggle('active', furiganaOn);
+});
+
+// ---------- OPEN/CLOSE ALL ----------
+let allOpen = false;
+document.getElementById('toggleAll').addEventListener('click', () => {
+  allOpen = !allOpen;
+  document.querySelectorAll('.line').forEach(l => l.classList.toggle('open', allOpen));
+});
+
+// ---------- SCROLL TO PRACTICE ----------
+document.getElementById('scrollPractice').addEventListener('click', () => {
+  document.getElementById('practicePanel').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+// ---------- PRACTICE MODE ----------
+let practiceIdx = 0;
+const practiceLineEl = document.getElementById('practiceLine');
+const progressLabel = document.getElementById('progressLabel');
+
+// Tokenize a line into chunks (words) roughly by particles/spaces for blanking.
+// Simple approach: split by common delimiters while keeping punctuation attached.
+function tokenize(line) {
+  // remove full-width spaces used as visual separators, keep as boundaries
+  const clean = line.replace(/\u3000/g, ' ');
+  // split into characters but group by 2-4 char chunks isn't linguistic; instead split on spaces first
+  const parts = clean.split(' ').filter(Boolean);
+  return parts;
+}
+
+function renderPracticeLine() {
+  practiceLineEl.innerHTML = '';
+  const line = allPlainLines[practiceIdx];
+  const tokens = tokenize(line);
+
+  tokens.forEach((tok) => {
+    const span = document.createElement('span');
+    span.className = 'blank';
+    span.textContent = tok;
+    span.dataset.revealed = 'false';
+    span.addEventListener('click', () => {
+      span.classList.toggle('revealed');
+    });
+    practiceLineEl.appendChild(span);
+  });
+
+  progressLabel.textContent = `${practiceIdx + 1} / ${allPlainLines.length} 줄`;
+}
+
+document.getElementById('revealAllBtn').addEventListener('click', () => {
+  document.querySelectorAll('.blank').forEach(b => b.classList.add('revealed'));
+});
+
+document.getElementById('nextLineBtn').addEventListener('click', () => {
+  practiceIdx = (practiceIdx + 1) % allPlainLines.length;
+  renderPracticeLine();
+});
+
+document.getElementById('prevLineBtn').addEventListener('click', () => {
+  practiceIdx = (practiceIdx - 1 + allPlainLines.length) % allPlainLines.length;
+  renderPracticeLine();
+});
+
+renderPracticeLine();
+
+// ---------- FLASHCARDS ----------
+const vocabDeckSource = flashcardPool.filter(f => !f.isGrammar);
+const grammarDeckSource = flashcardPool.filter(f => f.isGrammar);
+
+let currentDeck = [...vocabDeckSource];
+let cardIdx = 0;
+let cardFlipped = false;
+
+const flashCard = document.getElementById('flashCard');
+const cardFront = document.getElementById('cardFront');
+const cardBack = document.getElementById('cardBack');
+const cardProgress = document.getElementById('cardProgress');
+const deckVocabBtn = document.getElementById('deckVocab');
+const deckGrammarBtn = document.getElementById('deckGrammar');
+
+function renderCard() {
+  if (currentDeck.length === 0) {
+    cardFront.textContent = '카드가 없어요';
+    cardBack.textContent = '';
+    cardProgress.textContent = '';
+    return;
+  }
+  const c = currentDeck[cardIdx];
+  cardFront.textContent = c.word;
+  cardBack.textContent = c.gloss;
+  cardProgress.textContent = `${cardIdx + 1} / ${currentDeck.length}`;
+  flashCard.classList.remove('flipped');
+  cardFlipped = false;
+}
+
+flashCard.addEventListener('click', () => {
+  cardFlipped = !cardFlipped;
+  flashCard.classList.toggle('flipped', cardFlipped);
+});
+document.getElementById('cardFlipBtn').addEventListener('click', () => {
+  cardFlipped = !cardFlipped;
+  flashCard.classList.toggle('flipped', cardFlipped);
+});
+
+document.getElementById('cardNextBtn').addEventListener('click', () => {
+  if (currentDeck.length === 0) return;
+  cardIdx = (cardIdx + 1) % currentDeck.length;
+  renderCard();
+});
+document.getElementById('cardPrevBtn').addEventListener('click', () => {
+  if (currentDeck.length === 0) return;
+  cardIdx = (cardIdx - 1 + currentDeck.length) % currentDeck.length;
+  renderCard();
+});
+
+document.getElementById('cardSpeakBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (currentDeck.length === 0) return;
+  speak(currentDeck[cardIdx].word);
+});
+
+deckVocabBtn.addEventListener('click', () => {
+  currentDeck = [...vocabDeckSource];
+  cardIdx = 0;
+  deckVocabBtn.classList.add('active');
+  deckGrammarBtn.classList.remove('active');
+  renderCard();
+});
+deckGrammarBtn.addEventListener('click', () => {
+  currentDeck = [...grammarDeckSource];
+  cardIdx = 0;
+  deckGrammarBtn.classList.add('active');
+  deckVocabBtn.classList.remove('active');
+  renderCard();
+});
+document.getElementById('deckShuffle').addEventListener('click', () => {
+  for (let i = currentDeck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [currentDeck[i], currentDeck[j]] = [currentDeck[j], currentDeck[i]];
+  }
+  cardIdx = 0;
+  renderCard();
+});
+
+renderCard();
+
+// ---------- QUIZ MODE ----------
+let quizPool = [...flashcardPool]; // full pool, filtered by deck choice
+let quizDeckFilter = 'all'; // 'all' | 'vocab' | 'grammar'
+let quizOrder = [];
+let quizPos = 0;
+let quizScoreCorrect = 0;
+let quizScoreTotal = 0;
+let quizAnswered = false;
+
+const quizTag = document.getElementById('quizTag');
+const quizPrompt = document.getElementById('quizPrompt');
+const quizOptionsEl = document.getElementById('quizOptions');
+const quizFeedback = document.getElementById('quizFeedback');
+const quizScoreEl = document.getElementById('quizScore');
+
+function shuffleArr(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getQuizDeck() {
+  if (quizDeckFilter === 'vocab') return flashcardPool.filter(f => !f.isGrammar);
+  if (quizDeckFilter === 'grammar') return flashcardPool.filter(f => f.isGrammar);
+  return flashcardPool;
+}
+
+function startQuizSet() {
+  quizPool = getQuizDeck();
+  quizOrder = shuffleArr(quizPool.map((_, i) => i));
+  quizPos = 0;
+  quizScoreCorrect = 0;
+  quizScoreTotal = 0;
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+  quizFeedback.textContent = '';
+  quizAnswered = false;
+
+  if (quizPool.length < 2) {
+    quizPrompt.textContent = '이 덱에는 문제를 만들 카드가 부족해요.';
+    quizOptionsEl.innerHTML = '';
+    quizTag.textContent = '문제 없음';
+    return;
+  }
+
+  if (quizPos >= quizOrder.length) {
+    // completed a full pass — reshuffle and continue endlessly
+    quizOrder = shuffleArr(quizPool.map((_, i) => i));
+    quizPos = 0;
+  }
+
+  const item = quizPool[quizOrder[quizPos]];
+  // direction: true = word -> meaning, false = meaning -> word
+  const wordToMeaning = Math.random() < 0.5;
+
+  quizTag.textContent = wordToMeaning ? '이 단어/문법의 뜻은?' : '이 뜻에 맞는 단어/문법은?';
+  quizPrompt.textContent = wordToMeaning ? item.word : item.gloss;
+
+  // build distractors from same pool (different items)
+  const others = quizPool.filter((_, i) => quizPool[i] !== item);
+  const distractors = shuffleArr(others).slice(0, 3);
+  const options = shuffleArr([item, ...distractors]);
+
+  quizOptionsEl.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.type = 'button';
+    btn.textContent = wordToMeaning ? opt.gloss : opt.word;
+    btn.addEventListener('click', () => {
+      if (quizAnswered) return;
+      quizAnswered = true;
+      quizScoreTotal++;
+      const isCorrect = opt === item;
+      if (isCorrect) quizScoreCorrect++;
+
+      document.querySelectorAll('.quiz-option').forEach(o => o.classList.add('disabled'));
+      btn.classList.add(isCorrect ? 'correct' : 'wrong');
+      if (!isCorrect) {
+        // highlight the correct one too
+        [...quizOptionsEl.children].forEach(child => {
+          if (child.textContent === (wordToMeaning ? item.gloss : item.word)) {
+            child.classList.add('correct');
+          }
+        });
+      }
+      quizFeedback.textContent = isCorrect ? '정답이에요! 🎉' : `아쉬워요. 정답: ${wordToMeaning ? item.gloss : item.word}`;
+      updateQuizScore();
+    });
+    quizOptionsEl.appendChild(btn);
+  });
+
+  updateQuizScore();
+}
+
+function updateQuizScore() {
+  quizScoreEl.textContent = quizScoreTotal > 0
+    ? `정답 ${quizScoreCorrect} / 시도 ${quizScoreTotal}  ·  ${quizPos + 1}번째 문제`
+    : `${quizPos + 1}번째 문제`;
+}
+
+document.getElementById('quizNextBtn').addEventListener('click', () => {
+  quizPos++;
+  renderQuizQuestion();
+});
+document.getElementById('quizRestartBtn').addEventListener('click', () => {
+  startQuizSet();
+});
+
+const quizDeckAllBtn = document.getElementById('quizDeckAll');
+const quizDeckVocabBtn = document.getElementById('quizDeckVocab');
+const quizDeckGrammarBtn = document.getElementById('quizDeckGrammar');
+
+function setQuizDeckActive(btn) {
+  [quizDeckAllBtn, quizDeckVocabBtn, quizDeckGrammarBtn].forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+quizDeckAllBtn.addEventListener('click', () => { quizDeckFilter = 'all'; setQuizDeckActive(quizDeckAllBtn); startQuizSet(); });
+quizDeckVocabBtn.addEventListener('click', () => { quizDeckFilter = 'vocab'; setQuizDeckActive(quizDeckVocabBtn); startQuizSet(); });
+quizDeckGrammarBtn.addEventListener('click', () => { quizDeckFilter = 'grammar'; setQuizDeckActive(quizDeckGrammarBtn); startQuizSet(); });
+
+startQuizSet();
+
+// ---------- AMBIENT STARS ----------
+const sky = document.getElementById('sky');
+for (let i = 0; i < 28; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  s.style.left = Math.random() * 100 + 'vw';
+  s.style.top = Math.random() * 100 + 'vh';
+  s.style.animationDuration = (14 + Math.random() * 18) + 's';
+  s.style.animationDelay = (Math.random() * 10) + 's';
+  sky.appendChild(s);
+}
+</script>
+
+</body>
+</html>

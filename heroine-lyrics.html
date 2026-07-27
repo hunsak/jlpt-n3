@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0a1425">
+<title>ヒロイン – 일본어 가사 학습</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#101c33;
+    --navy-deep:#0a1425;
+    --snow:#f4f7fb;
+    --ice:#8fb4d6;
+    --rose:#e79a92;
+    --gold:#cda86e;
+    --line:rgba(244,247,251,0.12);
+  }
+  *{box-sizing:border-box;}
+  html{ font-size:18px; background:#0a1425; height:100%; }
+  body{
+    margin:0;
+    min-height:100%;
+    background:var(--navy-deep);
+    color:var(--snow);
+    font-family:'Noto Sans KR',sans-serif;
+    line-height:1.8;
+    position:relative;
+    overflow-x:hidden;
+  }
+  @media(max-width:480px){ html{ font-size:19px; } }
+  .snowlayer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+  .flake{
+    position:absolute;top:-10px;
+    background:var(--snow);
+    border-radius:50%;
+    opacity:0.55;
+    animation:fall linear infinite;
+  }
+  @keyframes fall{
+    to{ transform:translateY(110vh) translateX(var(--drift,0px)); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .flake{animation:none;display:none;}
+  }
+  header{
+    position:relative;z-index:1;
+    text-align:center;
+    padding:64px 24px 40px;
+    background:linear-gradient(180deg,var(--navy) 0%,var(--navy-deep) 100%);
+    border-bottom:1px solid var(--line);
+  }
+  h1.jp-title{
+    font-family:'Shippori Mincho',serif;
+    font-size:clamp(2.4rem,6vw,4rem);
+    letter-spacing:0.15em;
+    margin:0;
+    color:var(--snow);
+    text-shadow:0 0 24px rgba(231,154,146,0.25);
+  }
+  .subtitle{
+    font-family:'Noto Serif KR',serif;
+    color:var(--ice);
+    margin-top:10px;
+    font-size:1.05rem;
+    letter-spacing:0.05em;
+  }
+  .toggle-bar{
+    position:relative;z-index:1;
+    display:flex;justify-content:center;gap:12px;flex-wrap:wrap;
+    padding:18px;background:var(--navy);
+    border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:5;
+  }
+  button.ui-btn{
+    background:transparent;
+    border:1px solid var(--ice);
+    color:var(--ice);
+    padding:11px 20px;
+    border-radius:999px;
+    font-family:'Noto Sans KR',sans-serif;
+    font-size:0.95rem;
+    cursor:pointer;
+    transition:all .2s ease;
+  }
+  button.ui-btn:hover{background:var(--ice);color:var(--navy-deep);}
+  button.ui-btn.active{background:var(--rose);border-color:var(--rose);color:var(--navy-deep);}
+  main{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:40px 20px 100px;background:var(--navy-deep);color:var(--snow);}
+  section.stanza{
+    margin-bottom:56px;
+    padding-bottom:40px;
+    border-bottom:1px dashed var(--line);
+  }
+  .stanza-label{
+    font-family:'Noto Serif KR',serif;
+    color:var(--gold);
+    font-size:0.8rem;
+    letter-spacing:0.2em;
+    margin-bottom:14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .stanza-label::before{content:"❄";}
+  .line-block{margin-bottom:18px;}
+  .jp-line{
+    font-family:'Shippori Mincho',serif;
+    font-size:clamp(1.5rem,6vw,1.9rem);
+    letter-spacing:0.02em;
+    line-height:2;
+  }
+  ruby rt{
+    font-family:'Noto Sans KR',sans-serif;
+    font-size:0.5em;
+    color:var(--ice);
+  }
+  body.hide-furigana ruby rt{ display:none; }
+  .kr-line{
+    font-family:'Noto Serif KR',serif;
+    color:#c7d3e6;
+    font-size:1.15rem;
+    margin-top:6px;
+  }
+  body.hide-kr .kr-line{ display:none; }
+  .notes{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  @media(max-width:640px){ .notes{grid-template-columns:1fr;} }
+  .note-card{
+    background:rgba(244,247,251,0.04);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px 18px;
+  }
+  .note-card h4{
+    margin:0 0 12px;
+    font-size:0.85rem;
+    letter-spacing:0.15em;
+    color:var(--rose);
+    text-transform:uppercase;
+  }
+  .note-card ul{margin:0;padding-left:0;list-style:none;}
+  .note-card li{margin-bottom:12px;font-size:1.08rem;line-height:1.6;}
+  .note-card .w{color:var(--snow);font-weight:500;}
+  .note-card .w rt{color:var(--gold);font-size:0.55em;}
+  .note-card .m{color:#a9b8cf;font-size:0.92em;}
+
+  /* Section headers */
+  .section-head{
+    text-align:center;margin:80px 0 36px;
+  }
+  .section-head .eyebrow{
+    font-family:'Noto Serif KR',serif;
+    color:var(--gold);letter-spacing:0.3em;font-size:0.75rem;
+  }
+  .section-head h2{
+    font-family:'Shippori Mincho',serif;
+    font-size:2rem;margin:8px 0 0;
+  }
+
+  /* Flashcards */
+  .flash-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;}
+  .flashcard{
+    width:100%;max-width:440px;height:270px;
+    perspective:1200px;cursor:pointer;
+  }
+  .flash-inner{
+    position:relative;width:100%;height:100%;
+    transition:transform .5s;transform-style:preserve-3d;
+  }
+  .flashcard.flipped .flash-inner{transform:rotateY(180deg);}
+  .flash-face{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    backface-visibility:hidden;
+    border-radius:18px;
+    border:1px solid var(--line);
+    padding:20px;text-align:center;
+  }
+  .flash-front{
+    background:linear-gradient(160deg,var(--navy),#152238);
+  }
+  .flash-front .jp-word{font-family:'Shippori Mincho',serif;font-size:clamp(2.2rem,9vw,3rem);line-height:2.1;}
+  .flash-front .jp-word rt{color:var(--ice);font-size:0.4em;}
+  .flash-back{
+    background:linear-gradient(160deg,#22314d,var(--navy));
+    transform:rotateY(180deg);
+  }
+  .flash-back .kr-mean{font-family:'Noto Serif KR',serif;font-size:1.6rem;color:var(--rose);}
+  .flash-back .pos{margin-top:8px;font-size:0.9rem;color:var(--ice);letter-spacing:0.1em;}
+  .flash-controls{display:flex;gap:14px;align-items:center;}
+  .flash-count{font-size:0.95rem;color:#8fa0bd;}
+
+  /* Quiz */
+  .quiz-item{
+    background:rgba(244,247,251,0.04);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 22px;margin-bottom:18px;
+  }
+  .quiz-q{font-size:1.15rem;margin-bottom:16px;line-height:1.6;}
+  .quiz-q .jp-inline rt{color:var(--gold);font-size:0.55em;}
+  .quiz-opts{display:grid;gap:12px;}
+  .opt-btn{
+    text-align:left;
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--snow);
+    padding:13px 16px;border-radius:10px;
+    cursor:pointer;font-size:1.05rem;
+    font-family:'Noto Sans KR',sans-serif;
+    transition:all .15s ease;
+  }
+  .opt-btn:hover{border-color:var(--ice);}
+  .opt-btn.correct{background:rgba(140,200,160,0.18);border-color:#8cc8a0;}
+  .opt-btn.wrong{background:rgba(220,120,120,0.18);border-color:#dc7878;}
+  .opt-btn:disabled{cursor:default;}
+  .quiz-footer{
+    text-align:center;margin-top:20px;
+  }
+  #score-box{
+    font-family:'Shippori Mincho',serif;
+    font-size:1.3rem;color:var(--gold);
+    margin-top:16px;
+  }
+  footer{
+    text-align:center;padding:40px 20px;color:#5c6c88;font-size:0.8rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="snowlayer" id="snow"></div>
+
+<header>
+  <h1 class="jp-title">ヒロイン</h1>
+  <div class="subtitle">「히로인」— 일본어 가사 학습 노트</div>
+</header>
+
+<div class="toggle-bar">
+  <button class="ui-btn active" id="btn-furigana" onclick="toggleFurigana()">후리가나 표시</button>
+  <button class="ui-btn active" id="btn-kr" onclick="toggleKr()">한국어 번역 표시</button>
+</div>
+
+<main>
+  <div id="stanzas"></div>
+
+  <div class="section-head">
+    <div class="eyebrow">FLASHCARDS</div>
+    <h2>단어 플래시카드</h2>
+  </div>
+  <div class="flash-wrap">
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="flash-inner" id="flash-inner">
+        <div class="flash-face flash-front">
+          <div class="jp-word" id="flash-jp"></div>
+        </div>
+        <div class="flash-face flash-back">
+          <div class="kr-mean" id="flash-kr"></div>
+          <div class="pos" id="flash-pos"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flash-controls">
+      <button class="ui-btn" onclick="prevCard()">← 이전</button>
+      <span class="flash-count" id="flash-count"></span>
+      <button class="ui-btn" onclick="nextCard()">다음 →</button>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="eyebrow">QUIZ</div>
+    <h2>단어 · 문법 퀴즈</h2>
+  </div>
+  <div id="quiz-container"></div>
+  <div class="quiz-footer">
+    <button class="ui-btn" onclick="gradeQuiz()">채점하기</button>
+    <div id="score-box"></div>
+  </div>
+</main>
+
+<footer>ヒロイン — 가사 학습 자료 · 개인 학습용</footer>
+
+<script>
+/* ---------- snowfall ---------- */
+const snow = document.getElementById('snow');
+for(let i=0;i<40;i++){
+  const f = document.createElement('div');
+  f.className='flake';
+  const size = 2+Math.random()*4;
+  f.style.width=size+'px';
+  f.style.height=size+'px';
+  f.style.left = Math.random()*100+'vw';
+  f.style.setProperty('--drift', (Math.random()*60-30)+'px');
+  f.style.animationDuration = (8+Math.random()*10)+'s';
+  f.style.animationDelay = (Math.random()*10)+'s';
+  snow.appendChild(f);
+}
+
+/* ---------- toggles ---------- */
+function toggleFurigana(){
+  document.body.classList.toggle('hide-furigana');
+  document.getElementById('btn-furigana').classList.toggle('active');
+}
+function toggleKr(){
+  document.body.classList.toggle('hide-kr');
+  document.getElementById('btn-kr').classList.toggle('active');
+}
+
+/* ---------- stanza data ---------- */
+const stanzas = [
+{
+  label:"1절",
+  lines:[
+    ["<ruby>君<rt>きみ</rt></ruby>の<ruby>毎日<rt>まいにち</rt></ruby>に <ruby>僕<rt>ぼく</rt></ruby>は<ruby>似合<rt>にあ</rt></ruby>わないかな","너의 매일에 나는 어울리지 않는 걸까"],
+    ["<ruby>白<rt>しろ</rt></ruby>い<ruby>空<rt>そら</rt></ruby>から <ruby>雪<rt>ゆき</rt></ruby>が<ruby>落<rt>お</rt></ruby>ちた","하얀 하늘에서 눈이 내렸어"],
+    ["<ruby>別<rt>べつ</rt></ruby>にいいさと <ruby>吐<rt>は</rt></ruby>き<ruby>出<rt>だ</rt></ruby>したため<ruby>息<rt>いき</rt></ruby>が","그냥 됐다, 하고 내뱉은 한숨이"],
+    ["<ruby>少<rt>すこ</rt></ruby>し<ruby>残<rt>のこ</rt></ruby>って <ruby>寂<rt>さび</rt></ruby>しそうに<ruby>消<rt>き</rt></ruby>えた","조금 남았다가 쓸쓸히 사라졌어"],
+    ["<ruby>君<rt>きみ</rt></ruby>の<ruby>街<rt>まち</rt></ruby>にも <ruby>降<rt>ふ</rt></ruby>っているかな","네가 있는 거리에도 눈이 내리고 있으려나"],
+    ["ああ<ruby>今<rt>いま</rt></ruby><ruby>隣<rt>となり</rt></ruby>で","아아, 지금 내 옆에서"]
+  ],
+  vocab:[["<ruby>似合<rt>にあ</rt></ruby>う","어울리다 (동사)"],["<ruby>吐<rt>は</rt></ruby>き<ruby>出<rt>だ</rt></ruby>す","내뱉다"],["<ruby>寂<rt>さび</rt></ruby>しい","쓸쓸하다"],["<ruby>街<rt>まち</rt></ruby>","거리, 동네"],["<ruby>隣<rt>となり</rt></ruby>","옆, 이웃"]],
+  grammar:[["~かな","혼잣말로 하는 추측·의문 (~할까)"],["형용사+さ","형용사를 명사화하는 접미사 (여기선 별로+さ=그저 그런 느낌)"],["~そうに + 동사","양태 부사적 용법 (~한 듯이 ~하다)"]]
+},
+{
+  label:"후렴 1",
+  lines:[
+    ["<ruby>雪<rt>ゆき</rt></ruby>が<ruby>綺麗<rt>きれい</rt></ruby>と<ruby>笑<rt>わら</rt></ruby>うのは<ruby>君<rt>きみ</rt></ruby>がいい","눈이 예쁘다며 웃는 건 너였으면 좋겠어"],
+    ["でも<ruby>寒<rt>さむ</rt></ruby>いねって<ruby>嬉<rt>うれ</rt></ruby>しそうなのも","그래도 춥네~ 라며 기뻐 보이는 것도"],
+    ["<ruby>転<rt>ころ</rt></ruby>びそうになって<ruby>掴<rt>つか</rt></ruby>んだ<ruby>手<rt>て</rt></ruby>のその<ruby>先<rt>さき</rt></ruby>で","넘어질 뻔해서 붙잡은 손 끝에서"],
+    ["ありがとうって<ruby>楽<rt>たの</rt></ruby>しそうなのも","고맙다며 즐거워 보이는 것도"],
+    ["それも<ruby>君<rt>きみ</rt></ruby>がいい","그것도 너였으면 좋겠어"]
+  ],
+  vocab:[["<ruby>綺麗<rt>きれい</rt></ruby>","예쁨, 깨끗함"],["<ruby>転<rt>ころ</rt></ruby>ぶ","넘어지다"],["<ruby>掴<rt>つか</rt></ruby>む","붙잡다, 잡다"],["<ruby>先<rt>さき</rt></ruby>","끝, 앞"],["<ruby>楽<rt>たの</rt></ruby>しい","즐겁다"]],
+  grammar:[["~のは…がいい","~하는 건 …가 좋다 (대상을 강조하는 구문)"],["~そうになる","~할 뻔하다 (동작 직전의 상태)"],["って","だって/という의 회화체 축약형 (~라며, ~라고)"]]
+},
+{
+  label:"2절",
+  lines:[
+    ["<ruby>気付<rt>きづ</rt></ruby>けば<ruby>辺<rt>あた</rt></ruby>りは","정신을 차려보면 주변은"],
+    ["ほとんどが<ruby>白<rt>しろ</rt></ruby>く<ruby>染<rt>そ</rt></ruby>まって","온통 하얗게 물들어서"],
+    ["<ruby>散<rt>ち</rt></ruby>らかってた<ruby>事<rt>こと</rt></ruby> <ruby>忘<rt>わす</rt></ruby>れてしまいそう","어지럽혀져 있던 일들마저 잊어버릴 것 같아"],
+    ["<ruby>意外<rt>いがい</rt></ruby>と<ruby>積<rt>つ</rt></ruby>もったねと","생각보다 많이 쌓였네, 하고"],
+    ["メールを<ruby>送<rt>おく</rt></ruby>ろうとして","문자를 보내려다"],
+    ["<ruby>打<rt>う</rt></ruby>ちかけのまま ポケットに<ruby>入<rt>い</rt></ruby>れた","보내지 못한 채 주머니에 넣었어"]
+  ],
+  vocab:[["<ruby>気付<rt>きづ</rt></ruby>く","알아차리다"],["<ruby>染<rt>そ</rt></ruby>まる","물들다"],["<ruby>積<rt>つ</rt></ruby>もる","쌓이다"],["<ruby>意外<rt>いがい</rt></ruby>と","의외로, 생각보다"],["<ruby>送<rt>おく</rt></ruby>る","보내다"]],
+  grammar:[["~てしまいそう","~해버릴 것 같다 (아쉬움·안타까움의 뉘앙스)"],["~う/ようとして","~하려고 하다가 (의도했지만 중단)"],["~のまま","~한 채로, 상태 유지"]]
+},
+{
+  label:"3절",
+  lines:[
+    ["<ruby>好<rt>この</rt></ruby>まれるような <ruby>強<rt>つよ</rt></ruby>く<ruby>優<rt>やさ</rt></ruby>しい<ruby>僕<rt>ぼく</rt></ruby>に","네가 좋아할 만한 강하고 다정한 나로"],
+    ["<ruby>変<rt>か</rt></ruby>われないかな","변할 순 없는 걸까"]
+  ],
+  vocab:[["<ruby>好<rt>この</rt></ruby>む","좋아하다, 선호하다"],["<ruby>強<rt>つよ</rt></ruby>い","강하다"],["<ruby>優<rt>やさ</rt></ruby>しい","다정하다, 상냥하다"],["<ruby>変<rt>か</rt></ruby>わる","변하다"]],
+  grammar:[["受身形 好まれる","수동형 (~される): 사랑받다, 선호되다"],["~ないかな","~할 순 없을까 (이루어지길 바라는 희망 섞인 의문)"]]
+},
+{
+  label:"후렴 2",
+  lines:[
+    ["<ruby>雪<rt>ゆき</rt></ruby>が<ruby>綺麗<rt>きれい</rt></ruby>と<ruby>笑<rt>わら</rt></ruby>うのは<ruby>君<rt>きみ</rt></ruby>がいい","눈이 예쁘다며 웃는 건 너였으면 좋겠어"],
+    ["<ruby>出<rt>だ</rt></ruby>しかけた<ruby>答<rt>こた</rt></ruby>え<ruby>胸<rt>むね</rt></ruby>が<ruby>痛<rt>いた</rt></ruby>くて","꺼내려다 말았던 대답에 가슴이 아파서"],
+    ["<ruby>渡<rt>わた</rt></ruby>し<ruby>方<rt>かた</rt></ruby>もどこに<ruby>捨<rt>す</rt></ruby>てればいいかも<ruby>分<rt>わ</rt></ruby>からずに","어떻게 전해야 할지도, 어디에 버려야 할지도 모른 채"],
+    ["<ruby>君<rt>きみ</rt></ruby>から<ruby>見<rt>み</rt></ruby>えてる<ruby>景色<rt>けしき</rt></ruby>に","너에게서 비치는 풍경에"],
+    ["ただ<ruby>怯<rt>おび</rt></ruby>えているんだ","그저 겁내고 있을 뿐이야"]
+  ],
+  vocab:[["<ruby>答<rt>こた</rt></ruby>え","대답"],["<ruby>胸<rt>むね</rt></ruby>","가슴"],["<ruby>渡<rt>わた</rt></ruby>す","건네다"],["<ruby>捨<rt>す</rt></ruby>てる","버리다"],["<ruby>景色<rt>けしき</rt></ruby>","풍경"],["<ruby>怯<rt>おび</rt></ruby>える","겁내다, 두려워하다"]],
+  grammar:[["~かけた","~하다 만 (동작 도중에 멈춤)"],["~ばいいか","~하면 좋을지"],["~ずに","~하지 않고 (=~ないで)"],["~ているんだ","~하고 있는 거야 (설명·강조의 の+だ)"]]
+},
+{
+  label:"4절",
+  lines:[
+    ["<ruby>思<rt>おも</rt></ruby>えばどんな<ruby>映画<rt>えいが</rt></ruby>を<ruby>観<rt>み</rt></ruby>たって","생각해 보면 어떤 영화를 보든"],
+    ["どんな<ruby>小説<rt>しょうせつ</rt></ruby>や<ruby>音楽<rt>おんがく</rt></ruby>だって","어떤 소설이든 음악이든"],
+    ["その<ruby>ヒロイン</ruby>に<ruby>重<rt>かさ</rt></ruby>ねてしまうのは<ruby>君<rt>きみ</rt></ruby>だよ","그 히로인에 겹쳐 보이는 건 너야"],
+    ["<ruby>行<rt>い</rt></ruby>ってみたい<ruby>遠<rt>とお</rt></ruby>い<ruby>場所<rt>ばしょ</rt></ruby>で<ruby>見<rt>み</rt></ruby>たい<ruby>夜空<rt>よぞら</rt></ruby>も","가 보고 싶은 먼 곳에서 보고 싶은 밤하늘도"],
+    ["<ruby>隣<rt>となり</rt></ruby>に<ruby>描<rt>えが</rt></ruby>くのはいつでも","내 옆에 그리는 건 늘"]
+  ],
+  vocab:[["<ruby>重<rt>かさ</rt></ruby>ねる","겹치다, 포개다"],["<ruby>場所<rt>ばしょ</rt></ruby>","장소"],["<ruby>夜空<rt>よぞら</rt></ruby>","밤하늘"],["<ruby>描<rt>えが</rt></ruby>く","그리다"]],
+  grammar:[["~たって","~해도 (~ても의 회화체)"],["~てしまう","~해 버리다 (무의식적/자연스러운 결과)"]]
+},
+{
+  label:"5절",
+  lines:[
+    ["<ruby>見慣<rt>みな</rt></ruby>れたはずの<ruby>街<rt>まち</rt></ruby>がこんなにも","익숙했을 터인 거리가 이렇게나"],
+    ["<ruby>馬鹿<rt>ばか</rt></ruby>だなぁ<ruby>僕<rt>ぼく</rt></ruby>は","바보구나, 난"]
+  ],
+  vocab:[["<ruby>見慣<rt>みな</rt></ruby>れる","낯익다, 익숙해지다"],["<ruby>馬鹿<rt>ばか</rt></ruby>","바보"]],
+  grammar:[["~はずの","~일 터인, 당연히 그럴 (명사 수식)"],["~だなぁ","~구나 (감탄, 혼잣말)"]]
+},
+{
+  label:"6절",
+  lines:[
+    ["<ruby>君<rt>きみ</rt></ruby>の<ruby>街<rt>まち</rt></ruby>に<ruby>白<rt>しろ</rt></ruby>い<ruby>雪<rt>ゆき</rt></ruby>が<ruby>降<rt>ふ</rt></ruby>った<ruby>時<rt>とき</rt></ruby>","네가 있는 거리에 하얀 눈이 내리면"],
+    ["<ruby>君<rt>きみ</rt></ruby>は<ruby>誰<rt>だれ</rt></ruby>に<ruby>会<rt>あ</rt></ruby>いたくなるんだろう","너는 누굴 보고 싶어 할까"],
+    ["<ruby>雪<rt>ゆき</rt></ruby>が<ruby>綺麗<rt>きれい</rt></ruby>だねって<ruby>誰<rt>だれ</rt></ruby>に<ruby>言<rt>い</rt></ruby>いたくなるんだろう","눈이 예쁘다고 누구에게 말하고 싶어질까"],
+    ["<ruby>僕<rt>ぼく</rt></ruby>は やっぱり<ruby>僕<rt>ぼく</rt></ruby>は","나는, 역시 나는"]
+  ],
+  vocab:[["<ruby>降<rt>ふ</rt></ruby>る","(눈·비가) 내리다"],["<ruby>時<rt>とき</rt></ruby>","때"],["<ruby>誰<rt>だれ</rt></ruby>","누구"],["<ruby>会<rt>あ</rt></ruby>う","만나다"]],
+  grammar:[["~たくなる","~하고 싶어지다 (자연스러운 욕구 변화)"],["~んだろう","~는 걸까 (추측·혼잣말)"]]
+},
+{
+  label:"후렴 3 (엔딩)",
+  lines:[
+    ["<ruby>雪<rt>ゆき</rt></ruby>が<ruby>綺麗<rt>きれい</rt></ruby>と<ruby>笑<rt>わら</rt></ruby>うのは<ruby>君<rt>きみ</rt></ruby>がいい","눈이 예쁘다며 웃는 건 너였으면 좋겠어"],
+    ["でも<ruby>寒<rt>さむ</rt></ruby>いねって<ruby>嬉<rt>うれ</rt></ruby>しそうなのも","그래도 춥네~ 라며 기뻐 보이는 것도"],
+    ["<ruby>転<rt>ころ</rt></ruby>びそうになって<ruby>掴<rt>つか</rt></ruby>んだ<ruby>手<rt>て</rt></ruby>のその<ruby>先<rt>さき</rt></ruby>で","넘어질 뻔해서 붙잡은 손 끝에서"],
+    ["ありがとうって<ruby>楽<rt>たの</rt></ruby>しそうなのも","고맙다며 즐거워 보이는 것도"],
+    ["<ruby>全部<rt>ぜんぶ</rt></ruby><ruby>君<rt>きみ</rt></ruby>がいい","전부 너였으면 좋겠어"]
+  ],
+  vocab:[["<ruby>全部<rt>ぜんぶ</rt></ruby>","전부, 모두"]],
+  grammar:[["반복 후렴 비교","1절 후렴의 「それも」→ 마지막엔 「全部」로 바뀌며 감정이 고조됨"]]
+}
+];
+
+/* build stanza DOM */
+const stanzaContainer = document.getElementById('stanzas');
+stanzas.forEach(st=>{
+  const sec = document.createElement('section');
+  sec.className='stanza';
+  let linesHtml = st.lines.map(l=>`<div class="line-block"><div class="jp-line">${l[0]}</div><div class="kr-line">${l[1]}</div></div>`).join('');
+  let vocabHtml = st.vocab.map(v=>{
+    const parts = v[0].split(' <rt>');
+    return `<li><span class="w">${v[0]}</span><br><span class="m">${v[1]}</span></li>`;
+  }).join('');
+  let grammarHtml = st.grammar.map(g=>`<li><span class="w">${g[0]}</span><br><span class="m">${g[1]}</span></li>`).join('');
+  sec.innerHTML = `
+    <div class="stanza-label">${st.label}</div>
+    ${linesHtml}
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul>${vocabHtml}</ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul>${grammarHtml}</ul></div>
+    </div>
+  `;
+  stanzaContainer.appendChild(sec);
+});
+
+/* ---------- flashcards ---------- */
+const flashData = [
+  ["<ruby>似合<rt>にあ</rt></ruby>う","어울리다"],
+  ["<ruby>吐<rt>は</rt></ruby>き<ruby>出<rt>だ</rt></ruby>す","내뱉다"],
+  ["<ruby>寂<rt>さび</rt></ruby>しい","쓸쓸하다"],
+  ["<ruby>街<rt>まち</rt></ruby>","거리, 동네"],
+  ["<ruby>隣<rt>となり</rt></ruby>","옆, 이웃"],
+  ["<ruby>綺麗<rt>きれい</rt></ruby>","예쁨, 깨끗함"],
+  ["<ruby>転<rt>ころ</rt></ruby>ぶ","넘어지다"],
+  ["<ruby>掴<rt>つか</rt></ruby>む","붙잡다"],
+  ["<ruby>先<rt>さき</rt></ruby>","끝, 앞"],
+  ["<ruby>楽<rt>たの</rt></ruby>しい","즐겁다"],
+  ["<ruby>気付<rt>きづ</rt></ruby>く","알아차리다"],
+  ["<ruby>染<rt>そ</rt></ruby>まる","물들다"],
+  ["<ruby>積<rt>つ</rt></ruby>もる","쌓이다"],
+  ["<ruby>意外<rt>いがい</rt></ruby>と","의외로"],
+  ["<ruby>送<rt>おく</rt></ruby>る","보내다"],
+  ["<ruby>好<rt>この</rt></ruby>む","좋아하다, 선호하다"],
+  ["<ruby>強<rt>つよ</rt></ruby>い","강하다"],
+  ["<ruby>優<rt>やさ</rt></ruby>しい","다정하다"],
+  ["<ruby>変<rt>か</rt></ruby>わる","변하다"],
+  ["<ruby>答<rt>こた</rt></ruby>え","대답"],
+  ["<ruby>胸<rt>むね</rt></ruby>","가슴"],
+  ["<ruby>渡<rt>わた</rt></ruby>す","건네다"],
+  ["<ruby>捨<rt>す</rt></ruby>てる","버리다"],
+  ["<ruby>景色<rt>けしき</rt></ruby>","풍경"],
+  ["<ruby>怯<rt>おび</rt></ruby>える","겁내다, 두려워하다"],
+  ["<ruby>重<rt>かさ</rt></ruby>ねる","겹치다"],
+  ["<ruby>場所<rt>ばしょ</rt></ruby>","장소"],
+  ["<ruby>夜空<rt>よぞら</rt></ruby>","밤하늘"],
+  ["<ruby>描<rt>えが</rt></ruby>く","그리다"],
+  ["<ruby>見慣<rt>みな</rt></ruby>れる","낯익다, 익숙해지다"],
+  ["<ruby>馬鹿<rt>ばか</rt></ruby>","바보"],
+  ["<ruby>降<rt>ふ</rt></ruby>る","(눈·비가) 내리다"],
+  ["<ruby>誰<rt>だれ</rt></ruby>","누구"],
+  ["<ruby>会<rt>あ</rt></ruby>う","만나다"],
+  ["<ruby>全部<rt>ぜんぶ</rt></ruby>","전부, 모두"]
+];
+let cardIdx = 0;
+function renderCard(){
+  document.getElementById('flash-jp').innerHTML = flashData[cardIdx][0];
+  document.getElementById('flash-kr').innerHTML = flashData[cardIdx][1];
+  document.getElementById('flash-count').textContent = (cardIdx+1)+' / '+flashData.length;
+  document.getElementById('flashcard').classList.remove('flipped');
+}
+function flipCard(){ document.getElementById('flashcard').classList.toggle('flipped'); }
+function nextCard(){ cardIdx = (cardIdx+1)%flashData.length; renderCard(); }
+function prevCard(){ cardIdx = (cardIdx-1+flashData.length)%flashData.length; renderCard(); }
+renderCard();
+
+/* ---------- quiz ---------- */
+const quiz = [
+  {q:'「<ruby>似合</ruby><rt>にあ</rt>う」의 뜻은?', opts:['어울리다','내뱉다','겁내다','쌓이다'], answer:0},
+  {q:'「<ruby>寂</ruby><rt>さび</rt>しい」의 뜻은?', opts:['즐겁다','쓸쓸하다','강하다','다정하다'], answer:1},
+  {q:'「~かな」의 뉘앙스로 가장 알맞은 것은?', opts:['강한 명령','혼잣말 추측·의문','과거 완료','수동 표현'], answer:1},
+  {q:'「~のは…がいい」구문이 강조하는 것은?', opts:['시간 순서','원인과 결과','~하는 건 …였으면 좋겠다는 대상','장소'], answer:2},
+  {q:'「<ruby>転</ruby><rt>ころ</rt>びそうになる」의 의미는?', opts:['넘어질 뻔하다','넘어져 버렸다','넘어지고 싶다','넘어지지 않는다'], answer:0},
+  {q:'「<ruby>積</ruby><rt>つ</rt>もる」의 뜻은?', opts:['보내다','쌓이다','물들다','알아차리다'], answer:1},
+  {q:'「~てしまいそう」의 뉘앙스는?', opts:['~해버릴 것 같다 (아쉬움)','~하고 싶다','~한 적이 있다','~해야 한다'], answer:0},
+  {q:'「<ruby>好</ruby><rt>この</rt>まれる」의 문법 형태는?', opts:['사역형','수동형','가정형','명령형'], answer:1},
+  {q:'「~ないかな」가 표현하는 것은?', opts:['확실한 사실','희망 섞인 의문','금지','과거 회상'], answer:1},
+  {q:'「<ruby>怯</ruby><rt>おび</rt>える」의 뜻은?', opts:['그리다','겁내다, 두려워하다','건네다','버리다'], answer:1},
+  {q:'「~かけた」의 의미는?', opts:['~하다 만 (도중에 멈춤)','~한 적이 있다','~하게 되다','~해도 좋다'], answer:0},
+  {q:'「~たって」는 회화체에서 무엇의 축약형인가?', opts:['~ながら','~ても','~たら','~まま'], answer:1},
+  {q:'「<ruby>見慣</ruby><rt>みな</rt>れる」의 뜻은?', opts:['낯익다, 익숙해지다','낯설다','바뀌다','사라지다'], answer:0},
+  {q:'「~はずの」가 나타내는 뉘앙스는?', opts:['당연히 그럴 (예상)','절대 아닌','불가능한','우연한'], answer:0},
+  {q:'「~たくなる」의 의미는?', opts:['~하지 않게 되다','~하고 싶어지다','~해야만 하다','~할 수 있게 되다'], answer:1},
+  {q:'「~んだろう」의 뉘앙스는?', opts:['강한 확신','추측·혼잣말 (~는 걸까)','명령','감사'], answer:1},
+  {q:'「<ruby>渡</ruby><rt>わた</rt>す」의 뜻은?', opts:['버리다','건네다','물들다','만나다'], answer:1},
+  {q:'「<ruby>重</ruby><rt>かさ</rt>ねる」의 뜻은?', opts:['겹치다, 포개다','그리다','내뱉다','알아차리다'], answer:0}
+];
+
+const quizContainer = document.getElementById('quiz-container');
+quiz.forEach((item,i)=>{
+  const div = document.createElement('div');
+  div.className='quiz-item';
+  div.dataset.answer = item.answer;
+  div.dataset.answered = "false";
+  const optsHtml = item.opts.map((o,idx)=>`<button class="opt-btn" data-idx="${idx}" onclick="selectOpt(this,${i})">${o}</button>`).join('');
+  div.innerHTML = `<div class="quiz-q"><span class="jp-inline">${i+1}. ${item.q}</span></div><div class="quiz-opts">${optsHtml}</div>`;
+  quizContainer.appendChild(div);
+});
+
+function selectOpt(btn, qIndex){
+  const parent = btn.closest('.quiz-item');
+  if(parent.dataset.answered === "true") return;
+  parent.dataset.answered = "true";
+  const correctIdx = parseInt(parent.dataset.answer);
+  const chosenIdx = parseInt(btn.dataset.idx);
+  const buttons = parent.querySelectorAll('.opt-btn');
+  buttons.forEach(b=>b.disabled=true);
+  buttons[correctIdx].classList.add('correct');
+  if(chosenIdx !== correctIdx){ btn.classList.add('wrong'); }
+}
+
+function gradeQuiz(){
+  const items = document.querySelectorAll('.quiz-item');
+  let correct = 0;
+  items.forEach(item=>{
+    const correctIdx = parseInt(item.dataset.answer);
+    const buttons = item.querySelectorAll('.opt-btn');
+    if(item.dataset.answered === "true"){
+      buttons.forEach(b=>{
+        if(parseInt(b.dataset.idx)===correctIdx && (b.classList.contains('correct'))){
+          // check if that same button was the one clicked correctly (no wrong marked before it in this item)
+        }
+      });
+      const wrongMarked = item.querySelector('.opt-btn.wrong');
+      if(!wrongMarked) correct++;
+    } else {
+      buttons.forEach(b=>b.disabled=true);
+      buttons[correctIdx].classList.add('correct');
+    }
+  });
+  document.getElementById('score-box').textContent = `점수: ${correct} / ${items.length}`;
+}
+</script>
+</body>
+</html>
