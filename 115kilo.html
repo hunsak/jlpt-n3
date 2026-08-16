@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>115万キロフィルム ― 歌詞ノート</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap');
+
+  :root{
+    --night: #221a12;
+    --night-deep: #14100b;
+    --mist: #ede2d0;
+    --mist-dim: #a3937c;
+    --gold: #e6b45a;
+    --blush: #c97b4a;
+    --line: rgba(237,226,208,0.14);
+  }
+
+  *{ box-sizing: border-box; }
+
+  html,body{
+    margin:0; padding:0;
+    background:
+      radial-gradient(ellipse 55% 45% at 50% 0%, rgba(230,180,90,0.16) 0%, transparent 62%),
+      radial-gradient(ellipse at 50% 100%, #2c2116 0%, var(--night) 45%, var(--night-deep) 100%);
+    color: var(--mist);
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    min-height:100vh;
+  }
+
+  /* projector beam + drifting film dust, evoking an old film reel */
+  .sky{ position: fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none; }
+  .beam{
+    position:absolute; top:-15%; left:50%; width:60vw; height:75vh;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse 35% 55% at 50% 0%, rgba(230,180,90,0.14) 0%, transparent 65%);
+  }
+  .dust{
+    position:absolute; width:2px; height:2px; border-radius:50%;
+    background: var(--gold); opacity:0.4;
+    animation: flicker linear infinite;
+  }
+  @keyframes flicker{
+    0%{ transform: translateY(0) translateX(0); opacity:0; }
+    8%{ opacity:0.5; }
+    50%{ opacity:0.25; }
+    92%{ opacity:0.45; }
+    100%{ transform: translateY(-115vh) translateX(10px); opacity:0; }
+  }
+  .sprocket{
+    position:absolute; left:0; right:0; height: 18px;
+    background-image: radial-gradient(circle, rgba(237,226,208,0.15) 3px, transparent 3.5px);
+    background-size: 34px 18px;
+    background-repeat: repeat-x;
+    opacity: 0.5;
+  }
+  .sprocket.top{ top: 0; }
+  .sprocket.bottom{ bottom: 0; }
+
+  .wrap{ position:relative; z-index:1; max-width: 760px; margin: 0 auto; padding: 64px 24px 120px; }
+
+  header{ text-align:center; margin-bottom: 48px; }
+  .eyebrow{
+    font-size: 12px; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--blush); margin-bottom: 14px; font-weight:500;
+  }
+  h1{
+    font-family: 'Shippori Mincho', serif;
+    font-weight: 600;
+    font-size: clamp(24px, 5.6vw, 40px);
+    color: #f8f0e2;
+    margin: 0 0 8px;
+    letter-spacing: 0.02em;
+  }
+  .sub{ font-size: 14px; color: var(--mist-dim); font-weight:300; }
+
+  .controls{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin: 32px 0 24px; }
+  .toggle{
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--line);
+    color: var(--mist);
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    cursor:pointer;
+    transition: all 0.25s ease;
+    font-family: inherit;
+  }
+  .toggle:hover{ background: rgba(230,180,90,0.12); border-color: var(--gold); }
+  .toggle.active{ background: var(--gold); color: #2c1c05; border-color: var(--gold); font-weight:600; }
+
+  .voice-panel{
+    max-width: 620px; margin: 0 auto 40px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px 20px;
+  }
+  .voice-panel summary{
+    cursor:pointer; font-size: 13px; color: var(--gold); font-weight:600;
+    list-style: none; display:flex; align-items:center; justify-content:space-between;
+  }
+  .voice-panel summary::-webkit-details-marker{ display:none; }
+  .voice-panel summary::after{ content:'▾'; color: var(--mist-dim); }
+  .voice-panel[open] summary::after{ content:'▴'; }
+  .voice-body{ margin-top: 16px; }
+  .voice-row{ display:flex; gap:10px; align-items:center; margin-bottom: 12px; flex-wrap:wrap; }
+  select.voice-select{
+    flex:1; min-width: 200px;
+    background: rgba(255,255,255,0.06); color: var(--mist);
+    border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: 13px;
+    font-family: inherit;
+  }
+  .voice-list-count{ font-size:12px; color: var(--mist-dim); margin-top:6px; }
+  .voice-test-input{
+    flex:1; min-width: 160px; background: rgba(255,255,255,0.06); color: var(--mist);
+    border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: 13px;
+    font-family: inherit;
+  }
+
+  .stanza{
+    margin-bottom: 28px;
+    background: rgba(255,255,255,0.035);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 28px 26px;
+    backdrop-filter: blur(6px);
+  }
+  .stanza-label{
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--mist-dim); margin-bottom: 18px;
+  }
+
+  .line{
+    margin-bottom: 22px; padding-bottom:18px;
+    border-bottom: 1px dashed rgba(237,226,208,0.08);
+    cursor: pointer;
+  }
+  .line:last-child{ border-bottom:none; margin-bottom:0; padding-bottom:0; }
+
+  .jp-row{ display:flex; align-items:center; gap:4px; flex-wrap:wrap; }
+  .jp{
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(18px, 4vw, 23px);
+    line-height: 2.15;
+    color: #f6ecdd;
+    letter-spacing: 0.01em;
+  }
+  ruby rt{
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: 0.42em;
+    color: var(--gold);
+    opacity: 0.9;
+    user-select:none;
+  }
+  .no-furigana ruby rt{ display:none; }
+
+  .speak-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(230,180,90,0.14); border: 1px solid rgba(230,180,90,0.4);
+    color: var(--gold); font-size: 12px; cursor:pointer; vertical-align: middle;
+    margin-left: 8px; flex: none; transition: all 0.2s ease;
+  }
+  .speak-btn:hover{ background: var(--gold); color:#2c1c05; }
+  .speak-btn.small{ width:20px; height:20px; font-size:10px; margin-left:6px; }
+  .notes .word-row{ display:flex; align-items:center; gap:2px; margin-bottom:4px; }
+
+  .translation{
+    margin-top: 10px; font-size: 14.5px; color: var(--mist-dim); font-style: italic; line-height: 1.5;
+    max-height:0; overflow:hidden; opacity:0; transition: all 0.35s ease;
+  }
+  .line.open .translation{ max-height: 200px; opacity:1; margin-top:12px; }
+
+  .notes{
+    margin-top: 10px; font-size: 13px; color: var(--mist); line-height: 1.7;
+    max-height:0; overflow:hidden; opacity:0; transition: all 0.35s ease;
+    border-left: 2px solid var(--blush); padding-left: 0;
+  }
+  .line.open .notes{ max-height: 400px; opacity:1; padding-left: 14px; margin-top:10px; }
+  .notes .word{ color: var(--gold); font-weight:600; }
+
+  .hint{ font-size: 11px; color: var(--mist-dim); opacity:0.55; margin-top: 4px; }
+
+  .practice-panel{
+    background: rgba(230,180,90,0.07);
+    border: 1px solid rgba(230,180,90,0.28);
+    border-radius: 18px;
+    padding: 26px;
+    margin-top: 10px;
+    text-align:center;
+  }
+  .practice-panel h2{ font-family:'Shippori Mincho', serif; font-weight:600; color:#f8f0e2; font-size:20px; margin: 0 0 6px; }
+  .practice-panel p{ color: var(--mist-dim); font-size: 13px; margin: 0 0 20px; }
+
+  .practice-line{
+    font-family:'Shippori Mincho', serif; font-size: 21px; line-height: 2; color: #f6ecdd;
+    min-height: 3.2em; display:flex; align-items:center; justify-content:center; flex-wrap:wrap;
+    gap: 4px; margin-bottom: 18px;
+  }
+  .blank{ display:inline-block; min-width: 2.4em; border-bottom: 2px solid var(--blush); color: transparent; transition: color 0.2s; }
+  .blank.revealed{ color: #f6ecdd; border-bottom-color: var(--gold); }
+  .blank:hover{ cursor:pointer; border-bottom-color: var(--gold); }
+
+  .practice-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    background: var(--gold); color:#2c1c05; border:none; padding: 11px 22px;
+    border-radius: 999px; font-weight:600; font-size:13px; cursor:pointer;
+    font-family: inherit; transition: transform 0.15s ease;
+  }
+  .btn:hover{ transform: translateY(-1px); }
+  .btn.secondary{ background: transparent; color: var(--mist); border: 1px solid var(--line); }
+  .progress{ font-size: 12px; color: var(--mist-dim); margin-top: 14px; }
+
+  .flash-section{ margin-top: 60px; }
+  .flash-section .heading{ text-align:center; margin-bottom: 22px; }
+  .flash-section h2{ font-family:'Shippori Mincho', serif; font-weight:600; color:#f8f0e2; font-size:22px; margin:0 0 6px; }
+  .flash-section p{ color: var(--mist-dim); font-size:13px; margin:0; }
+  .flash-controls{ display:flex; gap:10px; justify-content:center; margin-bottom: 22px; flex-wrap:wrap; }
+
+  .card-stage{ perspective: 1200px; max-width: 480px; margin: 0 auto 20px; }
+  .card{ position:relative; width:100%; min-height: 200px; transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(.4,.2,.2,1); cursor:pointer; }
+  .card.flipped{ transform: rotateY(180deg); }
+  .card-face{
+    position:absolute; inset:0; backface-visibility: hidden; border-radius: 18px;
+    border: 1px solid var(--line); background: rgba(255,255,255,0.045);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding: 28px 22px; text-align:center; gap: 12px;
+  }
+  .card-face.back{ transform: rotateY(180deg); background: rgba(230,180,90,0.08); }
+  .card-tag{ font-size: 10px; letter-spacing:0.2em; text-transform:uppercase; color: var(--blush); }
+  .card-word{ font-family:'Shippori Mincho', serif; font-size: 28px; color:#f8f0e2; }
+  .card-read{ font-size: 14px; color: var(--gold); letter-spacing: 0.04em; margin-top: -6px; }
+  .card-gloss{ font-size: 15px; color: var(--mist); line-height:1.6; }
+  .card-hint{ font-size: 11px; color: var(--mist-dim); opacity:0.6; }
+
+  .flash-nav{ display:flex; gap:10px; justify-content:center; align-items:center; flex-wrap:wrap; }
+  .flash-progress{ font-size:12px; color: var(--mist-dim); text-align:center; margin-top:12px; }
+
+  .quiz-section{ margin-top: 60px; }
+  .quiz-section .heading{ text-align:center; margin-bottom: 22px; }
+  .quiz-section h2{ font-family:'Shippori Mincho', serif; font-weight:600; color:#f8f0e2; font-size:22px; margin:0 0 6px; }
+  .quiz-section p{ color: var(--mist-dim); font-size:13px; margin:0; }
+  .quiz-controls{ display:flex; gap:10px; justify-content:center; margin-bottom: 22px; flex-wrap:wrap; }
+
+  .quiz-card{
+    max-width: 520px; margin: 0 auto 20px; background: rgba(255,255,255,0.035);
+    border: 1px solid var(--line); border-radius: 18px; padding: 28px 24px; text-align:center;
+  }
+  .quiz-question-tag{ font-size: 11px; letter-spacing:0.2em; text-transform:uppercase; color: var(--blush); margin-bottom:14px; }
+  .quiz-prompt{ font-family:'Shippori Mincho', serif; font-size: 24px; color:#f8f0e2; margin-bottom: 26px; line-height: 1.5; }
+  .quiz-options{ display:flex; flex-direction:column; gap: 10px; }
+  .quiz-option{
+    background: rgba(255,255,255,0.05); border: 1px solid var(--line); color: var(--mist);
+    padding: 13px 16px; border-radius: 12px; font-size: 14.5px; cursor:pointer; text-align:left;
+    font-family: inherit; transition: all 0.2s ease;
+  }
+  .quiz-option:hover{ border-color: var(--gold); }
+  .quiz-option.correct{ background: rgba(120,200,150,0.18); border-color:#7ac896; color:#e6fbee; }
+  .quiz-option.wrong{ background: rgba(220,110,110,0.18); border-color:#dc7070; color:#ffe6e6; }
+  .quiz-option.disabled{ pointer-events:none; opacity:0.85; }
+  .quiz-feedback{ margin-top: 18px; font-size: 13px; min-height: 18px; color: var(--gold); }
+  .quiz-actions{ display:flex; gap:10px; justify-content:center; margin-top: 18px; flex-wrap:wrap; }
+  .quiz-score{ text-align:center; font-size: 13px; color: var(--mist-dim); margin-top: 14px; }
+
+  footer{ text-align:center; margin-top: 60px; font-size: 12px; color: var(--mist-dim); opacity:0.6; }
+</style>
+</head>
+<body>
+
+<div class="sky" id="sky">
+  <div class="beam"></div>
+  <div class="sprocket top"></div>
+  <div class="sprocket bottom"></div>
+</div>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Official HIGE DANdism · Lyric Study</div>
+    <h1>115万キロフィルム</h1>
+    <div class="sub">— 우리 둘의 인생을 담은 영화 —</div>
+  </header>
+
+  <div class="controls">
+    <button class="toggle active" id="toggleFurigana">ふりがな ON</button>
+    <button class="toggle" id="toggleAll">全部開く / たたむ</button>
+    <button class="toggle" id="scrollPractice">練習モードへ ↓</button>
+  </div>
+
+  <details class="voice-panel" id="voicePanel">
+    <summary>🔊 음성 설정 / 디버그 (탭하여 열기)</summary>
+    <div class="voice-body">
+      <div class="voice-row">
+        <select class="voice-select" id="voiceSelect">
+          <option value="">불러오는 중...</option>
+        </select>
+        <button class="btn secondary" id="refreshVoicesBtn">↻ 새로고침</button>
+      </div>
+      <div class="voice-row">
+        <input class="voice-test-input" id="voiceTestInput" value="どんな暗いストーリーも覆す瞬間が溢れてる">
+        <button class="btn" id="voiceTestBtn">테스트 재생</button>
+      </div>
+      <div class="voice-list-count" id="voiceListCount"></div>
+    </div>
+  </details>
+
+  <div id="stanzas"></div>
+
+  <div class="practice-panel" id="practicePanel">
+    <h2>暗記練習 · Memory Practice</h2>
+    <p>단어를 눌러 하나씩 드러내며 가사를 떠올려보세요. 다 맞히면 다음 줄로.</p>
+    <div class="practice-line" id="practiceLine"></div>
+    <div class="practice-actions">
+      <button class="btn" id="revealAllBtn">전체 보기</button>
+      <button class="btn secondary" id="nextLineBtn">다음 줄 →</button>
+      <button class="btn secondary" id="prevLineBtn">← 이전 줄</button>
+    </div>
+    <div class="progress" id="progressLabel"></div>
+  </div>
+
+  <div class="flash-section" id="flashSection">
+    <div class="heading">
+      <h2>単語・文法 フラッシュカード</h2>
+      <p>카드를 클릭하면 뒤집혀서 뜻/문법 설명이 나와요. 스피커 버튼으로 발음도 들을 수 있어요.</p>
+    </div>
+
+    <div class="flash-controls">
+      <button class="toggle active" id="deckVocab">単語 (단어)</button>
+      <button class="toggle" id="deckGrammar">文法 (문법)</button>
+      <button class="toggle" id="deckShuffle">🔀 셔플</button>
+    </div>
+
+    <div class="card-stage">
+      <div class="card" id="flashCard">
+        <div class="card-face front">
+          <div class="card-tag">単語 / 文法</div>
+          <div class="card-word" id="cardFront">—</div>
+          <div class="card-read" id="cardRead"></div>
+          <div class="card-hint">탭하여 뒤집기</div>
+        </div>
+        <div class="card-face back">
+          <div class="card-tag">意味</div>
+          <div class="card-gloss" id="cardBack">—</div>
+          <button class="speak-btn" id="cardSpeakBtn" title="발음 듣기">🔊</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flash-nav">
+      <button class="btn secondary" id="cardPrevBtn">← 이전</button>
+      <button class="btn" id="cardFlipBtn">뒤집기</button>
+      <button class="btn secondary" id="cardNextBtn">다음 →</button>
+    </div>
+    <div class="flash-progress" id="cardProgress"></div>
+  </div>
+
+  <div class="quiz-section" id="quizSection">
+    <div class="heading">
+      <h2>単語・文法 퀴즈</h2>
+      <p>4지선다로 단어와 문법을 테스트해보세요. 정답/오답이 바로 표시돼요.</p>
+    </div>
+
+    <div class="quiz-controls">
+      <button class="toggle active" id="quizDeckAll">전체</button>
+      <button class="toggle" id="quizDeckVocab">単語만</button>
+      <button class="toggle" id="quizDeckGrammar">文法만</button>
+    </div>
+
+    <div class="quiz-card">
+      <div class="quiz-question-tag" id="quizTag">문제</div>
+      <div class="quiz-prompt" id="quizPrompt">—</div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <div class="quiz-actions">
+        <button class="btn" id="quizNextBtn">다음 문제 →</button>
+        <button class="btn secondary" id="quizRestartBtn">↻ 다시 시작</button>
+      </div>
+    </div>
+    <div class="quiz-score" id="quizScore"></div>
+  </div>
+
+  <footer>가사는 사용자가 제공한 원문을 기반으로 학습용으로만 구성되었습니다.</footer>
+
+</div>
+
+<script>
+const stanzas = [
+  {
+    label: "Verse 1",
+    lines: [
+      { ruby: "これから<ruby>歌<rt>うた</rt></ruby>う<ruby>曲<rt>きょく</rt></ruby>の<ruby>内容<rt>ないよう</rt></ruby>は<br><ruby>僕<rt>ぼく</rt></ruby>の<ruby>頭<rt>あたま</rt></ruby>の<ruby>中<rt>なか</rt></ruby>のこと", plain: "これから歌う曲の内容は僕の頭の中のこと",
+        tr: "이제부터 부를 곡의 내용은 내 머릿속의 이야기",
+        notes: [ {w:"これから", g:"'이제부터, 지금부터'"} ] },
+      { ruby: "<ruby>主演<rt>しゅえん</rt></ruby>はもちろん<ruby>君<rt>きみ</rt></ruby>で<br><ruby>僕<rt>ぼく</rt></ruby>は<ruby>助演<rt>じょえん</rt></ruby>で<ruby>監督<rt>かんとく</rt></ruby>でカメラマン", plain: "主演はもちろん君で 僕は助演で監督でカメラマン",
+        tr: "주연은 물론 너고, 나는 조연에 감독에 카메라맨",
+        notes: [
+          {w:"主演", read:"しゅえん", g:"주연"},
+          {w:"助演", read:"じょえん", g:"조연"},
+          {w:"監督", read:"かんとく", g:"감독"}
+        ] },
+      { ruby: "<ruby>目<rt>め</rt></ruby>の<ruby>奥<rt>おく</rt></ruby>にあるフィルムで<br><ruby>作<rt>つく</rt></ruby>る<ruby>映画<rt>えいが</rt></ruby>の<ruby>話<rt>はなし</rt></ruby>さ ah", plain: "目の奥にあるフィルムで作る映画の話さ ah",
+        tr: "눈 속 깊이 있는 필름으로 만드는 영화 이야기야 ah",
+        notes: [ {w:"目の奥", read:"めのおく", g:"눈 속 깊은 곳"} ] },
+      { ruby: "くだらないなと<ruby>笑<rt>わら</rt></ruby>ったんなら<br><ruby>掴<rt>つか</rt></ruby>みはそれで<ruby>万事<rt>ばんじ</rt></ruby>OK！", plain: "くだらないなと笑ったんなら掴みはそれで万事OK!",
+        tr: "시시하다고 웃었다면 도입부는 그걸로 만사 OK!",
+        notes: [
+          {w:"くだらない", g:"시시하다, 하찮다"},
+          {w:"掴み", read:"つかみ", g:"'(초반의) 흥미를 끄는 부분, 도입부' — 掴む(잡다)에서 온 명사"}
+        ] },
+      { ruby: "<ruby>呆<rt>あき</rt></ruby>れていないでちょっと<ruby>待<rt>ま</rt></ruby>って", plain: "呆れていないでちょっと待って",
+        tr: "질려하지 말고 잠깐 기다려줘",
+        notes: [ {w:"呆れる", read:"あきれる", g:"어이없어하다, 질리다"} ] },
+      { ruby: "きっと<ruby>気<rt>き</rt></ruby>に<ruby>入<rt>い</rt></ruby>ってもらえると<ruby>思<rt>おも</rt></ruby>うな", plain: "きっと気に入ってもらえると思うな",
+        tr: "분명 마음에 들어할 거라 생각해",
+        notes: [ {w:"気に入る", read:"きにいる", g:"마음에 들다"} ] },
+      { ruby: "ここまでのダイジェストを<br><ruby>少<rt>すこ</rt></ruby>しだけ<ruby>見<rt>み</rt></ruby>せるよ", plain: "ここまでのダイジェストを少しだけ見せるよ",
+        tr: "여기까지의 요약을 조금만 보여줄게",
+        notes: [ {w:"ダイジェスト", g:"다이제스트, 요약"} ] }
+    ]
+  },
+  {
+    label: "Verse 2",
+    lines: [
+      { ruby: "<ruby>初<rt>はじ</rt></ruby>めて<ruby>喧嘩<rt>けんか</rt></ruby>した<ruby>夜<rt>よる</rt></ruby>の<ruby>涙<rt>なみだ</rt></ruby>", plain: "初めて喧嘩した夜の涙",
+        tr: "처음 싸운 밤의 눈물", notes: [] },
+      { ruby: "<ruby>個人的<rt>こじんてき</rt></ruby>に<ruby>胸<rt>むね</rt></ruby>が<ruby>痛<rt>いた</rt></ruby>むけれど", plain: "個人的に胸が痛むけれど",
+        tr: "개인적으로는 가슴이 아프지만",
+        notes: [ {w:"胸が痛む", read:"むねがいたむ", g:"가슴이 아프다"} ] },
+      { ruby: "そのまま<ruby>見<rt>み</rt></ruby>続<rt>つづ</rt>けよう", plain: "そのまま見続けよう",
+        tr: "그대로 계속 지켜보자",
+        notes: [ {w:"〜続けよう", read:"つづけよう", g:"'계속 ~하자' — 動詞+続ける의 청유형"} ] },
+      { ruby: "ごめんねと<ruby>言<rt>い</rt></ruby>って<ruby>仲直<rt>なかなお</rt></ruby>りして<ruby>手<rt>て</rt></ruby>を<ruby>握<rt>にぎ</rt></ruby>って", plain: "ごめんねと言って仲直りして手を握って",
+        tr: "미안하다고 말하고 화해하고 손을 잡고",
+        notes: [ {w:"仲直りする", read:"なかなおりする", g:"화해하다"} ] }
+    ]
+  },
+  {
+    label: "Chorus 1",
+    lines: [
+      { ruby: "ほら ここで<ruby>君<rt>きみ</rt></ruby>が<ruby>笑<rt>わら</rt></ruby>うシーンが<br><ruby>見<rt>み</rt></ruby>どころなんだからさ ah", plain: "ほら ここで君が笑うシーンが見どころなんだからさ ah",
+        tr: "봐, 여기서 네가 웃는 장면이 볼거리니까 ah",
+        notes: [ {w:"見どころ", read:"みどころ", g:"볼거리, 볼만한 부분"} ] },
+      { ruby: "<ruby>写真<rt>しゃしん</rt></ruby>にも<ruby>映<rt>うつ</rt></ruby>せやしない<br>とても<ruby>些細<rt>ささい</rt></ruby>なその<ruby>仕草<rt>しぐさ</rt></ruby>に", plain: "写真にも映せやしないとても些細なその仕草に",
+        tr: "사진으로도 담을 수 없는 아주 사소한 그 몸짓에",
+        notes: [
+          {w:"〜せやしない", g:"'~하지도 못한다' — 가능형 부정+やしない(강조)"},
+          {w:"些細な", read:"ささいな", g:"사소한"}
+        ] },
+      { ruby: "どんな<ruby>暗<rt>くら</rt></ruby>いストーリーも<br><ruby>覆<rt>くつがえ</rt></ruby>す<ruby>瞬間<rt>しゅんかん</rt></ruby>が<ruby>溢<rt>あふ</rt></ruby>れてる", plain: "どんな暗いストーリーも覆す瞬間が溢れてる",
+        tr: "어떤 어두운 이야기도 뒤집는 순간이 넘쳐난다",
+        notes: [ {w:"覆す", read:"くつがえす", g:"뒤엎다, 뒤집다"} ] },
+      { ruby: "どれかひとつを<ruby>切<rt>き</rt></ruby>り<ruby>取<rt>と</rt></ruby>って", plain: "どれかひとつを切り取って",
+        tr: "그중 하나를 잘라내서",
+        notes: [ {w:"切り取る", read:"きりとる", g:"잘라내다"} ] },
+      { ruby: "サムネイルにしよう<br>とりあえず<ruby>今<rt>いま</rt></ruby>の<ruby>所<rt>ところ</rt></ruby>は", plain: "サムネイルにしようとりあえず今の所は",
+        tr: "썸네일로 하자, 일단 지금은",
+        notes: [ {w:"とりあえず", g:"일단, 우선"} ] }
+    ]
+  },
+  {
+    label: "Verse 3",
+    lines: [
+      { ruby: "きっと10<ruby>年後<rt>ねんご</rt></ruby>くらいには<br>キャストが<ruby>増<rt>ふ</rt></ruby>えたりもするんだろう", plain: "きっと10年後くらいにはキャストが増えたりもするんだろう",
+        tr: "분명 10년 후쯤엔 캐스트가 늘기도 하겠지", notes: [] },
+      { ruby: "<ruby>今<rt>いま</rt></ruby>でも<ruby>余裕<rt>よゆう</rt></ruby>なんてないのに<br>こんな<ruby>安月給<rt>やすげっきゅう</rt></ruby>じゃもうキャパオーバー！", plain: "今でも余裕なんてないのにこんな安月給じゃもうキャパオーバー!",
+        tr: "지금도 여유 같은 건 없는데 이런 박봉으론 이미 한계 초과!",
+        notes: [
+          {w:"安月給", read:"やすげっきゅう", g:"박봉, 낮은 월급"},
+          {w:"キャパオーバー", g:"'capacity over' — 일본식 조어, 한계를 넘어섬"}
+        ] },
+      { ruby: "きっと<ruby>情<rt>なさ</rt></ruby>けないところも<br><ruby>山<rt>やま</rt></ruby>ほど<ruby>見<rt>み</rt></ruby>せるだろう", plain: "きっと情けないところも山ほど見せるだろう",
+        tr: "분명 한심한 모습도 산더미처럼 보여주겠지",
+        notes: [ {w:"情けない", read:"なさけない", g:"한심하다"}, {w:"山ほど", read:"やまほど", g:"산더미만큼, 아주 많이"} ] }
+    ]
+  },
+  {
+    label: "Verse 4",
+    lines: [
+      { ruby: "<ruby>苗字<rt>みょうじ</rt></ruby>がひとつになった<ruby>日<rt>ひ</rt></ruby>も", plain: "苗字がひとつになった日も",
+        tr: "성씨가 하나가 된 날도",
+        notes: [ {w:"苗字", read:"みょうじ", g:"성씨"} ] },
+      { ruby: "<ruby>何<rt>なに</rt></ruby>ひとつ<ruby>代<rt>か</rt></ruby>わり<ruby>映<rt>ば</rt></ruby>えのない<ruby>日<rt>ひ</rt></ruby>も", plain: "何ひとつ代わり映えのない日も",
+        tr: "아무것도 특별할 것 없는 날도",
+        notes: [ {w:"代わり映えのない", read:"かわりばえのない", g:"'별다를 것 없는, 늘 똑같은'"} ] },
+      { ruby: "<ruby>愛<rt>いと</rt></ruby>しい<ruby>日々<rt>ひび</rt></ruby><ruby>尊<rt>とうと</rt></ruby>い<ruby>日々<rt>ひび</rt></ruby>", plain: "愛しい日々尊い日々",
+        tr: "사랑스러운 나날, 소중한 나날", notes: [] },
+      { ruby: "<ruby>逃<rt>のが</rt></ruby>さないように<ruby>忘<rt>わす</rt></ruby>れないように<br><ruby>焼<rt>や</rt></ruby>き<ruby>付<rt>つ</rt></ruby>けていくよ", plain: "逃さないように忘れないように焼き付けていくよ",
+        tr: "놓치지 않도록, 잊지 않도록 마음에 새겨갈게",
+        notes: [ {w:"焼き付ける", read:"やきつける", g:"'(마음에) 새기다, 각인시키다'"} ] }
+    ]
+  },
+  {
+    label: "Bridge",
+    lines: [
+      { ruby: "<ruby>今<rt>いま</rt></ruby> <ruby>目<rt>め</rt></ruby>を<ruby>細<rt>ほそ</rt></ruby>めて<ruby>恥<rt>は</rt></ruby>じらいあって<br><ruby>永遠<rt>とわ</rt></ruby>を<ruby>願<rt>ねが</rt></ruby>った<ruby>僕<rt>ぼく</rt></ruby>たちを", plain: "今 目を細めて恥じらいあって永遠を願った僕たちを",
+        tr: "지금, 눈을 가늘게 뜨고 수줍어하며 영원을 바랐던 우리를",
+        notes: [
+          {w:"目を細める", read:"めをほそめる", g:"'눈을 가늘게 뜨다' — 흐뭇하고 즐거운 표정을 나타내는 관용구"},
+          {w:"永遠", read:"とわ", g:"'영원' — 여기선 とわ로 발음 (えいえん의 문어체 대체 훈)"}
+        ] },
+      { ruby: "すれ<ruby>違<rt>ちが</rt></ruby>いや<ruby>憂鬱<rt>ゆううつ</rt></ruby>な<ruby>展開<rt>てんかい</rt></ruby>が<br><ruby>引<rt>ひ</rt></ruby>き<ruby>裂<rt>さ</rt></ruby>こうとしたその<ruby>時<rt>とき</rt></ruby>には", plain: "すれ違いや憂鬱な展開が引き裂こうとしたその時には",
+        tr: "엇갈림이나 우울한 전개가 갈라놓으려 했던 그때는",
+        notes: [
+          {w:"すれ違い", read:"すれちがい", g:"엇갈림"},
+          {w:"引き裂く", read:"ひきさく", g:"찢다, 갈라놓다"}
+        ] },
+      { ruby: "<ruby>僕<rt>ぼく</rt></ruby>がうるさいくらいの<ruby>声量<rt>せいりょう</rt></ruby>で<br>この<ruby>歌<rt>うた</rt></ruby><ruby>何度<rt>なんど</rt></ruby>も<ruby>歌<rt>うた</rt></ruby>うよ", plain: "僕がうるさいくらいの声量でこの歌何度も歌うよ",
+        tr: "내가 시끄러울 정도의 목소리로 이 노래를 몇 번이고 부를게",
+        notes: [ {w:"声量", read:"せいりょう", g:"성량"} ] },
+      { ruby: "だからどうかそばにいて", plain: "だからどうかそばにいて",
+        tr: "그러니까 부디 곁에 있어줘", notes: [] },
+      { ruby: "エンドロールなんてもん<br><ruby>作<rt>つく</rt></ruby>りたくもないから yeah", plain: "エンドロールなんてもん作りたくもないから yeah",
+        tr: "엔딩 크레딧 같은 건 만들고 싶지도 않으니까 yeah",
+        notes: [ {w:"エンドロール", g:"엔딩 크레딧"} ] }
+    ]
+  },
+  {
+    label: "Bridge 2",
+    lines: [
+      { ruby: "クランクアップがいつなのか<br><ruby>僕<rt>ぼく</rt></ruby>らには<ruby>決<rt>き</rt></ruby>められない", plain: "クランクアップがいつなのか僕らには決められない",
+        tr: "촬영 종료가 언제일지 우리는 정할 수 없어",
+        notes: [ {w:"クランクアップ", g:"'crank up' — 영화 촬영 종료를 뜻하는 일본식 영화 용어"} ] },
+      { ruby: "だから<ruby>風<rt>かぜ</rt></ruby>に<ruby>吹<rt>ふ</rt></ruby>かれていこう", plain: "だから風に吹かれていこう (風に吹かれていこう)",
+        tr: "그러니까 바람에 몸을 맡기고 가자",
+        notes: [ {w:"風に吹かれる", read:"かぜにふかれる", g:"'바람에 실려 가다' — 순리에 몸을 맡긴다는 뉘앙스"} ] },
+      { ruby: "フィルムは<ruby>用意<rt>ようい</rt></ruby>したよ", plain: "フィルムは用意したよ (フィルムは用意したよ)",
+        tr: "필름은 준비했어", notes: [] },
+      { ruby: "<ruby>一生分<rt>いっしょうぶん</rt></ruby>の<ruby>長<rt>なが</rt></ruby>さを<br>ざっと115<ruby>万<rt>まん</rt></ruby>キロ", plain: "一生分の長さを ざっと115万キロ",
+        tr: "일생 분량의 길이를, 대략 115만 킬로",
+        notes: [ {w:"一生分", read:"いっしょうぶん", g:"일생 분량"} ] }
+    ]
+  },
+  {
+    label: "Chorus 2",
+    lines: [
+      { ruby: "ほら ここで<ruby>君<rt>きみ</rt></ruby>が<ruby>笑<rt>わら</rt></ruby>うシーンが<br><ruby>見<rt>み</rt></ruby>どころなんだからさ ah", plain: "ほら ここで君が笑うシーンが見どころなんだからさ ah",
+        tr: "봐, 여기서 네가 웃는 장면이 볼거리니까 ah", notes: [] },
+      { ruby: "<ruby>写真<rt>しゃしん</rt></ruby>にも<ruby>映<rt>うつ</rt></ruby>せやしない<br>とても<ruby>些細<rt>ささい</rt></ruby>なその<ruby>仕草<rt>しぐさ</rt></ruby>に", plain: "写真にも映せやしないとても些細なその仕草に",
+        tr: "사진으로도 담을 수 없는 아주 사소한 그 몸짓에", notes: [] },
+      { ruby: "どんな<ruby>暗<rt>くら</rt></ruby>いストーリーも<br><ruby>覆<rt>くつがえ</rt></ruby>す<ruby>瞬間<rt>しゅんかん</rt></ruby>が<ruby>溢<rt>あふ</rt></ruby>れてる", plain: "どんな暗いストーリーも覆す瞬間が溢れてる",
+        tr: "어떤 어두운 이야기도 뒤집는 순간이 넘쳐난다", notes: [] },
+      { ruby: "どれかひとつを<ruby>切<rt>き</rt></ruby>り<ruby>取<rt>と</rt></ruby>って<br>サムネイルにしよう", plain: "どれかひとつを切り取って サムネイルにしよう",
+        tr: "그중 하나를 잘라내서 썸네일로 하자", notes: [] }
+    ]
+  },
+  {
+    label: "Outro",
+    lines: [
+      { ruby: "さあ これから<ruby>生<rt>う</rt></ruby>まれる<br><ruby>名場面<rt>めいばめん</rt></ruby>を<ruby>探<rt>さが</rt></ruby>しにいこうよ", plain: "さあ これから生まれる名場面を探しにいこうよ",
+        tr: "자, 이제부터 태어날 명장면을 찾으러 가자",
+        notes: [ {w:"名場面", read:"めいばめん", g:"명장면"} ] },
+      { ruby: "<ruby>酸<rt>す</rt></ruby>いも<ruby>甘<rt>あま</rt></ruby>いも<ruby>寄<rt>よ</rt></ruby>り<ruby>添<rt>そ</rt></ruby>って", plain: "酸いも甘いも寄り添って",
+        tr: "쓴맛도 단맛도 함께하며",
+        notes: [
+          {w:"酸いも甘いも", read:"すいもあまいも", g:"'신맛도 단맛도' — 인생의 희로애락을 나타내는 관용구"},
+          {w:"寄り添う", read:"よりそう", g:"서로 기대다, 곁에 함께하다"}
+        ] },
+      { ruby: "<ruby>一緒<rt>いっしょ</rt></ruby>に<ruby>味<rt>あじ</rt></ruby>わおう<br>フィルムがなくなるまで", plain: "一緒に味わおうフィルムがなくなるまで",
+        tr: "함께 맛보자, 필름이 다할 때까지", notes: [] },
+      { ruby: "<ruby>撮影<rt>さつえい</rt></ruby>を<ruby>続<rt>つづ</rt></ruby>けよう<br>この<ruby>命<rt>いのち</rt></ruby>ある<ruby>限<rt>かぎ</rt></ruby>り", plain: "撮影を続けようこの命ある限り",
+        tr: "촬영을 계속하자, 이 생명이 있는 한",
+        notes: [ {w:"命ある限り", read:"いのちあるかぎり", g:"'생명이 있는 한' — 命+ある+限り(하는 한)"} ] }
+    ]
+  }
+];
+
+let jaVoice = null;
+let manualVoice = null;
+let allVoices = [];
+
+const voiceSelect = document.getElementById('voiceSelect');
+const voiceListCount = document.getElementById('voiceListCount');
+
+function populateVoiceList() {
+  if (!window.speechSynthesis) return;
+  allVoices = window.speechSynthesis.getVoices() || [];
+  jaVoice = allVoices.find(v => v.lang && v.lang.toLowerCase().startsWith('ja')) || null;
+
+  voiceSelect.innerHTML = '';
+  if (allVoices.length === 0) {
+    voiceSelect.innerHTML = '<option value="">음성을 찾을 수 없음</option>';
+    voiceListCount.textContent = '이 브라우저/웹뷰에서 인식된 음성이 0개예요.';
+    return;
+  }
+
+  const autoOpt = document.createElement('option');
+  autoOpt.value = '__auto__';
+  autoOpt.textContent = '자동 (일본어 음성 자동 선택)';
+  voiceSelect.appendChild(autoOpt);
+
+  allVoices.forEach((v, i) => {
+    const opt = document.createElement('option');
+    opt.value = String(i);
+    opt.textContent = `${v.name} — ${v.lang}${v.localService ? '' : ' (네트워크)'}`;
+    voiceSelect.appendChild(opt);
+  });
+
+  voiceSelect.value = '__auto__';
+  manualVoice = null;
+
+  const jaCount = allVoices.filter(v => v.lang && v.lang.toLowerCase().startsWith('ja')).length;
+  voiceListCount.textContent = `총 ${allVoices.length}개 음성 인식됨 (그중 일본어 계열 ${jaCount}개).`;
+}
+
+if (window.speechSynthesis) {
+  populateVoiceList();
+  window.speechSynthesis.onvoiceschanged = populateVoiceList;
+  setTimeout(populateVoiceList, 400);
+  setTimeout(populateVoiceList, 1200);
+}
+
+voiceSelect.addEventListener('change', () => {
+  manualVoice = (voiceSelect.value === '__auto__' || voiceSelect.value === '') ? null : allVoices[parseInt(voiceSelect.value, 10)] || null;
+});
+document.getElementById('refreshVoicesBtn').addEventListener('click', populateVoiceList);
+document.getElementById('voiceTestBtn').addEventListener('click', () => {
+  speak(document.getElementById('voiceTestInput').value || 'こんにちは');
+});
+
+function speak(text) {
+  if (!window.speechSynthesis) { alert('이 브라우저는 음성 합성을 지원하지 않아요.'); return; }
+  window.speechSynthesis.cancel();
+  const clean = text.replace(/<br\s*\/?>/g, '　').replace(/〜/g, '');
+  const utter = new SpeechSynthesisUtterance(clean);
+  utter.lang = 'ja-JP';
+  const chosen = manualVoice || jaVoice;
+  if (chosen) utter.voice = chosen;
+  utter.rate = 0.85;
+  window.speechSynthesis.speak(utter);
+}
+function makeSpeakBtn(text, small) {
+  const btn = document.createElement('button');
+  btn.className = 'speak-btn' + (small ? ' small' : '');
+  btn.type = 'button';
+  btn.title = '발음 듣기';
+  btn.textContent = '🔊';
+  btn.addEventListener('click', (e) => { e.stopPropagation(); speak(text); });
+  return btn;
+}
+
+const stanzasEl = document.getElementById('stanzas');
+let allPlainLines = [];
+let flashcardPool = [];
+
+stanzas.forEach((st) => {
+  const card = document.createElement('div');
+  card.className = 'stanza';
+  const label = document.createElement('div');
+  label.className = 'stanza-label';
+  label.textContent = st.label;
+  card.appendChild(label);
+
+  st.lines.forEach((ln) => {
+    allPlainLines.push(ln.plain);
+    const lineEl = document.createElement('div');
+    lineEl.className = 'line';
+
+    const jpRow = document.createElement('div');
+    jpRow.className = 'jp-row';
+    const jp = document.createElement('div');
+    jp.className = 'jp';
+    jp.innerHTML = ln.ruby;
+    jpRow.appendChild(jp);
+    jpRow.appendChild(makeSpeakBtn(ln.plain, false));
+    lineEl.appendChild(jpRow);
+
+    const hint = document.createElement('div');
+    hint.className = 'hint';
+    hint.textContent = '탭하여 뜻/문법 보기';
+    lineEl.appendChild(hint);
+
+    const tr = document.createElement('div');
+    tr.className = 'translation';
+    tr.textContent = ln.tr;
+    lineEl.appendChild(tr);
+
+    if (ln.notes.length) {
+      const notes = document.createElement('div');
+      notes.className = 'notes';
+      ln.notes.forEach(n => {
+        const row = document.createElement('div');
+        row.className = 'word-row';
+        const wordSpan = document.createElement('span');
+        wordSpan.className = 'word';
+        wordSpan.textContent = n.w;
+        row.appendChild(wordSpan);
+        row.appendChild(makeSpeakBtn(n.w, true));
+        const glossSpan = document.createElement('span');
+        glossSpan.textContent = ' — ' + n.g;
+        row.appendChild(glossSpan);
+        notes.appendChild(row);
+
+        const isGrammar = n.w.includes('〜');
+        if (!flashcardPool.some(f => f.word === n.w)) {
+          flashcardPool.push({ word: n.w, read: n.read || '', gloss: n.g, isGrammar });
+        }
+      });
+      lineEl.appendChild(notes);
+    }
+
+    lineEl.addEventListener('click', () => lineEl.classList.toggle('open'));
+    card.appendChild(lineEl);
+  });
+
+  stanzasEl.appendChild(card);
+});
+
+const furiganaBtn = document.getElementById('toggleFurigana');
+let furiganaOn = true;
+furiganaBtn.addEventListener('click', () => {
+  furiganaOn = !furiganaOn;
+  document.body.classList.toggle('no-furigana', !furiganaOn);
+  furiganaBtn.textContent = furiganaOn ? 'ふりがな ON' : 'ふりがな OFF';
+  furiganaBtn.classList.toggle('active', furiganaOn);
+});
+
+let allOpen = false;
+document.getElementById('toggleAll').addEventListener('click', () => {
+  allOpen = !allOpen;
+  document.querySelectorAll('.line').forEach(l => l.classList.toggle('open', allOpen));
+});
+
+document.getElementById('scrollPractice').addEventListener('click', () => {
+  document.getElementById('practicePanel').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+let practiceIdx = 0;
+const practiceLineEl = document.getElementById('practiceLine');
+const progressLabel = document.getElementById('progressLabel');
+
+function tokenize(line) {
+  const clean = line.replace(/\u3000/g, ' ');
+  return clean.split(' ').filter(Boolean);
+}
+
+function renderPracticeLine() {
+  practiceLineEl.innerHTML = '';
+  const line = allPlainLines[practiceIdx];
+  const tokens = tokenize(line);
+  tokens.forEach((tok) => {
+    const span = document.createElement('span');
+    span.className = 'blank';
+    span.textContent = tok;
+    span.addEventListener('click', () => span.classList.toggle('revealed'));
+    practiceLineEl.appendChild(span);
+  });
+  progressLabel.textContent = `${practiceIdx + 1} / ${allPlainLines.length} 줄`;
+}
+
+document.getElementById('revealAllBtn').addEventListener('click', () => {
+  document.querySelectorAll('.blank').forEach(b => b.classList.add('revealed'));
+});
+document.getElementById('nextLineBtn').addEventListener('click', () => {
+  practiceIdx = (practiceIdx + 1) % allPlainLines.length;
+  renderPracticeLine();
+});
+document.getElementById('prevLineBtn').addEventListener('click', () => {
+  practiceIdx = (practiceIdx - 1 + allPlainLines.length) % allPlainLines.length;
+  renderPracticeLine();
+});
+renderPracticeLine();
+
+const vocabDeckSource = flashcardPool.filter(f => !f.isGrammar);
+const grammarDeckSource = flashcardPool.filter(f => f.isGrammar);
+
+let currentDeck = [...vocabDeckSource];
+let cardIdx = 0;
+let cardFlipped = false;
+
+const flashCard = document.getElementById('flashCard');
+const cardFront = document.getElementById('cardFront');
+const cardRead = document.getElementById('cardRead');
+const cardBack = document.getElementById('cardBack');
+const cardProgress = document.getElementById('cardProgress');
+const deckVocabBtn = document.getElementById('deckVocab');
+const deckGrammarBtn = document.getElementById('deckGrammar');
+
+function renderCard() {
+  if (currentDeck.length === 0) {
+    cardFront.textContent = '카드가 없어요';
+    cardRead.textContent = '';
+    cardBack.textContent = '';
+    cardProgress.textContent = '';
+    return;
+  }
+  const c = currentDeck[cardIdx];
+  cardFront.textContent = c.word;
+  cardRead.textContent = c.read || '';
+  cardBack.textContent = c.gloss;
+  cardProgress.textContent = `${cardIdx + 1} / ${currentDeck.length}`;
+  flashCard.classList.remove('flipped');
+  cardFlipped = false;
+}
+
+flashCard.addEventListener('click', () => {
+  cardFlipped = !cardFlipped;
+  flashCard.classList.toggle('flipped', cardFlipped);
+});
+document.getElementById('cardFlipBtn').addEventListener('click', () => {
+  cardFlipped = !cardFlipped;
+  flashCard.classList.toggle('flipped', cardFlipped);
+});
+document.getElementById('cardNextBtn').addEventListener('click', () => {
+  if (currentDeck.length === 0) return;
+  cardIdx = (cardIdx + 1) % currentDeck.length;
+  renderCard();
+});
+document.getElementById('cardPrevBtn').addEventListener('click', () => {
+  if (currentDeck.length === 0) return;
+  cardIdx = (cardIdx - 1 + currentDeck.length) % currentDeck.length;
+  renderCard();
+});
+document.getElementById('cardSpeakBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (currentDeck.length === 0) return;
+  speak(currentDeck[cardIdx].word);
+});
+deckVocabBtn.addEventListener('click', () => {
+  currentDeck = [...vocabDeckSource]; cardIdx = 0;
+  deckVocabBtn.classList.add('active'); deckGrammarBtn.classList.remove('active');
+  renderCard();
+});
+deckGrammarBtn.addEventListener('click', () => {
+  currentDeck = [...grammarDeckSource]; cardIdx = 0;
+  deckGrammarBtn.classList.add('active'); deckVocabBtn.classList.remove('active');
+  renderCard();
+});
+document.getElementById('deckShuffle').addEventListener('click', () => {
+  for (let i = currentDeck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [currentDeck[i], currentDeck[j]] = [currentDeck[j], currentDeck[i]];
+  }
+  cardIdx = 0;
+  renderCard();
+});
+renderCard();
+
+let quizPool = [...flashcardPool];
+let quizDeckFilter = 'all';
+let quizOrder = [];
+let quizPos = 0;
+let quizScoreCorrect = 0;
+let quizScoreTotal = 0;
+let quizAnswered = false;
+
+const quizTag = document.getElementById('quizTag');
+const quizPrompt = document.getElementById('quizPrompt');
+const quizOptionsEl = document.getElementById('quizOptions');
+const quizFeedback = document.getElementById('quizFeedback');
+const quizScoreEl = document.getElementById('quizScore');
+
+function shuffleArr(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function getQuizDeck() {
+  if (quizDeckFilter === 'vocab') return flashcardPool.filter(f => !f.isGrammar);
+  if (quizDeckFilter === 'grammar') return flashcardPool.filter(f => f.isGrammar);
+  return flashcardPool;
+}
+function startQuizSet() {
+  quizPool = getQuizDeck();
+  quizOrder = shuffleArr(quizPool.map((_, i) => i));
+  quizPos = 0; quizScoreCorrect = 0; quizScoreTotal = 0;
+  renderQuizQuestion();
+}
+function renderQuizQuestion() {
+  quizFeedback.textContent = '';
+  quizAnswered = false;
+  if (quizPool.length < 2) {
+    quizPrompt.textContent = '이 덱에는 문제를 만들 카드가 부족해요.';
+    quizOptionsEl.innerHTML = '';
+    quizTag.textContent = '문제 없음';
+    return;
+  }
+  if (quizPos >= quizOrder.length) {
+    quizOrder = shuffleArr(quizPool.map((_, i) => i));
+    quizPos = 0;
+  }
+  const item = quizPool[quizOrder[quizPos]];
+  const wordToMeaning = Math.random() < 0.5;
+  quizTag.textContent = wordToMeaning ? '이 단어/문법의 뜻은?' : '이 뜻에 맞는 단어/문법은?';
+  quizPrompt.textContent = wordToMeaning ? item.word : item.gloss;
+
+  const others = quizPool.filter(o => o !== item);
+  const distractors = shuffleArr(others).slice(0, 3);
+  const options = shuffleArr([item, ...distractors]);
+
+  quizOptionsEl.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.type = 'button';
+    btn.textContent = wordToMeaning ? opt.gloss : opt.word;
+    btn.addEventListener('click', () => {
+      if (quizAnswered) return;
+      quizAnswered = true;
+      quizScoreTotal++;
+      const isCorrect = opt === item;
+      if (isCorrect) quizScoreCorrect++;
+      document.querySelectorAll('.quiz-option').forEach(o => o.classList.add('disabled'));
+      btn.classList.add(isCorrect ? 'correct' : 'wrong');
+      if (!isCorrect) {
+        [...quizOptionsEl.children].forEach(child => {
+          if (child.textContent === (wordToMeaning ? item.gloss : item.word)) child.classList.add('correct');
+        });
+      }
+      quizFeedback.textContent = isCorrect ? '정답이에요! 🎉' : `아쉬워요. 정답: ${wordToMeaning ? item.gloss : item.word}`;
+      updateQuizScore();
+    });
+    quizOptionsEl.appendChild(btn);
+  });
+  updateQuizScore();
+}
+function updateQuizScore() {
+  quizScoreEl.textContent = quizScoreTotal > 0
+    ? `정답 ${quizScoreCorrect} / 시도 ${quizScoreTotal}  ·  ${quizPos + 1}번째 문제`
+    : `${quizPos + 1}번째 문제`;
+}
+document.getElementById('quizNextBtn').addEventListener('click', () => { quizPos++; renderQuizQuestion(); });
+document.getElementById('quizRestartBtn').addEventListener('click', () => startQuizSet());
+
+const quizDeckAllBtn = document.getElementById('quizDeckAll');
+const quizDeckVocabBtn = document.getElementById('quizDeckVocab');
+const quizDeckGrammarBtn = document.getElementById('quizDeckGrammar');
+function setQuizDeckActive(btn) {
+  [quizDeckAllBtn, quizDeckVocabBtn, quizDeckGrammarBtn].forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+quizDeckAllBtn.addEventListener('click', () => { quizDeckFilter = 'all'; setQuizDeckActive(quizDeckAllBtn); startQuizSet(); });
+quizDeckVocabBtn.addEventListener('click', () => { quizDeckFilter = 'vocab'; setQuizDeckActive(quizDeckVocabBtn); startQuizSet(); });
+quizDeckGrammarBtn.addEventListener('click', () => { quizDeckFilter = 'grammar'; setQuizDeckActive(quizDeckGrammarBtn); startQuizSet(); });
+startQuizSet();
+
+const sky = document.getElementById('sky');
+for (let i = 0; i < 34; i++) {
+  const d = document.createElement('div');
+  d.className = 'dust';
+  d.style.left = Math.random() * 100 + 'vw';
+  d.style.animationDuration = (10 + Math.random() * 14) + 's';
+  d.style.animationDelay = (Math.random() * 8) + 's';
+  sky.appendChild(d);
+}
+</script>
+
+</body>
+</html>
