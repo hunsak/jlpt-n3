@@ -2,11 +2,20 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>원소 주기율표 암기 퀴즈</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- iOS 웹 앱 설정 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="원소 퀴즈">
+    
+    <!-- 원소 주기율표 타일 디자인 홈 화면 앱 아이콘 (SVG Data URL) -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%23007AFF'/><rect x='15' y='15' width='150' height='150' rx='28' fill='none' stroke='%23ffffff' stroke-width='3' stroke-opacity='0.3'/><text x='32' y='52' font-family='-apple-system, sans-serif' font-size='22' font-weight='bold' fill='%23ffffff' opacity='0.9'>1</text><text x='90' y='108' font-family='-apple-system, sans-serif' font-size='62' font-weight='800' fill='%23ffffff' text-anchor='middle'>H</text><text x='90' y='142' font-family='-apple-system, sans-serif' font-size='18' font-weight='600' fill='%23ffffff' text-anchor='middle' opacity='0.9'>수소</text></svg>">
+    
+    <title>원소 주기율표 퀴즈</title>
     <style>
         :root {
-            --bg-color: #f4f6f8;
+            --bg-color: #f2f2f7;
             --card-bg: #ffffff;
             --primary-color: #007aff;
             --text-color: #1c1c1e;
@@ -19,34 +28,87 @@
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 20px 16px;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+            overflow: hidden;
+        }
+
+        .app-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 430px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
         }
 
         .container {
-            width: 100%;
-            max-width: 420px;
             background: var(--card-bg);
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            border-radius: 28px;
+            padding: 28px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
             text-align: center;
         }
 
+        .app-icon-preview {
+            width: 72px;
+            height: 72px;
+            background-color: var(--primary-color);
+            border-radius: 18px;
+            margin: 0 auto 16px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            box-shadow: 0 6px 16px rgba(0, 122, 255, 0.3);
+        }
+
+        .app-icon-preview .num {
+            font-size: 0.65rem;
+            font-weight: 700;
+            align-self: flex-start;
+            margin-left: 12px;
+            margin-top: -2px;
+            opacity: 0.8;
+        }
+
+        .app-icon-preview .sym {
+            font-size: 1.8rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-top: -2px;
+        }
+
+        .app-icon-preview .txt {
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-top: 2px;
+            opacity: 0.9;
+        }
+
         h1 {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
+            font-weight: 700;
             margin-top: 0;
-            margin-bottom: 20px;
+            margin-bottom: 8px;
             color: var(--text-color);
         }
 
@@ -60,11 +122,11 @@
 
         .btn {
             width: 100%;
-            padding: 16px;
+            padding: 18px;
             font-size: 1.05rem;
             font-weight: 600;
             border: none;
-            border-radius: 14px;
+            border-radius: 16px;
             background-color: var(--primary-color);
             color: white;
             cursor: pointer;
@@ -73,22 +135,21 @@
         }
 
         .btn:active {
-            transform: scale(0.98);
-            opacity: 0.9;
+            transform: scale(0.97);
+            opacity: 0.85;
         }
 
         .mode-btn {
             background-color: #f2f2f7;
             color: var(--primary-color);
-            border: 1px solid var(--border-color);
         }
 
         .progress-bar {
             width: 100%;
-            height: 6px;
+            height: 8px;
             background-color: #e5e5ea;
-            border-radius: 3px;
-            margin-bottom: 20px;
+            border-radius: 4px;
+            margin-bottom: 24px;
             overflow: hidden;
         }
 
@@ -96,46 +157,51 @@
             width: 0%;
             height: 100%;
             background-color: var(--primary-color);
-            transition: width 0.3s ease;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .question-box {
             background-color: #f8f9fa;
-            border-radius: 16px;
-            padding: 30px 15px;
-            margin-bottom: 20px;
+            border-radius: 20px;
+            padding: 32px 16px;
+            margin-bottom: 24px;
             border: 1px solid var(--border-color);
         }
 
         .question-title {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--sub-text);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            font-weight: 500;
         }
 
         .question-main {
-            font-size: 2.8rem;
-            font-weight: 700;
+            font-size: 3.2rem;
+            font-weight: 800;
             color: var(--primary-color);
+            letter-spacing: -0.5px;
         }
 
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 12px;
         }
 
         .option-btn {
-            padding: 16px 10px;
-            font-size: 1.1rem;
+            padding: 18px 10px;
+            font-size: 1.15rem;
             font-weight: 600;
             background-color: #ffffff;
             border: 2px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 16px;
             color: var(--text-color);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s ease;
+        }
+
+        .option-btn:active {
+            transform: scale(0.96);
         }
 
         .option-btn.correct {
@@ -151,55 +217,60 @@
         }
 
         .score-display {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 800;
             color: var(--primary-color);
-            margin: 20px 0;
+            margin: 16px 0 8px 0;
         }
 
         .score-text {
             font-size: 1.1rem;
             color: var(--sub-text);
-            margin-bottom: 30px;
+            margin-bottom: 28px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- 메인 화면 -->
-    <div id="start-screen" class="screen active">
-        <h1>🧪 원소 주기율표 퀴즈</h1>
-        <p style="color: var(--sub-text); margin-bottom: 24px;">학습할 모드를 선택하세요 (10문항)</p>
-        <button class="btn mode-btn" onclick="startQuiz('symbolToName')">1. 원소기호 → 한글명칭</button>
-        <button class="btn mode-btn" onclick="startQuiz('nameToSymbol')">2. 한글명칭 → 원소기호</button>
-    </div>
+<div class="app-wrapper">
+    <div class="container">
+        <!-- 메인 화면 -->
+        <div id="start-screen" class="screen active">
+            <!-- 원소 타일 스타일의 앱 아이콘 상징 그래픽 -->
+            <div class="app-icon-preview">
+                <span class="num">1</span>
+                <span class="sym">H</span>
+                <span class="txt">수소</span>
+            </div>
+            <h1>원소 주기율표 퀴즈</h1>
+            <p style="color: var(--sub-text); margin-top: 0; margin-bottom: 28px; font-size: 0.95rem;">모드를 선택하여 10문제를 풀어보세요.</p>
+            <button class="btn mode-btn" onclick="startQuiz('symbolToName')">1. 원소기호 → 한글명칭</button>
+            <button class="btn mode-btn" onclick="startQuiz('nameToSymbol')">2. 한글명칭 → 원소기호</button>
+        </div>
 
-    <!-- 퀴즈 진행 화면 -->
-    <div id="quiz-screen" class="screen">
-        <div class="progress-bar">
-            <div id="progress" class="progress"></div>
+        <!-- 퀴즈 진행 화면 -->
+        <div id="quiz-screen" class="screen">
+            <div class="progress-bar">
+                <div id="progress" class="progress"></div>
+            </div>
+            <div class="question-box">
+                <div id="question-title" class="question-title">다음 원소기호의 한글 명칭은?</div>
+                <div id="question-main" class="question-main">H</div>
+            </div>
+            <div id="options" class="options-grid"></div>
         </div>
-        <div class="question-box">
-            <div id="question-title" class="question-title">다음 원소기호의 한글 명칭은?</div>
-            <div id="question-main" class="question-main">H</div>
-        </div>
-        <div id="options" class="options-grid">
-            <!-- 보기 버튼들이 동적으로 생성됩니다 -->
-        </div>
-    </div>
 
-    <!-- 결과 화면 -->
-    <div id="result-screen" class="screen">
-        <h1>🎉 학습 완료!</h1>
-        <div id="score-display" class="score-display">80점</div>
-        <div id="score-text" class="score-text">10문제 중 8문제를 맞췄습니다.</div>
-        <button class="btn" onclick="showStartScreen()">다시 풀기</button>
+        <!-- 결과 화면 -->
+        <div id="result-screen" class="screen">
+            <h1>🎉 학습 완료!</h1>
+            <div id="score-display" class="score-display">0점</div>
+            <div id="score-text" class="score-text">10문제 중 0문제를 맞췄습니다.</div>
+            <button class="btn" onclick="showStartScreen()">다시 풀기</button>
+        </div>
     </div>
 </div>
 
 <script>
-    // 주요 원소 30개 데이터
     const elements = [
         { symbol: "H", name: "수소" }, { symbol: "He", name: "헬륨" },
         { symbol: "Li", name: "리튬" }, { symbol: "Be", name: "베릴륨" },
@@ -238,7 +309,6 @@
         score = 0;
         currentQuestionIndex = 0;
         
-        // 원소 목록을 섞어서 10개 추출
         const shuffled = [...elements].sort(() => 0.5 - Math.random());
         quizQuestions = shuffled.slice(0, 10);
 
@@ -255,10 +325,8 @@
         isAnswering = true;
         const currentQ = quizQuestions[currentQuestionIndex];
         
-        // 진행 바 업데이트
         document.getElementById('progress').style.width = `${((currentQuestionIndex) / 10) * 100}%`;
 
-        // 문제 및 제목 설정
         const titleEl = document.getElementById('question-title');
         const mainEl = document.getElementById('question-main');
 
@@ -270,7 +338,6 @@
             mainEl.textContent = currentQ.name;
         }
 
-        // 보기 생성 (정답 1개 + 오답 3개)
         const options = generateOptions(currentQ);
         const optionsContainer = document.getElementById('options');
         optionsContainer.innerHTML = '';
@@ -303,7 +370,6 @@
             score++;
         } else {
             selectedBtn.classList.add('wrong');
-            // 정답 버튼 표시
             buttons.forEach(btn => {
                 const targetValue = currentMode === 'symbolToName' ? correctQ.name : correctQ.symbol;
                 if (btn.textContent === targetValue) {
@@ -312,11 +378,10 @@
             });
         }
 
-        // 0.8초 후 다음 문제로
         setTimeout(() => {
             currentQuestionIndex++;
             nextQuestion();
-        }, 800);
+        }, 700);
     }
 
     function showResult() {
