@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <!-- iOS 웹 앱 설정 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="원소 퀴즈">
     
-    <!-- 원소 주기율표 타일 디자인 홈 화면 앱 아이콘 (SVG Data URL) -->
-    <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%23007AFF'/><rect x='15' y='15' width='150' height='150' rx='28' fill='none' stroke='%23ffffff' stroke-width='3' stroke-opacity='0.3'/><text x='32' y='52' font-family='-apple-system, sans-serif' font-size='22' font-weight='bold' fill='%23ffffff' opacity='0.9'>1</text><text x='90' y='108' font-family='-apple-system, sans-serif' font-size='62' font-weight='800' fill='%23ffffff' text-anchor='middle'>H</text><text x='90' y='142' font-family='-apple-system, sans-serif' font-size='18' font-weight='600' fill='%23ffffff' text-anchor='middle' opacity='0.9'>수소</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%23007AFF'/><text x='90' y='115' font-family='-apple-system, sans-serif' font-size='80' font-weight='800' fill='%23ffffff' text-anchor='middle'>H</text><text x='90' y='150' font-family='-apple-system, sans-serif' font-size='20' font-weight='600' fill='%23ffffff' text-anchor='middle' opacity='0.9'>수소</text></svg>">
     
     <title>원소 주기율표 퀴즈</title>
     <style>
@@ -44,8 +42,6 @@
             height: 100vh;
             padding-top: env(safe-area-inset-top);
             padding-bottom: env(safe-area-inset-bottom);
-            padding-left: env(safe-area-inset-left);
-            padding-right: env(safe-area-inset-right);
             overflow: hidden;
         }
 
@@ -67,59 +63,80 @@
             text-align: center;
         }
 
+        /* 메인 화면 아이콘 */
         .app-icon-preview {
-            width: 72px;
-            height: 72px;
+            width: 80px;
+            height: 80px;
             background-color: var(--primary-color);
-            border-radius: 18px;
-            margin: 0 auto 16px auto;
+            border-radius: 20px;
+            margin: 0 auto 20px auto;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             color: white;
-            box-shadow: 0 6px 16px rgba(0, 122, 255, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);
         }
+        .app-icon-preview .sym { font-size: 2.5rem; font-weight: 800; }
+        .app-icon-preview .txt { font-size: 0.8rem; font-weight: 600; opacity: 0.9; }
 
-        .app-icon-preview .num {
-            font-size: 0.65rem;
-            font-weight: 700;
-            align-self: flex-start;
-            margin-left: 12px;
-            margin-top: -2px;
-            opacity: 0.8;
+        h1 { font-size: 1.6rem; font-weight: 700; margin: 0 0 10px 0; }
+        .sub-title { color: var(--sub-text); margin-bottom: 30px; font-size: 0.95rem; }
+
+        .screen { display: none; }
+        .screen.active { display: block; }
+
+        /* 설정 세션 */
+        .settings-section {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
         }
-
-        .app-icon-preview .sym {
-            font-size: 1.8rem;
-            font-weight: 800;
-            line-height: 1;
-            margin-top: -2px;
-        }
-
-        .app-icon-preview .txt {
-            font-size: 0.65rem;
+        .settings-label {
+            font-size: 0.9rem;
+            color: var(--sub-text);
             font-weight: 600;
-            margin-top: 2px;
-            opacity: 0.9;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-top: 0;
-            margin-bottom: 8px;
-            color: var(--text-color);
-        }
-
-        .screen {
-            display: none;
-        }
-
-        .screen.active {
+            margin-bottom: 10px;
             display: block;
         }
 
+        /* 갯수 선택 세그먼트 제어 */
+        .segmented-control {
+            display: flex;
+            background: #e5e5ea;
+            border-radius: 8px;
+            padding: 2px;
+            margin-bottom: 15px;
+            overflow-x: auto; /* 항목이 많을 때 가로 스크롤 */
+            -webkit-overflow-scrolling: touch;
+        }
+        .segmented-control::-webkit-scrollbar { display: none; } /* 스크롤바 숨김 */
+
+        .segmented-control label {
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .segmented-control input { display: none; }
+        .segmented-control span {
+            display: block;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .segmented-control input:checked + span {
+            background: #ffffff;
+            color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* 버튼 스타일 */
         .btn {
             width: 100%;
             padding: 18px;
@@ -131,201 +148,232 @@
             color: white;
             cursor: pointer;
             margin-bottom: 12px;
-            transition: transform 0.1s, opacity 0.2s;
+            transition: all 0.1s;
         }
+        .btn:active { transform: scale(0.97); opacity: 0.85; }
+        .btn.secondary { background-color: #f2f2f7; color: var(--primary-color); }
+        .btn:disabled { background-color: #c7c7cc; color: #8e8e93; transform: none; opacity: 1; }
 
-        .btn:active {
-            transform: scale(0.97);
-            opacity: 0.85;
-        }
+        /* 퀴즈 UI */
+        .progress-bar { width: 100%; height: 8px; background-color: #e5e5ea; border-radius: 4px; margin-bottom: 25px; overflow: hidden; }
+        .progress { width: 0%; height: 100%; background-color: var(--correct-color); transition: width 0.3s ease; }
+        
+        .question-box { background-color: #f8f9fa; border-radius: 20px; padding: 35px 15px; margin-bottom: 25px; border: 1px solid var(--border-color); }
+        .question-title { font-size: 0.95rem; color: var(--sub-text); margin-bottom: 12px; }
+        .question-main { font-size: 3.5rem; font-weight: 800; color: var(--primary-color); letter-spacing: -1px; }
 
-        .mode-btn {
-            background-color: #f2f2f7;
-            color: var(--primary-color);
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background-color: #e5e5ea;
-            border-radius: 4px;
-            margin-bottom: 24px;
-            overflow: hidden;
-        }
-
-        .progress {
-            width: 0%;
-            height: 100%;
-            background-color: var(--primary-color);
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .question-box {
-            background-color: #f8f9fa;
-            border-radius: 20px;
-            padding: 32px 16px;
-            margin-bottom: 24px;
-            border: 1px solid var(--border-color);
-        }
-
-        .question-title {
-            font-size: 0.95rem;
-            color: var(--sub-text);
-            margin-bottom: 12px;
-            font-weight: 500;
-        }
-
-        .question-main {
-            font-size: 3.2rem;
-            font-weight: 800;
-            color: var(--primary-color);
-            letter-spacing: -0.5px;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .option-btn {
-            padding: 18px 10px;
-            font-size: 1.15rem;
-            font-weight: 600;
-            background-color: #ffffff;
-            border: 2px solid var(--border-color);
-            border-radius: 16px;
-            color: var(--text-color);
-            cursor: pointer;
-            transition: all 0.15s ease;
+            padding: 20px 10px; font-size: 1.2rem; font-weight: 600;
+            background-color: #ffffff; border: 2px solid var(--border-color);
+            border-radius: 16px; color: var(--text-color); cursor: pointer;
+            transition: all 0.15s;
         }
+        .option-btn.correct { background-color: var(--correct-color); border-color: var(--correct-color); color: white; }
+        .option-btn.wrong { background-color: var(--wrong-color); border-color: var(--wrong-color); color: white; }
 
-        .option-btn:active {
-            transform: scale(0.96);
-        }
+        /* 결과 UI */
+        .score-display { font-size: 4rem; font-weight: 800; color: var(--primary-color); margin: 20px 0 10px 0; }
+        .score-text { font-size: 1.1rem; color: var(--sub-text); margin-bottom: 30px; }
+        .remain-text { font-size: 0.9rem; color: var(--primary-color); margin-bottom: 15px; font-weight: 600;}
 
-        .option-btn.correct {
-            background-color: var(--correct-color);
-            border-color: var(--correct-color);
-            color: white;
-        }
-
-        .option-btn.wrong {
-            background-color: var(--wrong-color);
-            border-color: var(--wrong-color);
-            color: white;
-        }
-
-        .score-display {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: var(--primary-color);
-            margin: 16px 0 8px 0;
-        }
-
-        .score-text {
-            font-size: 1.1rem;
-            color: var(--sub-text);
-            margin-bottom: 28px;
-        }
     </style>
 </head>
 <body>
 
 <div class="app-wrapper">
     <div class="container">
-        <!-- 메인 화면 -->
+        
         <div id="start-screen" class="screen active">
-            <!-- 원소 타일 스타일의 앱 아이콘 상징 그래픽 -->
             <div class="app-icon-preview">
-                <span class="num">1</span>
                 <span class="sym">H</span>
                 <span class="txt">수소</span>
             </div>
             <h1>원소 주기율표 퀴즈</h1>
-            <p style="color: var(--sub-text); margin-top: 0; margin-bottom: 28px; font-size: 0.95rem;">모드를 선택하여 10문제를 풀어보세요.</p>
-            <button class="btn mode-btn" onclick="startQuiz('symbolToName')">1. 원소기호 → 한글명칭</button>
-            <button class="btn mode-btn" onclick="startQuiz('nameToSymbol')">2. 한글명칭 → 원소기호</button>
+            <p class="sub-title">모드와 문제 갯수를 선택하세요.</p>
+            
+            <div class="settings-section">
+                <label class="settings-label">문제 갯수 설정</label>
+                <div class="segmented-control" id="quantity-selector">
+                    </div>
+            </div>
+
+            <button class="btn secondary" onclick="startQuiz('symbolToName')">1. 원소기호 → 한글명칭</button>
+            <button class="btn secondary" onclick="startQuiz('nameToSymbol')">2. 한글명칭 → 원소기호</button>
         </div>
 
-        <!-- 퀴즈 진행 화면 -->
         <div id="quiz-screen" class="screen">
             <div class="progress-bar">
                 <div id="progress" class="progress"></div>
             </div>
             <div class="question-box">
-                <div id="question-title" class="question-title">다음 원소기호의 한글 명칭은?</div>
+                <div id="question-title" class="question-title">문제</div>
                 <div id="question-main" class="question-main">H</div>
             </div>
             <div id="options" class="options-grid"></div>
         </div>
 
-        <!-- 결과 화면 -->
         <div id="result-screen" class="screen">
-            <h1>🎉 학습 완료!</h1>
+            <h1>🎉 라운드 종료!</h1>
             <div id="score-display" class="score-display">0점</div>
             <div id="score-text" class="score-text">10문제 중 0문제를 맞췄습니다.</div>
-            <button class="btn" onclick="showStartScreen()">다시 풀기</button>
+            
+            <div class="settings-section">
+                <p id="remain-count-text" class="remain-text">남은 원소: 20개</p>
+                <label class="settings-label">다음 라운드 문제 갯수</label>
+                <div class="segmented-control" id="result-quantity-selector">
+                    </div>
+            </div>
+
+            <button id="continue-btn" class="btn" onclick="continueQuiz()">안 푼 문제 이어서 풀기</button>
+            <button class="btn secondary" onclick="showStartScreen()">처음부터 다시 하기</button>
         </div>
     </div>
 </div>
 
 <script>
-    const elements = [
-        { symbol: "H", name: "수소" }, { symbol: "He", name: "헬륨" },
-        { symbol: "Li", name: "리튬" }, { symbol: "Be", name: "베릴륨" },
-        { symbol: "B", name: "붕소" }, { symbol: "C", name: "탄소" },
-        { symbol: "N", name: "질소" }, { symbol: "O", name: "산소" },
-        { symbol: "F", name: "플루오린" }, { symbol: "Ne", name: "네온" },
-        { symbol: "Na", name: "나트륨" }, { symbol: "Mg", name: "마그네슘" },
-        { symbol: "Al", name: "알루미늄" }, { symbol: "Si", name: "규소" },
-        { symbol: "P", name: "인" }, { symbol: "S", name: "황" },
-        { symbol: "Cl", name: "염소" }, { symbol: "Ar", name: "아르곤" },
-        { symbol: "K", name: "칼륨" }, { symbol: "Ca", name: "칼슘" },
-        { symbol: "Fe", name: "철" }, { symbol: "Cu", name: "구리" },
-        { symbol: "Zn", name: "아연" }, { symbol: "Ag", name: "은" },
-        { symbol: "Au", name: "금" }, { symbol: "Hg", name: "수은" },
-        { symbol: "Pb", name: "납" }, { symbol: "I", name: "아이오딘" },
-        { symbol: "Ba", name: "바륨" }, { symbol: "U", name: "우라늄" }
+    // 주요 원소 30개 데이터
+    const elementsData = [
+        { id: 1, symbol: "H", name: "수소" }, { id: 2, symbol: "He", name: "헬륨" },
+        { id: 3, symbol: "Li", name: "리튬" }, { id: 4, symbol: "Be", name: "베릴륨" },
+        { id: 5, symbol: "B", name: "붕소" }, { id: 6, symbol: "C", name: "탄소" },
+        { id: 7, symbol: "N", name: "질소" }, { id: 8, symbol: "O", name: "산소" },
+        { id: 9, symbol: "F", name: "플루오린" }, { id: 10, symbol: "Ne", name: "네온" },
+        { id: 11, symbol: "Na", name: "나트륨" }, { id: 12, symbol: "Mg", name: "마그네슘" },
+        { id: 13, symbol: "Al", name: "알루미늄" }, { id: 14, symbol: "Si", name: "규소" },
+        { id: 15, symbol: "P", name: "인" }, { id: 16, symbol: "S", name: "황" },
+        { id: 17, symbol: "Cl", name: "염소" }, { id: 18, symbol: "Ar", name: "아르곤" },
+        { id: 19, symbol: "K", name: "칼륨" }, { id: 20, symbol: "Ca", name: "칼슘" },
+        { id: 21, symbol: "Fe", name: "철" }, { id: 22, symbol: "Cu", name: "구리" },
+        { id: 23, symbol: "Zn", name: "아연" }, { id: 24, symbol: "Ag", name: "은" },
+        { id: 25, symbol: "Au", name: "금" }, { id: 26, symbol: "Hg", name: "수은" },
+        { id: 27, symbol: "Pb", name: "납" }, { id: 28, symbol: "I", name: "아이오딘" },
+        { id: 29, symbol: "Ba", name: "바륨" }, { id: 30, symbol: "U", name: "우라늄" }
     ];
 
+    // 선택 가능한 문제 갯수 옵션
+    const quantityOptions = [5, 10, 15, 20, 25, 30]; // 데이터가 30개이므로 30까지만 설정
+
+    // 상태 변수
     let currentMode = '';
-    let quizQuestions = [];
+    let unallocatedElementIds = []; // 아직 풀지 않은 원소 ID 목록
+    let currentRoundQuestions = [];  // 이번 라운드 문제 목록
     let currentQuestionIndex = 0;
-    let score = 0;
+    let roundScore = 0;
     let isAnswering = false;
 
+    // 초기화: 문제 갯수 선택 UI 생성 및 전체 원소 목록 설정
+    function initApp() {
+        renderQuantitySelectors();
+        resetLearningRecord();
+    }
+
+    // 학습 기록 초기화 (모든 원소를 안 푼 상태로 만듦)
+    function resetLearningRecord() {
+        unallocatedElementIds = elementsData.map(e => e.id);
+    }
+
+    // 문제 갯수 선택기(Segmented Control) 동적 생성
+    function renderQuantitySelectors() {
+        const containers = [document.getElementById('quantity-selector'), document.getElementById('result-quantity-selector')];
+        
+        containers.forEach((container, idx) => {
+            container.innerHTML = '';
+            const suffix = idx === 0 ? 'start' : 'result'; // ID 중복 방지
+
+            quantityOptions.forEach((qty, i) => {
+                const label = document.createElement('label');
+                
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = `quiz-qty-${suffix}`;
+                input.value = qty;
+                if (qty === 10) input.checked = true; // 기본값 10개
+
+                const span = document.createElement('span');
+                span.textContent = qty;
+
+                label.appendChild(input);
+                label.appendChild(span);
+                container.appendChild(label);
+            });
+        });
+    }
+
+    // 선택된 문제 갯수 가져오기
+    function getSelectedQuantity(screenType) {
+        const selectorId = screenType === 'start' ? 'quantity-selector' : 'result-quantity-selector';
+        return parseInt(document.querySelector(`#${selectorId} input:checked`).value);
+    }
+
+    // 화면 전환
     function showScreen(screenId) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
     }
 
+    // 메인으로 돌아가기 (기록 초기화 포함)
     function showStartScreen() {
+        resetLearningRecord();
         showScreen('start-screen');
     }
 
+    // 퀴즈 시작 (메인 화면에서 호출)
     function startQuiz(mode) {
         currentMode = mode;
-        score = 0;
-        currentQuestionIndex = 0;
-        
-        const shuffled = [...elements].sort(() => 0.5 - Math.random());
-        quizQuestions = shuffled.slice(0, 10);
+        resetLearningRecord(); // 처음부터 다시하기이므로 기록 초기화
+        prepareRound('start');
+    }
 
+    // 이어서 풀기 (결과 화면에서 호출)
+    function continueQuiz() {
+        // 모드는 이전 라운드 모드 유지
+        prepareRound('result');
+    }
+
+    // 라운드 준비 및 시작
+    function prepareRound(fromScreen) {
+        const requestedQty = getSelectedQuantity(fromScreen);
+        
+        // 1. 남은 문제 목록 섞기
+        const shuffledRemainingIds = unallocatedElementIds.sort(() => 0.5 - Math.random());
+        
+        // 2. 요청한 갯수만큼 추출 (남은 갯수가 더 적으면 남은 만큼만)
+        const finalQty = Math.min(requestedQty, shuffledRemainingIds.length);
+        const selectedIds = shuffledRemainingIds.slice(0, finalQty);
+
+        if (finalQty === 0) {
+            alert("모든 원소를 학습했습니다! 처음부터 다시 시작합니다.");
+            showStartScreen();
+            return;
+        }
+
+        // 3. 이번 라운드 문제 데이터 매핑
+        currentRoundQuestions = selectedIds.map(id => elementsData.find(e => e.id === id));
+
+        // 4. 추출된 문제들을 전체 남은 목록에서 제외
+        unallocatedElementIds = unallocatedElementIds.filter(id => !selectedIds.includes(id));
+
+        // 5. 라운드 상태 초기화 및 시작
+        roundScore = 0;
+        currentQuestionIndex = 0;
         showScreen('quiz-screen');
         nextQuestion();
     }
 
+    // 다음 문제 표시
     function nextQuestion() {
-        if (currentQuestionIndex >= 10) {
+        if (currentQuestionIndex >= currentRoundQuestions.length) {
             showResult();
             return;
         }
 
         isAnswering = true;
-        const currentQ = quizQuestions[currentQuestionIndex];
+        const currentQ = currentRoundQuestions[currentQuestionIndex];
+        const totalInRound = currentRoundQuestions.length;
         
-        document.getElementById('progress').style.width = `${((currentQuestionIndex) / 10) * 100}%`;
+        // 진행 바 업데이트
+        document.getElementById('progress').style.width = `${((currentQuestionIndex) / totalInRound) * 100}%`;
 
         const titleEl = document.getElementById('question-title');
         const mainEl = document.getElementById('question-main');
@@ -338,6 +386,7 @@
             mainEl.textContent = currentQ.name;
         }
 
+        // 보기 생성 (정답 1 + 오답 3)
         const options = generateOptions(currentQ);
         const optionsContainer = document.getElementById('options');
         optionsContainer.innerHTML = '';
@@ -345,31 +394,37 @@
         options.forEach(opt => {
             const btn = document.createElement('button');
             btn.className = 'option-btn';
+            // 모드에 따라 보기 텍스트 설정
             btn.textContent = currentMode === 'symbolToName' ? opt.name : opt.symbol;
             btn.onclick = () => checkAnswer(btn, opt, currentQ);
             optionsContainer.appendChild(btn);
         });
     }
 
+    // 오답 포함 보기 4개 생성
     function generateOptions(correctElement) {
-        const wrongCandidates = elements.filter(e => e.symbol !== correctElement.symbol);
+        // 전체 데이터에서 정답 제외하고 섞어서 3개 추출
+        const wrongCandidates = elementsData.filter(e => e.id !== correctElement.id);
         const shuffledWrong = wrongCandidates.sort(() => 0.5 - Math.random()).slice(0, 3);
+        
         const allOptions = [correctElement, ...shuffledWrong];
-        return allOptions.sort(() => 0.5 - Math.random());
+        return allOptions.sort(() => 0.5 - Math.random()); // 보기 순서 섞기
     }
 
+    // 정답 확인
     function checkAnswer(selectedBtn, selectedOpt, correctQ) {
         if (!isAnswering) return;
-        isAnswering = false;
+        isAnswering = false; // 연타 방지
 
-        const isCorrect = selectedOpt.symbol === correctQ.symbol;
+        const isCorrect = selectedOpt.id === correctQ.id;
         const buttons = document.querySelectorAll('.option-btn');
 
         if (isCorrect) {
             selectedBtn.classList.add('correct');
-            score++;
+            roundScore++;
         } else {
             selectedBtn.classList.add('wrong');
+            // 정답 버튼을 녹색으로 표시
             buttons.forEach(btn => {
                 const targetValue = currentMode === 'symbolToName' ? correctQ.name : correctQ.symbol;
                 if (btn.textContent === targetValue) {
@@ -378,18 +433,36 @@
             });
         }
 
+        // 0.7초 후 다음 문제
         setTimeout(() => {
             currentQuestionIndex++;
             nextQuestion();
         }, 700);
     }
 
+    // 결과 화면 표시
     function showResult() {
         showScreen('result-screen');
-        const finalScore = score * 10;
+        const totalInRound = currentRoundQuestions.length;
+        const finalScore = Math.round((roundScore / totalInRound) * 100);
+        const remainCount = unallocatedElementIds.length;
+
         document.getElementById('score-display').textContent = `${finalScore}점`;
-        document.getElementById('score-text').textContent = `10문제 중 ${score}문제를 맞췄습니다.`;
+        document.getElementById('score-text').textContent = `${totalInRound}문제 중 ${roundScore}문제를 맞췄습니다.`;
+        document.getElementById('remain-count-text').textContent = `남은 안 푼 원소: ${remainCount}개`;
+
+        const continueBtn = document.getElementById('continue-btn');
+        if (remainCount === 0) {
+            continueBtn.disabled = true;
+            continueBtn.textContent = "모든 원소 학습 완료!";
+        } else {
+            continueBtn.disabled = false;
+            continueBtn.textContent = "안 푼 문제 이어서 풀기";
+        }
     }
+
+    // 앱 시작
+    window.onload = initApp;
 </script>
 
 </body>
