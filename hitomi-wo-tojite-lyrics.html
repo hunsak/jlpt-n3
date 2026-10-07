@@ -243,6 +243,7 @@
 <div class="toggle-bar">
   <button class="ui-btn active" id="btn-furigana" onclick="toggleFurigana()">후리가나 표시</button>
   <button class="ui-btn active" id="btn-kr" onclick="toggleKr()">한국어 번역 표시</button>
+  <button class="ui-btn" id="btn-copy-lyrics" onclick="copyLyrics()">📋 가사+번역 전체 복사</button>
 </div>
 <noscript>
   <div style="background:#3a2a2a;color:#f4d9d9;text-align:center;padding:14px 20px;font-size:0.95rem;">
@@ -297,6 +298,7 @@
   <div class="section-head">
     <div class="eyebrow">FLASHCARDS</div>
     <h2>단어 플래시카드</h2>
+    <button class="ui-btn" id="btn-copy-vocab" onclick="copyVocab()" style="margin-top:14px;">📋 단어+뜻 전체 복사</button>
   </div>
   <div class="flash-wrap">
     <div class="flashcard" id="flashcard" onclick="flipCard()">
@@ -354,6 +356,70 @@ function toggleFurigana(){
 function toggleKr(){
   document.body.classList.toggle('hide-kr');
   document.getElementById('btn-kr').classList.toggle('active');
+}
+
+/* ---------- copy to clipboard ---------- */
+function rubyToAnnotated(html){
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  let out = '';
+  div.childNodes.forEach(node=>{
+    if(node.nodeType === 1 && node.tagName === 'RUBY'){
+      let base = '', rt = '';
+      node.childNodes.forEach(c=>{
+        if(c.nodeType === 1 && c.tagName === 'RT'){ rt += c.textContent; }
+        else { base += c.textContent; }
+      });
+      out += rt ? `${base}(${rt})` : base;
+    } else {
+      out += node.textContent;
+    }
+  });
+  return out;
+}
+
+function copyText(text, btn, successLabel){
+  const original = btn.textContent;
+  function showResult(ok){
+    btn.textContent = ok ? (successLabel || '복사됨! ✓') : '복사 실패';
+    setTimeout(()=>{ btn.textContent = original; }, 1600);
+  }
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  ta.style.top = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  let ok = false;
+  try{ ok = document.execCommand('copy'); }catch(e){ ok = false; }
+  document.body.removeChild(ta);
+  if(ok){
+    showResult(true);
+  } else if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>showResult(true)).catch(()=>showResult(false));
+  } else {
+    showResult(false);
+  }
+}
+
+function copyLyrics(){
+  let out = [];
+  stanzas.forEach(st=>{
+    out.push(`[${st.label}]`);
+    st.lines.forEach(l=>{
+      out.push(rubyToAnnotated(l[0]));
+      out.push(l[1]);
+      out.push('');
+    });
+  });
+  copyText(out.join('\n').trim()+'\n', document.getElementById('btn-copy-lyrics'), '복사됨! ✓');
+}
+
+function copyVocab(){
+  let out = flashData.map(v => `${rubyToAnnotated(v[0])} - ${v[1]}`);
+  copyText(out.join('\n'), document.getElementById('btn-copy-vocab'), '복사됨! ✓');
 }
 
 /* ---------- stanza data ---------- */
