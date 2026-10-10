@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark"><meta name="theme-color" content="#0a1425">
+<title>Dynamite – 영어 가사 학습</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#101c33;
+    --navy-deep:#0a1425;
+    --snow:#f4f7fb;
+    --ice:#8fb4d6;
+    --rose:#e79a92;
+    --gold:#cda86e;
+    --line:rgba(244,247,251,0.12);
+  }
+  *{box-sizing:border-box;}
+  html{ font-size:18px; background:#0a1425; height:100%; }
+  body{
+    margin:0;
+    min-height:100%;
+    background:var(--navy-deep);
+    color:var(--snow);
+    font-family:'Noto Sans KR',sans-serif;
+    line-height:1.8;
+    position:relative;
+    overflow-x:hidden;
+  }
+  @media(max-width:480px){ html{ font-size:19px; } }
+  .snowlayer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+  .flake{
+    position:absolute;top:-10px;
+    background:var(--snow);
+    border-radius:50%;
+    opacity:0.55;
+    animation:fall linear infinite;
+  }
+  @keyframes fall{
+    to{ transform:translateY(110vh) translateX(var(--drift,0px)); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .flake{animation:none;display:none;}
+  }
+  header{
+    position:relative;z-index:1;
+    text-align:center;
+    padding:64px 24px 40px;
+    background:linear-gradient(180deg,var(--navy) 0%,var(--navy-deep) 100%);
+    border-bottom:1px solid var(--line);
+  }
+  h1.jp-title{
+    font-family:'Shippori Mincho',serif;
+    font-size:clamp(2.4rem,6vw,4rem);
+    letter-spacing:0.15em;
+    margin:0;
+    color:var(--snow);
+    text-shadow:0 0 24px rgba(231,154,146,0.25);
+  }
+  .subtitle{
+    font-family:'Noto Serif KR',serif;
+    color:var(--ice);
+    margin-top:10px;
+    font-size:1.05rem;
+    letter-spacing:0.05em;
+  }
+  .toggle-bar{
+    position:relative;z-index:1;
+    display:flex;justify-content:center;gap:12px;flex-wrap:wrap;
+    padding:18px;background:var(--navy);
+    border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:5;
+  }
+  button.ui-btn{
+    background:transparent;
+    border:1px solid var(--ice);
+    color:var(--ice);
+    padding:11px 20px;
+    border-radius:999px;
+    font-family:'Noto Sans KR',sans-serif;
+    font-size:0.95rem;
+    cursor:pointer;
+    transition:all .2s ease;
+  }
+  button.ui-btn:hover{background:var(--ice);color:var(--navy-deep);}
+  button.ui-btn.active{background:var(--rose);border-color:var(--rose);color:var(--navy-deep);}
+  main{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:40px 20px 100px;background:var(--navy-deep);color:var(--snow);}
+  section.stanza{
+    margin-bottom:56px;
+    padding-bottom:40px;
+    border-bottom:1px dashed var(--line);
+  }
+  .stanza-label{
+    font-family:'Noto Serif KR',serif;
+    color:var(--gold);
+    font-size:0.8rem;
+    letter-spacing:0.2em;
+    margin-bottom:14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .stanza-label::before{content:"❄";}
+  .line-block{margin-bottom:18px;}
+  .jp-line{
+    font-family:'Shippori Mincho',serif;
+    font-size:clamp(1.5rem,6vw,1.9rem);
+    letter-spacing:0.02em;
+    line-height:2;
+  }
+  ruby rt{
+    font-family:'Noto Sans KR',sans-serif;
+    font-size:0.5em;
+    color:var(--ice);
+  }
+  body.hide-furigana ruby rt{ display:none; }
+  .kr-line{
+    font-family:'Noto Serif KR',serif;
+    color:#c7d3e6;
+    font-size:1.15rem;
+    margin-top:6px;
+  }
+  body.hide-kr .kr-line{ display:none; }
+  .notes{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  @media(max-width:640px){ .notes{grid-template-columns:1fr;} }
+  .note-card{
+    background:rgba(244,247,251,0.04);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px 18px;
+  }
+  .note-card h4{
+    margin:0 0 12px;
+    font-size:0.85rem;
+    letter-spacing:0.15em;
+    color:var(--rose);
+    text-transform:uppercase;
+  }
+  .note-card ul{margin:0;padding-left:0;list-style:none;}
+  .note-card li{margin-bottom:12px;font-size:1.08rem;line-height:1.6;}
+  .note-card .w{color:var(--snow);font-weight:500;}
+  .note-card .w rt{color:var(--gold);font-size:0.55em;}
+  .note-card .m{color:#a9b8cf;font-size:0.92em;}
+
+  /* Section headers */
+  .section-head{
+    text-align:center;margin:80px 0 36px;
+  }
+  .section-head .eyebrow{
+    font-family:'Noto Serif KR',serif;
+    color:var(--gold);letter-spacing:0.3em;font-size:0.75rem;
+  }
+  .section-head h2{
+    font-family:'Shippori Mincho',serif;
+    font-size:2rem;margin:8px 0 0;
+  }
+
+  /* Flashcards */
+  .flash-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;}
+  .flashcard{
+    width:100%;max-width:440px;height:270px;
+    perspective:1200px;cursor:pointer;
+  }
+  .flash-inner{
+    position:relative;width:100%;height:100%;
+    transition:transform .5s;transform-style:preserve-3d;
+  }
+  .flashcard.flipped .flash-inner{transform:rotateY(180deg);}
+  .flash-face{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    backface-visibility:hidden;
+    border-radius:18px;
+    border:1px solid var(--line);
+    padding:20px;text-align:center;
+  }
+  .flash-front{
+    background:linear-gradient(160deg,var(--navy),#152238);
+  }
+  .flash-front .jp-word{font-family:'Shippori Mincho',serif;font-size:clamp(2.2rem,9vw,3rem);line-height:2.1;}
+  .flash-front .jp-word rt{color:var(--ice);font-size:0.4em;}
+  .flash-back{
+    background:linear-gradient(160deg,#22314d,var(--navy));
+    transform:rotateY(180deg);
+  }
+  .flash-back .kr-mean{font-family:'Noto Serif KR',serif;font-size:1.6rem;color:var(--rose);}
+  .flash-back .pos{margin-top:8px;font-size:0.9rem;color:var(--ice);letter-spacing:0.1em;}
+  .flash-controls{display:flex;gap:14px;align-items:center;}
+  .flash-count{font-size:0.95rem;color:#8fa0bd;}
+
+  /* Quiz */
+  .quiz-item{
+    background:rgba(244,247,251,0.04);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 22px;margin-bottom:18px;
+  }
+  .quiz-q{font-size:1.15rem;margin-bottom:16px;line-height:1.6;}
+  .quiz-q .jp-inline rt{color:var(--gold);font-size:0.55em;}
+  .quiz-opts{display:grid;gap:12px;}
+  .opt-btn{
+    text-align:left;
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--snow);
+    padding:13px 16px;border-radius:10px;
+    cursor:pointer;font-size:1.05rem;
+    font-family:'Noto Sans KR',sans-serif;
+    transition:all .15s ease;
+  }
+  .opt-btn:hover{border-color:var(--ice);}
+  .opt-btn.correct{background:rgba(140,200,160,0.18);border-color:#8cc8a0;}
+  .opt-btn.wrong{background:rgba(220,120,120,0.18);border-color:#dc7878;}
+  .opt-btn:disabled{cursor:default;}
+  .quiz-footer{
+    text-align:center;margin-top:20px;
+  }
+  #score-box{
+    font-family:'Shippori Mincho',serif;
+    font-size:1.3rem;color:var(--gold);
+    margin-top:16px;
+  }
+  footer{
+    text-align:center;padding:40px 20px;color:#5c6c88;font-size:0.8rem;
+  }
+
+.flash-front .jp-word{font-family:'Noto Sans KR',sans-serif;font-size:clamp(1.7rem,7vw,2.3rem);line-height:1.4;}
+.flash-back .ex{margin-top:10px;font-size:0.95rem;color:#c7d3e6;}
+.summary{font-family:'Noto Serif KR',serif;color:#c7d3e6;font-size:1.1rem;line-height:1.8;margin-bottom:6px;}
+.ex{font-size:0.88em;color:#8fa0bd;display:block;margin-top:2px;}
+</style></head><body>
+<div class="snowlayer" id="snow"></div>
+<header><h1 class="jp-title">Dynamite</h1><div class="subtitle">BTS(방탄소년단) · 영어 가사 학습 노트</div></header>
+<div class="toggle-bar"><button class="ui-btn" id="btn-copy-vocab" onclick="copyVocab()">📋 단어+뜻 전체 복사</button></div>
+<main>
+<div id="stanzas"><section class="stanza"><div class="stanza-label">인트로 · Verse 1</div>
+<div class="summary">화자가 "오늘 밤을 내가 밝힌다"고 선언하며 시작해요. 아침에 신발을 신고 우유 한 잔을 마시는 평범한 일상이 곧바로 신나는 에너지로 바뀌는 장면이 이어져요.</div>
+<div class="notes"><div class="note-card"><h4>주요 단어·표현</h4><ul><li><span class="w">bring the fire</span><br><span class="m">열기·에너지를 가져오다</span><span class="ex">예) Watch me bring the fire to this stage.</span></li><li><span class="w">set ~ alight</span><br><span class="m">~에 불을 붙이다, 환하게 밝히다</span><span class="ex">예) The fireworks set the sky alight.</span></li><li><span class="w">rock and roll</span><br><span class="m">신나게 놀다 (로큰롤)</span><span class="ex">예) Let's rock and roll!</span></li><li><span class="w">get up</span><br><span class="m">일어나다</span><span class="ex">예) I get up at seven.</span></li></ul></div>
+<div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">Let's + 동사원형</span><br><span class="m">~하자 (권유)</span><span class="ex">예) Let's start now.</span></li><li><span class="w">명령문 (Watch me ~)</span><br><span class="m">~해 봐 (상대에게 지시·도전)</span><span class="ex">예) Watch me jump.</span></li></ul></div></div></section>
+<section class="stanza"><div class="stanza-label">Verse — 라임 놀이</div>
+<div class="summary">-ong, -one, -ome 같은 소리로 운을 맞추며 하루의 활동(노래하며 걷기, 전화 받기, 탁구 치기)을 빠르게 나열해요. 뜻보다 리듬과 말맛이 핵심인 구간이에요.</div>
+<div class="notes"><div class="note-card"><h4>주요 단어·표현</h4><ul><li><span class="w">rolling stone</span><br><span class="m">(한곳에 머물지 않는) 떠돌이</span><span class="ex">예) He lives like a rolling stone.</span></li><li><span class="w">kick the drum</span><br><span class="m">드럼(비트)을 치다·강하게 울리다</span><span class="ex">예) The band kicks the drum hard.</span></li><li><span class="w">jump up to the top</span><br><span class="m">정상으로 뛰어오르다</span><span class="ex">예) She jumped up to the top of the chart.</span></li><li><span class="w">call me on my phone</span><br><span class="m">내 전화로 전화해</span><span class="ex">예) Call me on my phone later.</span></li></ul></div>
+<div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">when + 주어 + 동사 (시간 부사절)</span><br><span class="m">~할 때</span><span class="ex">예) I sing when I walk home.</span></li><li><span class="w">현재진행 / rolling on</span><br><span class="m">계속 ~해 나가다</span><span class="ex">예) The party keeps rolling on.</span></li></ul></div></div></section>
+<section class="stanza"><div class="stanza-label">Pre-chorus</div>
+<div class="summary">베이스가 쿵쿵 울리는 분위기가 점점 묵직해지고, 인생은 꿀처럼 달콤하다며 자신감을 드러내요. 디스코 느낌에 푹 빠졌고 바로 출발할 준비가 됐다는 내용이에요.</div>
+<div class="notes"><div class="note-card"><h4>주요 단어·표현</h4><ul><li><span class="w">get heavy</span><br><span class="m">(분위기·비트가) 묵직해지다</span><span class="ex">예) The beat is getting heavy.</span></li><li><span class="w">bass boom</span><br><span class="m">쿵 울리는 저음</span><span class="ex">예) I can feel the bass boom.</span></li><li><span class="w">cha-ching</span><br><span class="m">(돈 들어오는 소리) 짤랑</span><span class="ex">예) This deal goes cha-ching.</span></li><li><span class="w">overload</span><br><span class="m">과부하, 넘치도록 많음</span><span class="ex">예) It's a sound overload.</span></li><li><span class="w">be good to go</span><br><span class="m">준비 완료, 바로 갈 수 있다</span><span class="ex">예) I'm packed and good to go.</span></li><li><span class="w">glow up</span><br><span class="m">(외모·실력이) 확 달라지다, 빛나다</span><span class="ex">예) She had a big glow up this year.</span></li><li><span class="w">be into ~</span><br><span class="m">~에 푹 빠져 있다</span><span class="ex">예) I'm into jazz these days.</span></li></ul></div>
+<div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">be getting + 형용사</span><br><span class="m">점점 ~해지다 (변화 진행)</span><span class="ex">예) It's getting cold.</span></li><li><span class="w">as + 형용사 + as ~</span><br><span class="m">~만큼 …한 (비교)</span><span class="ex">예) He is as tall as his dad.</span></li><li><span class="w">can you + 동사?</span><br><span class="m">~할 수 있어?/~들려?</span><span class="ex">예) Can you hear that?</span></li></ul></div></div></section>
+<section class="stanza"><div class="stanza-label">Chorus</div>
+<div class="summary">오늘 밤 나는 별들 사이에 있다며, 약간의 펑크와 소울을 담아 도시를 환하게 밝히겠다고 말해요. 다이너마이트처럼 터뜨리겠다는 다짐이 반복되는 핵심 후렴이에요.</div>
+<div class="notes"><div class="note-card"><h4>주요 단어·표현</h4><ul><li><span class="w">in the stars</span><br><span class="m">별들 속에, 정상급으로 빛나는</span><span class="ex">예) Tonight we are in the stars.</span></li><li><span class="w">shine through</span><br><span class="m">~을 뚫고 빛나다</span><span class="ex">예) Light shines through the window.</span></li><li><span class="w">funk and soul</span><br><span class="m">펑크와 소울 (음악 장르)</span><span class="ex">예) The song has funk and soul.</span></li><li><span class="w">light it up</span><br><span class="m">확 불을 붙이다, 분위기를 달구다</span><span class="ex">예) Let's light it up!</span></li><li><span class="w">dynamite</span><br><span class="m">다이너마이트 (폭발적으로 멋진 것)</span><span class="ex">예) That performance was dynamite.</span></li></ul></div>
+<div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">'Cause = because</span><br><span class="m">구어체 접속사 (왜냐면)</span><span class="ex">예) I'm happy 'cause it's Friday.</span></li><li><span class="w">I'ma = I'm going to</span><br><span class="m">구어체 미래 의지 (~할 거야)</span><span class="ex">예) I'ma call you tomorrow.</span></li><li><span class="w">like + 명사 (직유)</span><br><span class="m">~처럼</span><span class="ex">예) She dances like a star.</span></li><li><span class="w">So + 주어 + 동사</span><br><span class="m">그러니까 ~ (결과·결론)</span><span class="ex">예) So we left early.</span></li></ul></div></div></section>
+<section class="stanza"><div class="stanza-label">Verse 2</div>
+<div class="summary">친구를 데려오고 누구든 와서 함께하라고 초대해요. 낮이든 밤이든 하늘이 밝으니 동틀 때까지 춤추자는 흥겨운 분위기이고, 시선은 목표에서 떼지 말라는 조언도 나와요.</div>
+<div class="notes"><div class="note-card"><h4>주요 단어·표현</h4><ul><li><span class="w">join the crowd</span><br><span class="m">무리에 합류하다</span><span class="ex">예) Come and join the crowd.</span></li><li><span class="w">come along</span><br><span class="m">함께 가다·오다</span><span class="ex">예) Do you want to come along?</span></li><li><span class="w">word up</span><br><span class="m">(구어) 맞아, 인정!/잘 들어</span><span class="ex">예) Word up, that's true.</span></li><li><span class="w">talk the talk</span><br><span class="m">말만 번지르르하게 하다 / 말로 보여주다</span><span class="ex">예) He can talk the talk.</span></li><li><span class="w">off the wall</span><br><span class="m">엉뚱하고 독특한, 파격적인</span><span class="ex">예) Her ideas are off the wall.</span></li><li><span class="w">break of dawn</span><br><span class="m">동틀 녘</span><span class="ex">예) We danced until the break of dawn.</span></li><li><span class="w">keep your eyes on the ball</span><br><span class="m">목표에서 눈을 떼지 마라</span><span class="ex">예) Keep your eyes on the ball.</span></li></ul></div>
+<div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">whoever + 동사</span><br><span class="m">~하는 누구든</span><span class="ex">예) Whoever comes is welcome.</span></li><li><span class="w">wanna = want to / ya = your</span><br><span class="m">구어체 축약 표기</span><span class="ex">예) I wanna go. / Keep ya head up.</span></li><li><span class="w">should + 동사원형</span><br><span class="m">~하는 게 좋다 (조언)</span><span class="ex">예) You should rest.</span></li><li><span class="w">Day or night</span><br><span class="m">낮이든 밤이든 (A or B 양보 표현)</span><span class="ex">예) Day or night, I'm ready.</span></li></ul></div></div></section>
+<section class="stanza"><div class="stanza-label">Bridge · Outro</div>
+<div class="summary">"Dyn-na-na" 같은 의성어 후렴을 반복하며 관객이 따라 부르도록 이끌고, 마지막으로 "인생은 다이너마이트"라는 메시지로 마무리해요.</div>
+<div class="notes"><div class="note-card"><h4>주요 단어·표현</h4><ul><li><span class="w">life is dynamite</span><br><span class="m">인생은 폭발적으로 멋지다 (곡의 핵심 메시지)</span><span class="ex">예) Life is dynamite when you smile.</span></li><li><span class="w">clap</span><br><span class="m">박수치다</span><span class="ex">예) Clap your hands!</span></li></ul></div>
+<div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">be + 명사 (은유)</span><br><span class="m">A는 B다 (직접 비유)</span><span class="ex">예) Time is money.</span></li></ul></div></div></section>
+</div>
+<div class="section-head"><div class="eyebrow">MY LYRICS</div><h2>내 가사 메모</h2></div>
+<div style="max-width:720px;margin:0 auto 20px;">
+<textarea id="my-lyrics" placeholder="가사를 직접 붙여넣어 보관하세요. (이 기기 브라우저에만 저장돼요)" style="width:100%;min-height:260px;background:rgba(244,247,251,0.05);color:#f4f7fb;border:1px solid rgba(244,247,251,0.2);border-radius:12px;padding:14px;font-size:1.05rem;line-height:1.7;font-family:'Noto Sans KR',sans-serif;"></textarea>
+<div style="text-align:center;margin-top:10px;"><button class="ui-btn" onclick="saveLyrics()" id="btn-save-lyrics">💾 저장</button> <button class="ui-btn" onclick="clearLyrics()">지우기</button></div>
+</div>
+<div class="section-head"><div class="eyebrow">FLASHCARDS</div><h2>단어 플래시카드</h2></div>
+<div class="flash-wrap"><div class="flashcard" id="flashcard" onclick="flipCard()"><div class="flash-inner">
+<div class="flash-face flash-front"><div class="jp-word" id="flash-jp"></div></div>
+<div class="flash-face flash-back"><div class="kr-mean" id="flash-kr"></div><div class="ex" id="flash-ex"></div></div></div></div>
+<div class="flash-controls"><button class="ui-btn" onclick="prevCard()">← 이전</button><span class="flash-count" id="flash-count"></span><button class="ui-btn" onclick="nextCard()">다음 →</button></div></div>
+<div class="section-head"><div class="eyebrow">QUIZ</div><h2>단어 · 문법 퀴즈</h2></div>
+<div id="quiz-container"></div>
+<div class="quiz-footer"><button class="ui-btn" onclick="gradeQuiz()">채점하기</button><div id="score-box"></div></div>
+</main>
+<footer>Dynamite — 학습 노트 · 개인 학습용 (가사 원문은 수록하지 않았어요)</footer>
+<script>
+const snow=document.getElementById('snow');
+for(let i=0;i<40;i++){const f=document.createElement('div');f.className='flake';const s=2+Math.random()*4;f.style.width=s+'px';f.style.height=s+'px';f.style.left=Math.random()*100+'vw';f.style.setProperty('--drift',(Math.random()*60-30)+'px');f.style.animationDuration=(8+Math.random()*10)+'s';f.style.animationDelay=(Math.random()*10)+'s';snow.appendChild(f);}
+const flashData=[["bring the fire", "열기·에너지를 가져오다", "Watch me bring the fire to this stage."], ["set ~ alight", "~에 불을 붙이다, 환하게 밝히다", "The fireworks set the sky alight."], ["rock and roll", "신나게 놀다 (로큰롤)", "Let's rock and roll!"], ["get up", "일어나다", "I get up at seven."], ["rolling stone", "(한곳에 머물지 않는) 떠돌이", "He lives like a rolling stone."], ["kick the drum", "드럼(비트)을 치다·강하게 울리다", "The band kicks the drum hard."], ["jump up to the top", "정상으로 뛰어오르다", "She jumped up to the top of the chart."], ["call me on my phone", "내 전화로 전화해", "Call me on my phone later."], ["get heavy", "(분위기·비트가) 묵직해지다", "The beat is getting heavy."], ["bass boom", "쿵 울리는 저음", "I can feel the bass boom."], ["cha-ching", "(돈 들어오는 소리) 짤랑", "This deal goes cha-ching."], ["overload", "과부하, 넘치도록 많음", "It's a sound overload."], ["be good to go", "준비 완료, 바로 갈 수 있다", "I'm packed and good to go."], ["glow up", "(외모·실력이) 확 달라지다, 빛나다", "She had a big glow up this year."], ["be into ~", "~에 푹 빠져 있다", "I'm into jazz these days."], ["in the stars", "별들 속에, 정상급으로 빛나는", "Tonight we are in the stars."], ["shine through", "~을 뚫고 빛나다", "Light shines through the window."], ["funk and soul", "펑크와 소울 (음악 장르)", "The song has funk and soul."], ["light it up", "확 불을 붙이다, 분위기를 달구다", "Let's light it up!"], ["dynamite", "다이너마이트 (폭발적으로 멋진 것)", "That performance was dynamite."], ["join the crowd", "무리에 합류하다", "Come and join the crowd."], ["come along", "함께 가다·오다", "Do you want to come along?"], ["word up", "(구어) 맞아, 인정!/잘 들어", "Word up, that's true."], ["talk the talk", "말만 번지르르하게 하다 / 말로 보여주다", "He can talk the talk."], ["off the wall", "엉뚱하고 독특한, 파격적인", "Her ideas are off the wall."], ["break of dawn", "동틀 녘", "We danced until the break of dawn."], ["keep your eyes on the ball", "목표에서 눈을 떼지 마라", "Keep your eyes on the ball."], ["life is dynamite", "인생은 폭발적으로 멋지다 (곡의 핵심 메시지)", "Life is dynamite when you smile."], ["clap", "박수치다", "Clap your hands!"], ["'Cause = because", "구어체 접속사 (왜냐면)", "I'm happy 'cause it's Friday."], ["I'ma = I'm going to", "구어체 미래 의지 (~할 거야)", "I'ma call you tomorrow."], ["wanna = want to / ya = your", "구어체 축약 표기", "I wanna go. / Keep ya head up."]];
+let idx=0;
+function renderCard(){document.getElementById('flash-jp').textContent=flashData[idx][0];document.getElementById('flash-kr').textContent=flashData[idx][1];document.getElementById('flash-ex').textContent='예) '+flashData[idx][2];document.getElementById('flash-count').textContent=(idx+1)+' / '+flashData.length;document.getElementById('flashcard').classList.remove('flipped');}
+function flipCard(){document.getElementById('flashcard').classList.toggle('flipped');}
+function nextCard(){idx=(idx+1)%flashData.length;renderCard();}
+function prevCard(){idx=(idx-1+flashData.length)%flashData.length;renderCard();}
+renderCard();
+const quiz=[{"q": "\"bring the fire\"의 뜻은?", "opts": ["소방서를 부르다", "불을 끄다", "열기·에너지를 가져오다", "요리하다"], "answer": 2}, {"q": "\"set the night alight\"에서 alight의 의미는?", "opts": ["어두운", "조용한", "차가운", "환하게 불이 붙은"], "answer": 3}, {"q": "\"rolling stone\"이 비유하는 것은?", "opts": ["무거운 사람", "한곳에 머물지 않는 떠돌이", "오래된 건물", "돌 던지는 사람"], "answer": 1}, {"q": "\"I'm good to go\"의 뜻은?", "opts": ["좋은 곳에 가다", "잘 가다", "준비 완료, 바로 갈 수 있다", "가도 좋다고 허락받았다"], "answer": 2}, {"q": "\"glow up\"의 뜻은?", "opts": ["화를 내다", "(외모·실력이) 확 좋아지다", "불을 끄다", "잠들다"], "answer": 1}, {"q": "\"I'm into that\"에서 be into ~는?", "opts": ["~을 싫어하다", "~에서 나오다", "~에 푹 빠져 있다", "~안으로 들어가다"], "answer": 2}, {"q": "\"'Cause\"는 무엇의 축약인가?", "opts": ["cause and effect", "coast", "cousin", "because"], "answer": 3}, {"q": "\"I'ma\"는 무엇을 줄인 말인가?", "opts": ["I must", "I'm going to", "I may", "I am a"], "answer": 1}, {"q": "\"wanna\"는 무엇의 구어체인가?", "opts": ["wander", "wonder", "want to", "would not"], "answer": 2}, {"q": "\"as sweet as honey\"의 구조는?", "opts": ["than 비교급", "수동태", "최상급", "as + 형용사 + as (동등 비교)"], "answer": 3}, {"q": "\"whoever wanna come along\"에서 whoever의 뜻은?", "opts": ["어디든", "~하는 누구든", "누구의", "언제든"], "answer": 1}, {"q": "\"off the wall\"의 뜻은?", "opts": ["조용한", "벽에서 떨어진", "벽에 걸린", "엉뚱하고 파격적인"], "answer": 3}, {"q": "\"break of dawn\"의 뜻은?", "opts": ["휴식 시간", "점심때", "동틀 녘", "한밤중"], "answer": 2}, {"q": "\"Keep your eyes on the ball\"의 뜻은?", "opts": ["공을 던져라", "공놀이하자", "목표에서 눈을 떼지 마라", "눈을 감아라"], "answer": 2}, {"q": "\"It's getting heavy\"에서 be getting + 형용사는?", "opts": ["~을 얻다", "~하게 하다", "~에 도착하다", "점점 ~해지다"], "answer": 3}, {"q": "\"Day or night\"의 뜻은?", "opts": ["낮이든 밤이든", "낮과 밤 중 선택", "오늘 밤", "하루 종일 쉬다"], "answer": 0}];
+const qc=document.getElementById('quiz-container');
+quiz.forEach((it,i)=>{const d=document.createElement('div');d.className='quiz-item';d.dataset.answer=it.answer;d.dataset.answered='false';
+d.innerHTML='<div class="quiz-q">'+(i+1)+'. '+it.q+'</div><div class="quiz-opts">'+it.opts.map((o,k)=>'<button class="opt-btn" data-idx="'+k+'" onclick="selectOpt(this)">'+o+'</button>').join('')+'</div>';qc.appendChild(d);});
+function selectOpt(btn){const p=btn.closest('.quiz-item');if(p.dataset.answered==='true')return;p.dataset.answered='true';const c=+p.dataset.answer;const bs=p.querySelectorAll('.opt-btn');bs.forEach(b=>b.disabled=true);bs[c].classList.add('correct');if(+btn.dataset.idx!==c)btn.classList.add('wrong');}
+function gradeQuiz(){let ok=0;const items=document.querySelectorAll('.quiz-item');items.forEach(it=>{const c=+it.dataset.answer;const bs=it.querySelectorAll('.opt-btn');if(it.dataset.answered==='true'){if(!it.querySelector('.opt-btn.wrong'))ok++;}else{bs.forEach(b=>b.disabled=true);bs[c].classList.add('correct');}});document.getElementById('score-box').textContent='점수: '+ok+' / '+items.length;}
+function copyText(text,btn){const o=btn.textContent;const done=r=>{btn.textContent=r?'복사됨! ✓':'복사 실패';setTimeout(()=>btn.textContent=o,1600);};const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.focus();ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(e){}document.body.removeChild(ta);if(ok)done(true);else if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>done(true)).catch(()=>done(false));else done(false);}
+function copyVocab(){copyText(flashData.map(v=>v[0]+' - '+v[1]).join('\n'),document.getElementById('btn-copy-vocab'));}
+
+function saveLyrics(){const b=document.getElementById('btn-save-lyrics');const o=b.textContent;let ok=true;try{localStorage.setItem('dyn-my-lyrics',document.getElementById('my-lyrics').value);}catch(e){ok=false;}b.textContent=ok?'저장됨 ✓':'저장 실패(브라우저 제한)';setTimeout(()=>b.textContent=o,1600);}
+function clearLyrics(){document.getElementById('my-lyrics').value='';try{localStorage.removeItem('dyn-my-lyrics');}catch(e){}}
+try{const v=localStorage.getItem('dyn-my-lyrics');if(v)document.getElementById('my-lyrics').value=v;}catch(e){}
+</script></body></html>
