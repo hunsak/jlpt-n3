@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0a1425">
+<title>ベテルギウス – 일본어 가사 학습</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#101c33;
+    --navy-deep:#0a1425;
+    --snow:#f4f7fb;
+    --ice:#8fb4d6;
+    --rose:#e79a92;
+    --gold:#cda86e;
+    --line:rgba(244,247,251,0.12);
+  }
+  *{box-sizing:border-box;}
+  html{ font-size:18px; background:#0a1425; height:100%; }
+  body{
+    margin:0;
+    min-height:100%;
+    background:var(--navy-deep);
+    color:var(--snow);
+    font-family:'Noto Sans KR',sans-serif;
+    line-height:1.8;
+    position:relative;
+    overflow-x:hidden;
+  }
+  @media(max-width:480px){ html{ font-size:19px; } }
+  .snowlayer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+  .flake{
+    position:absolute;top:-10px;
+    background:var(--snow);
+    border-radius:50%;
+    opacity:0.55;
+    animation:fall linear infinite;
+  }
+  @keyframes fall{
+    to{ transform:translateY(110vh) translateX(var(--drift,0px)); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .flake{animation:none;display:none;}
+  }
+  header{
+    position:relative;z-index:1;
+    text-align:center;
+    padding:64px 24px 40px;
+    background:linear-gradient(180deg,var(--navy) 0%,var(--navy-deep) 100%);
+    border-bottom:1px solid var(--line);
+  }
+  h1.jp-title{
+    font-family:'Shippori Mincho',serif;
+    font-size:clamp(2.4rem,6vw,4rem);
+    letter-spacing:0.15em;
+    margin:0;
+    color:var(--snow);
+    text-shadow:0 0 24px rgba(231,154,146,0.25);
+  }
+  .subtitle{
+    font-family:'Noto Serif KR',serif;
+    color:var(--ice);
+    margin-top:10px;
+    font-size:1.05rem;
+    letter-spacing:0.05em;
+  }
+  .toggle-bar{
+    position:relative;z-index:1;
+    display:flex;justify-content:center;gap:12px;flex-wrap:wrap;
+    padding:18px;background:var(--navy);
+    border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:5;
+  }
+  button.ui-btn{
+    background:transparent;
+    border:1px solid var(--ice);
+    color:var(--ice);
+    padding:11px 20px;
+    border-radius:999px;
+    font-family:'Noto Sans KR',sans-serif;
+    font-size:0.95rem;
+    cursor:pointer;
+    transition:all .2s ease;
+  }
+  button.ui-btn:hover{background:var(--ice);color:var(--navy-deep);}
+  button.ui-btn.active{background:var(--rose);border-color:var(--rose);color:var(--navy-deep);}
+  main{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:40px 20px 100px;background:var(--navy-deep);color:var(--snow);}
+  section.stanza{
+    margin-bottom:56px;
+    padding-bottom:40px;
+    border-bottom:1px dashed var(--line);
+  }
+  .stanza-label{
+    font-family:'Noto Serif KR',serif;
+    color:var(--gold);
+    font-size:0.8rem;
+    letter-spacing:0.2em;
+    margin-bottom:14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .stanza-label::before{content:"❄";}
+  .line-block{margin-bottom:18px;}
+  .jp-line{
+    font-family:'Shippori Mincho',serif;
+    font-size:clamp(1.5rem,6vw,1.9rem);
+    letter-spacing:0.02em;
+    line-height:2;
+  }
+  ruby rt{
+    font-family:'Noto Sans KR',sans-serif;
+    font-size:0.5em;
+    color:var(--ice);
+  }
+  body.hide-furigana ruby rt{ display:none; }
+  .kr-line{
+    font-family:'Noto Serif KR',serif;
+    color:#c7d3e6;
+    font-size:1.15rem;
+    margin-top:6px;
+  }
+  body.hide-kr .kr-line{ display:none; }
+  .notes{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  @media(max-width:640px){ .notes{grid-template-columns:1fr;} }
+  .note-card{
+    background:rgba(244,247,251,0.04);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px 18px;
+  }
+  .note-card h4{
+    margin:0 0 12px;
+    font-size:0.85rem;
+    letter-spacing:0.15em;
+    color:var(--rose);
+    text-transform:uppercase;
+  }
+  .note-card ul{margin:0;padding-left:0;list-style:none;}
+  .note-card li{margin-bottom:12px;font-size:1.08rem;line-height:1.6;}
+  .note-card .w{color:var(--snow);font-weight:500;}
+  .note-card .w rt{color:var(--gold);font-size:0.55em;}
+  .note-card .m{color:#a9b8cf;font-size:0.92em;}
+
+  /* Section headers */
+  .section-head{
+    text-align:center;margin:80px 0 36px;
+  }
+  .section-head .eyebrow{
+    font-family:'Noto Serif KR',serif;
+    color:var(--gold);letter-spacing:0.3em;font-size:0.75rem;
+  }
+  .section-head h2{
+    font-family:'Shippori Mincho',serif;
+    font-size:2rem;margin:8px 0 0;
+  }
+
+  /* Flashcards */
+  .flash-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;}
+  .flashcard{
+    width:100%;max-width:440px;height:270px;
+    perspective:1200px;cursor:pointer;
+  }
+  .flash-inner{
+    position:relative;width:100%;height:100%;
+    transition:transform .5s;transform-style:preserve-3d;
+  }
+  .flashcard.flipped .flash-inner{transform:rotateY(180deg);}
+  .flash-face{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    backface-visibility:hidden;
+    border-radius:18px;
+    border:1px solid var(--line);
+    padding:20px;text-align:center;
+  }
+  .flash-front{
+    background:linear-gradient(160deg,var(--navy),#152238);
+  }
+  .flash-front .jp-word{font-family:'Shippori Mincho',serif;font-size:clamp(2.2rem,9vw,3rem);line-height:2.1;}
+  .flash-front .jp-word rt{color:var(--ice);font-size:0.4em;}
+  .flash-back{
+    background:linear-gradient(160deg,#22314d,var(--navy));
+    transform:rotateY(180deg);
+  }
+  .flash-back .kr-mean{font-family:'Noto Serif KR',serif;font-size:1.6rem;color:var(--rose);}
+  .flash-back .pos{margin-top:8px;font-size:0.9rem;color:var(--ice);letter-spacing:0.1em;}
+  .flash-controls{display:flex;gap:14px;align-items:center;}
+  .flash-count{font-size:0.95rem;color:#8fa0bd;}
+
+  /* Quiz */
+  .quiz-item{
+    background:rgba(244,247,251,0.04);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 22px;margin-bottom:18px;
+  }
+  .quiz-q{font-size:1.15rem;margin-bottom:16px;line-height:1.6;}
+  .quiz-q .jp-inline rt{color:var(--gold);font-size:0.55em;}
+  .quiz-opts{display:grid;gap:12px;}
+  .opt-btn{
+    text-align:left;
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--snow);
+    padding:13px 16px;border-radius:10px;
+    cursor:pointer;font-size:1.05rem;
+    font-family:'Noto Sans KR',sans-serif;
+    transition:all .15s ease;
+  }
+  .opt-btn:hover{border-color:var(--ice);}
+  .opt-btn.correct{background:rgba(140,200,160,0.18);border-color:#8cc8a0;}
+  .opt-btn.wrong{background:rgba(220,120,120,0.18);border-color:#dc7878;}
+  .opt-btn:disabled{cursor:default;}
+  .quiz-footer{
+    text-align:center;margin-top:20px;
+  }
+  #score-box{
+    font-family:'Shippori Mincho',serif;
+    font-size:1.3rem;color:var(--gold);
+    margin-top:16px;
+  }
+  footer{
+    text-align:center;padding:40px 20px;color:#5c6c88;font-size:0.8rem;
+  }
+
+  body.hide-notes .notes{ display:none; }
+
+  .toggle-bar .bar-handle{display:none;font-size:0.85rem;color:var(--ice);cursor:pointer;padding:4px 12px;}
+  .toggle-bar.compact{padding:6px 12px;}
+  .toggle-bar.compact .ui-btn{display:none;}
+  .toggle-bar.compact .bar-handle{display:inline-block;}
+</style>
+</head>
+<body>
+
+<div class="snowlayer" id="snow"></div>
+
+<header>
+  <h1 class="jp-title">ベテルギウス</h1>
+  <div class="subtitle">「베텔기우스」— 優里(유우리) · 일본어 가사 학습 노트</div>
+</header>
+
+<div class="toggle-bar">
+  <button class="ui-btn active" id="btn-furigana" onclick="toggleFurigana()">후리가나 표시</button>
+  <button class="ui-btn active" id="btn-kr" onclick="toggleKr()">한국어 번역 표시</button>
+  <button class="ui-btn active" id="btn-notes" onclick="toggleNotes()">단어·문법 표시</button>
+  <button class="ui-btn" id="btn-copy-lyrics" onclick="copyLyrics()">📋 가사+번역 전체 복사</button>
+</div>
+<noscript>
+  <div style="background:#3a2a2a;color:#f4d9d9;text-align:center;padding:14px 20px;font-size:0.95rem;">
+    이 브라우저는 자바스크립트를 실행하지 않아 가사·단어·문법은 보이지만 플래시카드와 퀴즈는 작동하지 않습니다.
+    Safari나 Claude 앱에서 열면 전체 기능을 이용할 수 있어요.
+  </div>
+</noscript>
+
+<main>
+  <div id="stanzas"><section class="stanza">
+    <div class="stanza-label">1절 A</div>
+    <div class="line-block"><div class="jp-line"><ruby>空<rt>そら</rt></ruby>にある<ruby>何<rt>なに</rt></ruby>かを<ruby>見<rt>み</rt></ruby>つめてたら</div><div class="kr-line">하늘에 있는 무언가를 바라보고 있었더니</div></div><div class="line-block"><div class="jp-line">それは<ruby>星<rt>ほし</rt></ruby>だって<ruby>君<rt>きみ</rt></ruby>がおしえてくれた</div><div class="kr-line">그건 별이라고 네가 알려 주었어</div></div><div class="line-block"><div class="jp-line">まるでそれは<ruby>僕<rt>ぼく</rt></ruby>らみたいに <ruby>寄<rt>よ</rt></ruby>り<ruby>添<rt>そ</rt></ruby>ってる</div><div class="kr-line">마치 그건 우리처럼 붙어 있어서</div></div><div class="line-block"><div class="jp-line">それを<ruby>泣<rt>な</rt></ruby>いたり<ruby>笑<rt>わら</rt></ruby>ったり<ruby>繋<rt>つな</rt></ruby>いでいく</div><div class="kr-line">그걸 울면서 또 웃으면서 이어가</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>空<rt>そら</rt></ruby></span><br><span class="m">하늘</span></li><li><span class="w"><ruby>何<rt>なに</rt></ruby>か</span><br><span class="m">무언가</span></li><li><span class="w"><ruby>見<rt>み</rt></ruby>つめる</span><br><span class="m">가만히 바라보다</span></li><li><span class="w"><ruby>星<rt>ほし</rt></ruby></span><br><span class="m">별</span></li><li><span class="w"><ruby>君<rt>きみ</rt></ruby></span><br><span class="m">너, 그대</span></li><li><span class="w">おしえる(<ruby>教<rt>おし</rt></ruby>える)</span><br><span class="m">알려주다, 가르치다</span></li><li><span class="w"><ruby>僕<rt>ぼく</rt></ruby>ら</span><br><span class="m">우리 (남성 화자)</span></li><li><span class="w"><ruby>寄<rt>よ</rt></ruby>り<ruby>添<rt>そ</rt></ruby>う</span><br><span class="m">바싹 붙다, 곁에 다가가 있다</span></li><li><span class="w"><ruby>泣<rt>な</rt></ruby>く</span><br><span class="m">울다</span></li><li><span class="w"><ruby>笑<rt>わら</rt></ruby>う</span><br><span class="m">웃다</span></li><li><span class="w"><ruby>繋<rt>つな</rt></ruby>ぐ</span><br><span class="m">잇다, 연결하다</span></li><li><span class="w">まるで</span><br><span class="m">마치</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">~てたら (=ていたら)</span><br><span class="m">~하고 있었더니 (발견·계기의 たら)</span></li><li><span class="w">~だって (=だと・って)</span><br><span class="m">~라고 (인용: 별이라고)</span></li><li><span class="w">~てくれる</span><br><span class="m">상대가 나에게 ~해 주다</span></li><li><span class="w">まるで~みたいに</span><br><span class="m">마치 ~처럼</span></li><li><span class="w">~たり~たり</span><br><span class="m">~하기도 ~하기도 하며</span></li><li><span class="w">~ていく</span><br><span class="m">~해 나가다 (앞으로 계속)</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">1절 B</div>
+    <div class="line-block"><div class="jp-line"><ruby>何十回<rt>なんじゅっかい</rt></ruby> <ruby>何百回<rt>なんびゃっかい</rt></ruby> ぶつかりあって</div><div class="kr-line">몇십 번, 몇백 번 부딪히며</div></div><div class="line-block"><div class="jp-line"><ruby>何十年<rt>なんじゅうねん</rt></ruby> <ruby>何百年<rt>なんびゃくねん</rt></ruby> <ruby>昔<rt>むかし</rt></ruby>の<ruby>光<rt>ひかり</rt></ruby>が</div><div class="kr-line">몇십 년, 몇백 년 옛날의 빛이</div></div><div class="line-block"><div class="jp-line"><ruby>星<rt>ほし</rt></ruby><ruby>自身<rt>じしん</rt></ruby>も<ruby>忘<rt>わす</rt></ruby>れたころに</div><div class="kr-line">별 자신도 잊었을 즈음에</div></div><div class="line-block"><div class="jp-line"><ruby>僕<rt>ぼく</rt></ruby>らに<ruby>届<rt>とど</rt></ruby>いてる</div><div class="kr-line">우리에게 전해지고 있어</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>何十回<rt>なんじゅっかい</rt></ruby></span><br><span class="m">몇십 번</span></li><li><span class="w"><ruby>何百回<rt>なんびゃっかい</rt></ruby></span><br><span class="m">몇백 번</span></li><li><span class="w">ぶつかる</span><br><span class="m">부딪히다</span></li><li><span class="w"><ruby>何十年<rt>なんじゅうねん</rt></ruby></span><br><span class="m">몇십 년</span></li><li><span class="w"><ruby>何百年<rt>なんびゃくねん</rt></ruby></span><br><span class="m">몇백 년</span></li><li><span class="w"><ruby>昔<rt>むかし</rt></ruby></span><br><span class="m">옛날</span></li><li><span class="w"><ruby>光<rt>ひかり</rt></ruby></span><br><span class="m">빛</span></li><li><span class="w"><ruby>自身<rt>じしん</rt></ruby></span><br><span class="m">자신</span></li><li><span class="w"><ruby>忘<rt>わす</rt></ruby>れる</span><br><span class="m">잊다</span></li><li><span class="w">ころ(頃)</span><br><span class="m">~할 때, 즈음</span></li><li><span class="w"><ruby>届<rt>とど</rt></ruby>く</span><br><span class="m">닿다, 도달하다</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">何+数詞 (何十・何百)</span><br><span class="m">몇십·몇백 (막연히 많은 수)</span></li><li><span class="w">~あう</span><br><span class="m">서로 ~하다 (ぶつかりあう)</span></li><li><span class="w">N+自身</span><br><span class="m">~자신 (星自身)</span></li><li><span class="w">~たころに</span><br><span class="m">~했을 즈음에</span></li><li><span class="w">~てる (=ている)</span><br><span class="m">~해 있다 (届いてる=도달해 있다)</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">후렴 1</div>
+    <div class="line-block"><div class="jp-line"><ruby>僕<rt>ぼく</rt></ruby>ら <ruby>見<rt>み</rt></ruby>つけあって <ruby>手繰<rt>たぐ</rt></ruby>りあって <ruby>同<rt>おな</rt></ruby>じ<ruby>空<rt>そら</rt></ruby></div><div class="kr-line">우리는 서로 찾아내고, 서로 당기며 같은 하늘</div></div><div class="line-block"><div class="jp-line"><ruby>輝<rt>かがや</rt></ruby>くのだって <ruby>二人<rt>ふたり</rt></ruby>だって <ruby>約束<rt>やくそく</rt></ruby>した</div><div class="kr-line">빛나는 것도 둘일 거라고 약속했어</div></div><div class="line-block"><div class="jp-line"><ruby>遥<rt>はる</rt></ruby>か<ruby>遠<rt>とお</rt></ruby>く<ruby>終<rt>お</rt></ruby>わらないベテルギウス</div><div class="kr-line">아득히 멀리 끝나지 않는 베텔기우스</div></div><div class="line-block"><div class="jp-line"><ruby>誰<rt>だれ</rt></ruby>かに<ruby>繋<rt>つな</rt></ruby>ぐ<ruby>魔法<rt>まほう</rt></ruby></div><div class="kr-line">누군가에게 이어지는 마법</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>見<rt>み</rt></ruby>つける</span><br><span class="m">찾아내다</span></li><li><span class="w"><ruby>手繰<rt>たぐ</rt></ruby>る</span><br><span class="m">(실 등을) 끌어당기다</span></li><li><span class="w"><ruby>同<rt>おな</rt></ruby>じ</span><br><span class="m">같은</span></li><li><span class="w"><ruby>輝<rt>かがや</rt></ruby>く</span><br><span class="m">빛나다</span></li><li><span class="w"><ruby>二人<rt>ふたり</rt></ruby></span><br><span class="m">두 사람</span></li><li><span class="w"><ruby>約束<rt>やくそく</rt></ruby></span><br><span class="m">약속</span></li><li><span class="w"><ruby>遥<rt>はる</rt></ruby>か</span><br><span class="m">아득히, 훨씬</span></li><li><span class="w"><ruby>遠<rt>とお</rt></ruby>く</span><br><span class="m">멀리</span></li><li><span class="w"><ruby>終<rt>お</rt></ruby>わる</span><br><span class="m">끝나다</span></li><li><span class="w">ベテルギウス</span><br><span class="m">베텔기우스 (오리온자리의 별)</span></li><li><span class="w"><ruby>誰<rt>だれ</rt></ruby>か</span><br><span class="m">누군가</span></li><li><span class="w"><ruby>魔法<rt>まほう</rt></ruby></span><br><span class="m">마법</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">~あって (서로 ~하고)</span><br><span class="m">見つけあう・手繰りあう = 서로 찾고 서로 당기다</span></li><li><span class="w">輝くのだって</span><br><span class="m">빛나는 것도 (の로 명사화 + だって)</span></li><li><span class="w">終わらない + 명사</span><br><span class="m">동사 부정형이 명사를 꾸밈 (끝나지 않는 베텔기우스)</span></li><li><span class="w">誰かに繋ぐ</span><br><span class="m">~に + 繋ぐ (누군가에게 이어주다)</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">후렴 2</div>
+    <div class="line-block"><div class="jp-line"><ruby>僕<rt>ぼく</rt></ruby>ら <ruby>肩並<rt>かたなら</rt></ruby>べ <ruby>手取<rt>てと</rt></ruby>り<ruby>合<rt>あ</rt></ruby>って <ruby>進<rt>すす</rt></ruby>んでく</div><div class="kr-line">우리 어깨를 나란히 서로 손잡고 나아가</div></div><div class="line-block"><div class="jp-line"><ruby>辛<rt>つら</rt></ruby>い<ruby>時<rt>とき</rt></ruby>だって <ruby>泣<rt>な</rt></ruby>かないって <ruby>誓<rt>ちか</rt></ruby>っただろう</div><div class="kr-line">힘들 때라도 울지 않겠다고 맹세했잖아</div></div><div class="line-block"><div class="jp-line"><ruby>遥<rt>はる</rt></ruby>か<ruby>遠<rt>とお</rt></ruby>く<ruby>終<rt>お</rt></ruby>わらないベテルギウス</div><div class="kr-line">아득히 멀리 끝나지 않는 베텔기우스</div></div><div class="line-block"><div class="jp-line"><ruby>君<rt>きみ</rt></ruby>にも<ruby>見<rt>み</rt></ruby>えるだろう <ruby>祈<rt>いの</rt></ruby>りが</div><div class="kr-line">너에게도 보이겠지, 기도가</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>肩<rt>かた</rt></ruby></span><br><span class="m">어깨</span></li><li><span class="w"><ruby>並<rt>なら</rt></ruby>べる</span><br><span class="m">나란히 하다</span></li><li><span class="w"><ruby>手<rt>て</rt></ruby></span><br><span class="m">손</span></li><li><span class="w"><ruby>取<rt>と</rt></ruby>り<ruby>合<rt>あ</rt></ruby>う</span><br><span class="m">서로 잡다</span></li><li><span class="w"><ruby>進<rt>すす</rt></ruby>む</span><br><span class="m">나아가다</span></li><li><span class="w"><ruby>辛<rt>つら</rt></ruby>い</span><br><span class="m">괴롭다, 힘들다</span></li><li><span class="w"><ruby>時<rt>とき</rt></ruby></span><br><span class="m">때</span></li><li><span class="w"><ruby>誓<rt>ちか</rt></ruby>う</span><br><span class="m">맹세하다</span></li><li><span class="w"><ruby>見<rt>み</rt></ruby>える</span><br><span class="m">보이다</span></li><li><span class="w"><ruby>祈<rt>いの</rt></ruby>り</span><br><span class="m">기도</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">肩並べ (연용 중지형)</span><br><span class="m">肩を並べて의 연결형: 어깨를 나란히 하고</span></li><li><span class="w">~時だって</span><br><span class="m">~할 때라도 (だって=でも)</span></li><li><span class="w">~ないって</span><br><span class="m">~하지 않겠다고 (인용 って)</span></li><li><span class="w">~ただろう</span><br><span class="m">~했잖아 (확인·동의 요구)</span></li><li><span class="w">~でく (=でいく)</span><br><span class="m">進んでく = 進んでいく (축약)</span></li><li><span class="w">~だろう</span><br><span class="m">~겠지 (추측)</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">2절 A</div>
+    <div class="line-block"><div class="jp-line"><ruby>記憶<rt>きおく</rt></ruby>を<ruby>辿<rt>たど</rt></ruby>るたび <ruby>蘇<rt>よみがえ</rt></ruby>るよ</div><div class="kr-line">기억을 더듬을 때마다 되살아나</div></div><div class="line-block"><div class="jp-line"><ruby>君<rt>きみ</rt></ruby>がいつだってそこに<ruby>居<rt>い</rt></ruby>てくれること</div><div class="kr-line">네가 언제라도 거기 있어줬다는 것</div></div><div class="line-block"><div class="jp-line">まるでそれは<ruby>星<rt>ほし</rt></ruby>の<ruby>光<rt>ひかり</rt></ruby>と <ruby>同<rt>おな</rt></ruby>じように</div><div class="kr-line">마치 그건 별빛과도 같이</div></div><div class="line-block"><div class="jp-line"><ruby>今日<rt>きょう</rt></ruby>に<ruby>泣<rt>な</rt></ruby>いたり<ruby>笑<rt>わら</rt></ruby>ったり<ruby>繋<rt>つな</rt></ruby>いでいく</div><div class="kr-line">오늘을 울면서 또 웃으면서 이어가</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>記憶<rt>きおく</rt></ruby></span><br><span class="m">기억</span></li><li><span class="w"><ruby>辿<rt>たど</rt></ruby>る</span><br><span class="m">더듬어 가다</span></li><li><span class="w"><ruby>蘇<rt>よみがえ</rt></ruby>る</span><br><span class="m">되살아나다</span></li><li><span class="w">いつだって</span><br><span class="m">언제라도, 항상</span></li><li><span class="w"><ruby>居<rt>い</rt></ruby>る</span><br><span class="m">있다</span></li><li><span class="w"><ruby>今日<rt>きょう</rt></ruby></span><br><span class="m">오늘</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">~たび</span><br><span class="m">~할 때마다</span></li><li><span class="w">~てくれること</span><br><span class="m">~해 준 것 (명사절)</span></li><li><span class="w">~と同じように</span><br><span class="m">~와 똑같이</span></li><li><span class="w">~よ</span><br><span class="m">강조·전달의 종조사</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">2절 B</div>
+    <div class="line-block"><div class="jp-line"><ruby>何十回<rt>なんじゅっかい</rt></ruby> <ruby>何百回<rt>なんびゃっかい</rt></ruby> ぶつかりあって</div><div class="kr-line">몇십 번, 몇백 번 부딪히더라도</div></div><div class="line-block"><div class="jp-line"><ruby>何十年<rt>なんじゅうねん</rt></ruby> <ruby>何百年<rt>なんびゃくねん</rt></ruby> <ruby>昔<rt>むかし</rt></ruby>の<ruby>光<rt>ひかり</rt></ruby>が</div><div class="kr-line">몇십 년, 몇백 년 옛날의 빛이</div></div><div class="line-block"><div class="jp-line"><ruby>僕<rt>ぼく</rt></ruby><ruby>自身<rt>じしん</rt></ruby>も<ruby>忘<rt>わす</rt></ruby>れたころに</div><div class="kr-line">나 자신도 잊어버렸을 즈음에</div></div><div class="line-block"><div class="jp-line"><ruby>僕<rt>ぼく</rt></ruby>らを<ruby>照<rt>て</rt></ruby>らしてる</div><div class="kr-line">우리들을 비춰주고 있어</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>僕<rt>ぼく</rt></ruby></span><br><span class="m">나</span></li><li><span class="w"><ruby>照<rt>て</rt></ruby>らす</span><br><span class="m">비추다</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">星自身 → 僕自身</span><br><span class="m">1절 B의 「星自身」가 「僕自身」로 바뀜 (별 ↔ 나)</span></li><li><span class="w">届いてる → 照らしてる</span><br><span class="m">「~に届く」(도달) → 「~を照らす」(비춤): 조사 に/を 차이</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">후렴 1 (반복)</div>
+    <div class="line-block"><div class="jp-line"><ruby>僕<rt>ぼく</rt></ruby>ら <ruby>見<rt>み</rt></ruby>つけあって <ruby>手繰<rt>たぐ</rt></ruby>りあって <ruby>同<rt>おな</rt></ruby>じ<ruby>空<rt>そら</rt></ruby></div><div class="kr-line">우리는 서로 찾아내고, 서로 당기며 같은 하늘</div></div><div class="line-block"><div class="jp-line"><ruby>輝<rt>かがや</rt></ruby>くのだって <ruby>二人<rt>ふたり</rt></ruby>だって <ruby>約束<rt>やくそく</rt></ruby>した</div><div class="kr-line">빛나는 것도 둘일 거라고 약속했어</div></div><div class="line-block"><div class="jp-line"><ruby>遥<rt>はる</rt></ruby>か<ruby>遠<rt>とお</rt></ruby>く<ruby>終<rt>お</rt></ruby>わらないベテルギウス</div><div class="kr-line">아득히 멀리 끝나지 않는 베텔기우스</div></div><div class="line-block"><div class="jp-line"><ruby>誰<rt>だれ</rt></ruby>かに<ruby>繋<rt>つな</rt></ruby>ぐ<ruby>魔法<rt>まほう</rt></ruby></div><div class="kr-line">누군가에게 이어지는 마법</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w">(후렴 1과 동일)</span><br><span class="m">위 후렴 1의 단어 참고</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">들을 때 포인트</span><br><span class="m">2절 이후 반복되는 후렴: 「同じ空」 등 표현이 그대로 쓰임</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">브릿지</div>
+    <div class="line-block"><div class="jp-line">どこまで いつまで <ruby>生<rt>い</rt></ruby>きられるか</div><div class="kr-line">어디까지 언제까지 살아갈 수 있을까</div></div><div class="line-block"><div class="jp-line"><ruby>君<rt>きみ</rt></ruby>が<ruby>不安<rt>ふあん</rt></ruby>になるたびに<ruby>強<rt>つよ</rt></ruby>がるんだ</div><div class="kr-line">네가 불안해할 때마다 강한 척을 하는걸</div></div><div class="line-block"><div class="jp-line"><ruby>大丈夫<rt>だいじょうぶ</rt></ruby> <ruby>僕<rt>ぼく</rt></ruby>が<ruby>横<rt>よこ</rt></ruby>にいるよ</div><div class="kr-line">괜찮아 내가 곁에 있을게</div></div><div class="line-block"><div class="jp-line"><ruby>見<rt>み</rt></ruby>えない<ruby>線<rt>せん</rt></ruby>を<ruby>繋<rt>つな</rt></ruby>ごう</div><div class="kr-line">보이지 않는 선을 잇자</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w">どこまで</span><br><span class="m">어디까지</span></li><li><span class="w">いつまで</span><br><span class="m">언제까지</span></li><li><span class="w"><ruby>生<rt>い</rt></ruby>きる</span><br><span class="m">살다</span></li><li><span class="w"><ruby>不安<rt>ふあん</rt></ruby></span><br><span class="m">불안</span></li><li><span class="w"><ruby>強<rt>つよ</rt></ruby>がる</span><br><span class="m">강한 척하다</span></li><li><span class="w"><ruby>大丈夫<rt>だいじょうぶ</rt></ruby></span><br><span class="m">괜찮다</span></li><li><span class="w"><ruby>横<rt>よこ</rt></ruby></span><br><span class="m">옆</span></li><li><span class="w"><ruby>線<rt>せん</rt></ruby></span><br><span class="m">선</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">生きられる (가능형)</span><br><span class="m">살아갈 수 있다</span></li><li><span class="w">~か</span><br><span class="m">~일까 (의문 종조사)</span></li><li><span class="w">~たびに</span><br><span class="m">~할 때마다</span></li><li><span class="w">~がる</span><br><span class="m">~한 척하다 / ~해 하다 (강がる)</span></li><li><span class="w">~んだ</span><br><span class="m">~거든, ~인 거야 (설명)</span></li><li><span class="w">繋ごう (의향형)</span><br><span class="m">~하자 (繋ぐ→繋ごう)</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">후렴 1 (반복)</div>
+    <div class="line-block"><div class="jp-line"><ruby>僕<rt>ぼく</rt></ruby>ら <ruby>見<rt>み</rt></ruby>つけあって <ruby>手繰<rt>たぐ</rt></ruby>りあって <ruby>同<rt>おな</rt></ruby>じ<ruby>空<rt>そら</rt></ruby></div><div class="kr-line">우리는 서로 찾아내고, 서로 당기며 같은 하늘</div></div><div class="line-block"><div class="jp-line"><ruby>輝<rt>かがや</rt></ruby>くのだって <ruby>二人<rt>ふたり</rt></ruby>だって <ruby>約束<rt>やくそく</rt></ruby>した</div><div class="kr-line">빛나는 것도 둘일 거라고 약속했어</div></div><div class="line-block"><div class="jp-line"><ruby>遥<rt>はる</rt></ruby>か<ruby>遠<rt>とお</rt></ruby>く<ruby>終<rt>お</rt></ruby>わらないベテルギウス</div><div class="kr-line">아득히 멀리 끝나지 않는 베텔기우스</div></div><div class="line-block"><div class="jp-line"><ruby>誰<rt>だれ</rt></ruby>かに<ruby>繋<rt>つな</rt></ruby>ぐ<ruby>魔法<rt>まほう</rt></ruby></div><div class="kr-line">누군가에게 이어지는 마법</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w">(후렴 1과 동일)</span><br><span class="m">위 후렴 1의 단어 참고</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">들을 때 포인트</span><br><span class="m">마지막으로 한 번 더 반복되는 후렴</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">후렴 2 (엔딩)</div>
+    <div class="line-block"><div class="jp-line"><ruby>僕<rt>ぼく</rt></ruby>ら <ruby>肩並<rt>かたなら</rt></ruby>べ <ruby>手取<rt>てと</rt></ruby>り<ruby>合<rt>あ</rt></ruby>って <ruby>進<rt>すす</rt></ruby>んでく</div><div class="kr-line">우리 어깨를 나란히 서로 손잡고 나아가</div></div><div class="line-block"><div class="jp-line"><ruby>辛<rt>つら</rt></ruby>い<ruby>時<rt>とき</rt></ruby>だって <ruby>二人<rt>ふたり</rt></ruby>だって <ruby>誓<rt>ちか</rt></ruby>っただろう</div><div class="kr-line">힘들 때라도 둘일 거라고 맹세했잖아</div></div><div class="line-block"><div class="jp-line"><ruby>遥<rt>はる</rt></ruby>か<ruby>遠<rt>とお</rt></ruby>く<ruby>終<rt>お</rt></ruby>わらないベテルギウス</div><div class="kr-line">아득히 멀리 끝나지 않는 베텔기우스</div></div><div class="line-block"><div class="jp-line"><ruby>君<rt>きみ</rt></ruby>にも<ruby>見<rt>み</rt></ruby>えるだろう <ruby>祈<rt>いの</rt></ruby>りが</div><div class="kr-line">너에게도 보이겠지, 기도가</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w">(후렴 2와 동일)</span><br><span class="m">위 후렴 2의 단어 참고</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">二人だって</span><br><span class="m">후렴 2의 「泣かないって」 자리에 들어가 혼자의 다짐이 둘의 맹세로 바뀜</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">아웃트로</div>
+    <div class="line-block"><div class="jp-line"><ruby>空<rt>そら</rt></ruby>にある<ruby>何<rt>なに</rt></ruby>かを<ruby>見<rt>み</rt></ruby>つめてたら</div><div class="kr-line">하늘에 있는 무언가를 바라보고 있었더니</div></div><div class="line-block"><div class="jp-line">それは<ruby>星<rt>ほし</rt></ruby>だって<ruby>君<rt>きみ</rt></ruby>がおしえてくれた</div><div class="kr-line">그건 별이라고 네가 알려 주었어</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w">(1절 A와 동일)</span><br><span class="m">첫머리 가사로 돌아가 수미상관</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">수미상관</span><br><span class="m">노래가 처음 두 줄로 돌아가며 끝남</span></li></ul></div>
+    </div>
+  </section>
+</div>
+
+  <div class="section-head">
+    <div class="eyebrow">FLASHCARDS</div>
+    <h2>단어 플래시카드</h2>
+    <button class="ui-btn" id="btn-copy-vocab" onclick="copyVocab()" style="margin-top:14px;">📋 단어+뜻 전체 복사</button>
+  </div>
+  <div class="flash-wrap">
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="flash-inner" id="flash-inner">
+        <div class="flash-face flash-front">
+          <div class="jp-word" id="flash-jp"></div>
+        </div>
+        <div class="flash-face flash-back">
+          <div class="kr-mean" id="flash-kr"></div>
+          <div class="pos" id="flash-pos"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flash-controls">
+      <button class="ui-btn" onclick="prevCard()">← 이전</button>
+      <span class="flash-count" id="flash-count"></span>
+      <button class="ui-btn" onclick="nextCard()">다음 →</button>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="eyebrow">QUIZ</div>
+    <h2>단어 · 문법 퀴즈</h2>
+  </div>
+  <div id="quiz-container"></div>
+  <div class="quiz-footer">
+    <button class="ui-btn" onclick="gradeQuiz()">채점하기</button>
+    <div id="score-box"></div>
+  </div>
+</main>
+
+<footer>ベテルギウス — 가사 학습 자료 · 개인 학습용</footer>
+
+<script>
+/* ---------- snowfall ---------- */
+const snow = document.getElementById('snow');
+for(let i=0;i<40;i++){
+  const f = document.createElement('div');
+  f.className='flake';
+  const size = 2+Math.random()*4;
+  f.style.width=size+'px';
+  f.style.height=size+'px';
+  f.style.left = Math.random()*100+'vw';
+  f.style.setProperty('--drift', (Math.random()*60-30)+'px');
+  f.style.animationDuration = (8+Math.random()*10)+'s';
+  f.style.animationDelay = (Math.random()*10)+'s';
+  snow.appendChild(f);
+}
+
+/* ---------- toggles ---------- */
+function toggleFurigana(){
+  document.body.classList.toggle('hide-furigana');
+  document.getElementById('btn-furigana').classList.toggle('active');
+}
+function toggleKr(){
+  document.body.classList.toggle('hide-kr');
+  document.getElementById('btn-kr').classList.toggle('active');
+}
+
+/* ---------- copy to clipboard ---------- */
+function rubyToAnnotated(html){
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  let out = '';
+  div.childNodes.forEach(node=>{
+    if(node.nodeType === 1 && node.tagName === 'RUBY'){
+      let base = '', rt = '';
+      node.childNodes.forEach(c=>{
+        if(c.nodeType === 1 && c.tagName === 'RT'){ rt += c.textContent; }
+        else { base += c.textContent; }
+      });
+      out += rt ? `${base}(${rt})` : base;
+    } else {
+      out += node.textContent;
+    }
+  });
+  return out;
+}
+
+function copyText(text, btn, successLabel){
+  const original = btn.textContent;
+  function showResult(ok){
+    btn.textContent = ok ? (successLabel || '복사됨! ✓') : '복사 실패';
+    setTimeout(()=>{ btn.textContent = original; }, 1600);
+  }
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  ta.style.top = '0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  let ok = false;
+  try{ ok = document.execCommand('copy'); }catch(e){ ok = false; }
+  document.body.removeChild(ta);
+  if(ok){
+    showResult(true);
+  } else if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>showResult(true)).catch(()=>showResult(false));
+  } else {
+    showResult(false);
+  }
+}
+
+function copyLyrics(){
+  let out = [];
+  stanzas.forEach(st=>{
+    out.push(`[${st.label}]`);
+    st.lines.forEach(l=>{
+      out.push(rubyToAnnotated(l[0]));
+      out.push(l[1]);
+      out.push('');
+    });
+  });
+  copyText(out.join('\n').trim()+'\n', document.getElementById('btn-copy-lyrics'), '복사됨! ✓');
+}
+
+function copyVocab(){
+  let out = flashData.map(v => `${rubyToAnnotated(v[0])} - ${v[1]}`);
+  copyText(out.join('\n'), document.getElementById('btn-copy-vocab'), '복사됨! ✓');
+}
+
+/* ---------- stanza data ---------- */
+const stanzas = [{"label": "1절 A", "lines": [["<ruby>空<rt>そら</rt></ruby>にある<ruby>何<rt>なに</rt></ruby>かを<ruby>見<rt>み</rt></ruby>つめてたら", "하늘에 있는 무언가를 바라보고 있었더니"], ["それは<ruby>星<rt>ほし</rt></ruby>だって<ruby>君<rt>きみ</rt></ruby>がおしえてくれた", "그건 별이라고 네가 알려 주었어"], ["まるでそれは<ruby>僕<rt>ぼく</rt></ruby>らみたいに <ruby>寄<rt>よ</rt></ruby>り<ruby>添<rt>そ</rt></ruby>ってる", "마치 그건 우리처럼 붙어 있어서"], ["それを<ruby>泣<rt>な</rt></ruby>いたり<ruby>笑<rt>わら</rt></ruby>ったり<ruby>繋<rt>つな</rt></ruby>いでいく", "그걸 울면서 또 웃으면서 이어가"]], "vocab": [["<ruby>空<rt>そら</rt></ruby>", "하늘"], ["<ruby>何<rt>なに</rt></ruby>か", "무언가"], ["<ruby>見<rt>み</rt></ruby>つめる", "가만히 바라보다"], ["<ruby>星<rt>ほし</rt></ruby>", "별"], ["<ruby>君<rt>きみ</rt></ruby>", "너, 그대"], ["おしえる(<ruby>教<rt>おし</rt></ruby>える)", "알려주다, 가르치다"], ["<ruby>僕<rt>ぼく</rt></ruby>ら", "우리 (남성 화자)"], ["<ruby>寄<rt>よ</rt></ruby>り<ruby>添<rt>そ</rt></ruby>う", "바싹 붙다, 곁에 다가가 있다"], ["<ruby>泣<rt>な</rt></ruby>く", "울다"], ["<ruby>笑<rt>わら</rt></ruby>う", "웃다"], ["<ruby>繋<rt>つな</rt></ruby>ぐ", "잇다, 연결하다"], ["まるで", "마치"]], "grammar": [["~てたら (=ていたら)", "~하고 있었더니 (발견·계기의 たら)"], ["~だって (=だと・って)", "~라고 (인용: 별이라고)"], ["~てくれる", "상대가 나에게 ~해 주다"], ["まるで~みたいに", "마치 ~처럼"], ["~たり~たり", "~하기도 ~하기도 하며"], ["~ていく", "~해 나가다 (앞으로 계속)"]]}, {"label": "1절 B", "lines": [["<ruby>何十回<rt>なんじゅっかい</rt></ruby> <ruby>何百回<rt>なんびゃっかい</rt></ruby> ぶつかりあって", "몇십 번, 몇백 번 부딪히며"], ["<ruby>何十年<rt>なんじゅうねん</rt></ruby> <ruby>何百年<rt>なんびゃくねん</rt></ruby> <ruby>昔<rt>むかし</rt></ruby>の<ruby>光<rt>ひかり</rt></ruby>が", "몇십 년, 몇백 년 옛날의 빛이"], ["<ruby>星<rt>ほし</rt></ruby><ruby>自身<rt>じしん</rt></ruby>も<ruby>忘<rt>わす</rt></ruby>れたころに", "별 자신도 잊었을 즈음에"], ["<ruby>僕<rt>ぼく</rt></ruby>らに<ruby>届<rt>とど</rt></ruby>いてる", "우리에게 전해지고 있어"]], "vocab": [["<ruby>何十回<rt>なんじゅっかい</rt></ruby>", "몇십 번"], ["<ruby>何百回<rt>なんびゃっかい</rt></ruby>", "몇백 번"], ["ぶつかる", "부딪히다"], ["<ruby>何十年<rt>なんじゅうねん</rt></ruby>", "몇십 년"], ["<ruby>何百年<rt>なんびゃくねん</rt></ruby>", "몇백 년"], ["<ruby>昔<rt>むかし</rt></ruby>", "옛날"], ["<ruby>光<rt>ひかり</rt></ruby>", "빛"], ["<ruby>自身<rt>じしん</rt></ruby>", "자신"], ["<ruby>忘<rt>わす</rt></ruby>れる", "잊다"], ["ころ(頃)", "~할 때, 즈음"], ["<ruby>届<rt>とど</rt></ruby>く", "닿다, 도달하다"]], "grammar": [["何+数詞 (何十・何百)", "몇십·몇백 (막연히 많은 수)"], ["~あう", "서로 ~하다 (ぶつかりあう)"], ["N+自身", "~자신 (星自身)"], ["~たころに", "~했을 즈음에"], ["~てる (=ている)", "~해 있다 (届いてる=도달해 있다)"]]}, {"label": "후렴 1", "lines": [["<ruby>僕<rt>ぼく</rt></ruby>ら <ruby>見<rt>み</rt></ruby>つけあって <ruby>手繰<rt>たぐ</rt></ruby>りあって <ruby>同<rt>おな</rt></ruby>じ<ruby>空<rt>そら</rt></ruby>", "우리는 서로 찾아내고, 서로 당기며 같은 하늘"], ["<ruby>輝<rt>かがや</rt></ruby>くのだって <ruby>二人<rt>ふたり</rt></ruby>だって <ruby>約束<rt>やくそく</rt></ruby>した", "빛나는 것도 둘일 거라고 약속했어"], ["<ruby>遥<rt>はる</rt></ruby>か<ruby>遠<rt>とお</rt></ruby>く<ruby>終<rt>お</rt></ruby>わらないベテルギウス", "아득히 멀리 끝나지 않는 베텔기우스"], ["<ruby>誰<rt>だれ</rt></ruby>かに<ruby>繋<rt>つな</rt></ruby>ぐ<ruby>魔法<rt>まほう</rt></ruby>", "누군가에게 이어지는 마법"]], "vocab": [["<ruby>見<rt>み</rt></ruby>つける", "찾아내다"], ["<ruby>手繰<rt>たぐ</rt></ruby>る", "(실 등을) 끌어당기다"], ["<ruby>同<rt>おな</rt></ruby>じ", "같은"], ["<ruby>輝<rt>かがや</rt></ruby>く", "빛나다"], ["<ruby>二人<rt>ふたり</rt></ruby>", "두 사람"], ["<ruby>約束<rt>やくそく</rt></ruby>", "약속"], ["<ruby>遥<rt>はる</rt></ruby>か", "아득히, 훨씬"], ["<ruby>遠<rt>とお</rt></ruby>く", "멀리"], ["<ruby>終<rt>お</rt></ruby>わる", "끝나다"], ["ベテルギウス", "베텔기우스 (오리온자리의 별)"], ["<ruby>誰<rt>だれ</rt></ruby>か", "누군가"], ["<ruby>魔法<rt>まほう</rt></ruby>", "마법"]], "grammar": [["~あって (서로 ~하고)", "見つけあう・手繰りあう = 서로 찾고 서로 당기다"], ["輝くのだって", "빛나는 것도 (の로 명사화 + だって)"], ["終わらない + 명사", "동사 부정형이 명사를 꾸밈 (끝나지 않는 베텔기우스)"], ["誰かに繋ぐ", "~に + 繋ぐ (누군가에게 이어주다)"]]}, {"label": "후렴 2", "lines": [["<ruby>僕<rt>ぼく</rt></ruby>ら <ruby>肩並<rt>かたなら</rt></ruby>べ <ruby>手取<rt>てと</rt></ruby>り<ruby>合<rt>あ</rt></ruby>って <ruby>進<rt>すす</rt></ruby>んでく", "우리 어깨를 나란히 서로 손잡고 나아가"], ["<ruby>辛<rt>つら</rt></ruby>い<ruby>時<rt>とき</rt></ruby>だって <ruby>泣<rt>な</rt></ruby>かないって <ruby>誓<rt>ちか</rt></ruby>っただろう", "힘들 때라도 울지 않겠다고 맹세했잖아"], ["<ruby>遥<rt>はる</rt></ruby>か<ruby>遠<rt>とお</rt></ruby>く<ruby>終<rt>お</rt></ruby>わらないベテルギウス", "아득히 멀리 끝나지 않는 베텔기우스"], ["<ruby>君<rt>きみ</rt></ruby>にも<ruby>見<rt>み</rt></ruby>えるだろう <ruby>祈<rt>いの</rt></ruby>りが", "너에게도 보이겠지, 기도가"]], "vocab": [["<ruby>肩<rt>かた</rt></ruby>", "어깨"], ["<ruby>並<rt>なら</rt></ruby>べる", "나란히 하다"], ["<ruby>手<rt>て</rt></ruby>", "손"], ["<ruby>取<rt>と</rt></ruby>り<ruby>合<rt>あ</rt></ruby>う", "서로 잡다"], ["<ruby>進<rt>すす</rt></ruby>む", "나아가다"], ["<ruby>辛<rt>つら</rt></ruby>い", "괴롭다, 힘들다"], ["<ruby>時<rt>とき</rt></ruby>", "때"], ["<ruby>誓<rt>ちか</rt></ruby>う", "맹세하다"], ["<ruby>見<rt>み</rt></ruby>える", "보이다"], ["<ruby>祈<rt>いの</rt></ruby>り", "기도"]], "grammar": [["肩並べ (연용 중지형)", "肩を並べて의 연결형: 어깨를 나란히 하고"], ["~時だって", "~할 때라도 (だって=でも)"], ["~ないって", "~하지 않겠다고 (인용 って)"], ["~ただろう", "~했잖아 (확인·동의 요구)"], ["~でく (=でいく)", "進んでく = 進んでいく (축약)"], ["~だろう", "~겠지 (추측)"]]}, {"label": "2절 A", "lines": [["<ruby>記憶<rt>きおく</rt></ruby>を<ruby>辿<rt>たど</rt></ruby>るたび <ruby>蘇<rt>よみがえ</rt></ruby>るよ", "기억을 더듬을 때마다 되살아나"], ["<ruby>君<rt>きみ</rt></ruby>がいつだってそこに<ruby>居<rt>い</rt></ruby>てくれること", "네가 언제라도 거기 있어줬다는 것"], ["まるでそれは<ruby>星<rt>ほし</rt></ruby>の<ruby>光<rt>ひかり</rt></ruby>と <ruby>同<rt>おな</rt></ruby>じように", "마치 그건 별빛과도 같이"], ["<ruby>今日<rt>きょう</rt></ruby>に<ruby>泣<rt>な</rt></ruby>いたり<ruby>笑<rt>わら</rt></ruby>ったり<ruby>繋<rt>つな</rt></ruby>いでいく", "오늘을 울면서 또 웃으면서 이어가"]], "vocab": [["<ruby>記憶<rt>きおく</rt></ruby>", "기억"], ["<ruby>辿<rt>たど</rt></ruby>る", "더듬어 가다"], ["<ruby>蘇<rt>よみがえ</rt></ruby>る", "되살아나다"], ["いつだって", "언제라도, 항상"], ["<ruby>居<rt>い</rt></ruby>る", "있다"], ["<ruby>今日<rt>きょう</rt></ruby>", "오늘"]], "grammar": [["~たび", "~할 때마다"], ["~てくれること", "~해 준 것 (명사절)"], ["~と同じように", "~와 똑같이"], ["~よ", "강조·전달의 종조사"]]}, {"label": "2절 B", "lines": [["<ruby>何十回<rt>なんじゅっかい</rt></ruby> <ruby>何百回<rt>なんびゃっかい</rt></ruby> ぶつかりあって", "몇십 번, 몇백 번 부딪히더라도"], ["<ruby>何十年<rt>なんじゅうねん</rt></ruby> <ruby>何百年<rt>なんびゃくねん</rt></ruby> <ruby>昔<rt>むかし</rt></ruby>の<ruby>光<rt>ひかり</rt></ruby>が", "몇십 년, 몇백 년 옛날의 빛이"], ["<ruby>僕<rt>ぼく</rt></ruby><ruby>自身<rt>じしん</rt></ruby>も<ruby>忘<rt>わす</rt></ruby>れたころに", "나 자신도 잊어버렸을 즈음에"], ["<ruby>僕<rt>ぼく</rt></ruby>らを<ruby>照<rt>て</rt></ruby>らしてる", "우리들을 비춰주고 있어"]], "vocab": [["<ruby>僕<rt>ぼく</rt></ruby>", "나"], ["<ruby>照<rt>て</rt></ruby>らす", "비추다"]], "grammar": [["星自身 → 僕自身", "1절 B의 「星自身」가 「僕自身」로 바뀜 (별 ↔ 나)"], ["届いてる → 照らしてる", "「~に届く」(도달) → 「~を照らす」(비춤): 조사 に/を 차이"]]}, {"label": "후렴 1 (반복)", "lines": [["<ruby>僕<rt>ぼく</rt></ruby>ら <ruby>見<rt>み</rt></ruby>つけあって <ruby>手繰<rt>たぐ</rt></ruby>りあって <ruby>同<rt>おな</rt></ruby>じ<ruby>空<rt>そら</rt></ruby>", "우리는 서로 찾아내고, 서로 당기며 같은 하늘"], ["<ruby>輝<rt>かがや</rt></ruby>くのだって <ruby>二人<rt>ふたり</rt></ruby>だって <ruby>約束<rt>やくそく</rt></ruby>した", "빛나는 것도 둘일 거라고 약속했어"], ["<ruby>遥<rt>はる</rt></ruby>か<ruby>遠<rt>とお</rt></ruby>く<ruby>終<rt>お</rt></ruby>わらないベテルギウス", "아득히 멀리 끝나지 않는 베텔기우스"], ["<ruby>誰<rt>だれ</rt></ruby>かに<ruby>繋<rt>つな</rt></ruby>ぐ<ruby>魔法<rt>まほう</rt></ruby>", "누군가에게 이어지는 마법"]], "vocab": [["(후렴 1과 동일)", "위 후렴 1의 단어 참고"]], "grammar": [["들을 때 포인트", "2절 이후 반복되는 후렴: 「同じ空」 등 표현이 그대로 쓰임"]]}, {"label": "브릿지", "lines": [["どこまで いつまで <ruby>生<rt>い</rt></ruby>きられるか", "어디까지 언제까지 살아갈 수 있을까"], ["<ruby>君<rt>きみ</rt></ruby>が<ruby>不安<rt>ふあん</rt></ruby>になるたびに<ruby>強<rt>つよ</rt></ruby>がるんだ", "네가 불안해할 때마다 강한 척을 하는걸"], ["<ruby>大丈夫<rt>だいじょうぶ</rt></ruby> <ruby>僕<rt>ぼく</rt></ruby>が<ruby>横<rt>よこ</rt></ruby>にいるよ", "괜찮아 내가 곁에 있을게"], ["<ruby>見<rt>み</rt></ruby>えない<ruby>線<rt>せん</rt></ruby>を<ruby>繋<rt>つな</rt></ruby>ごう", "보이지 않는 선을 잇자"]], "vocab": [["どこまで", "어디까지"], ["いつまで", "언제까지"], ["<ruby>生<rt>い</rt></ruby>きる", "살다"], ["<ruby>不安<rt>ふあん</rt></ruby>", "불안"], ["<ruby>強<rt>つよ</rt></ruby>がる", "강한 척하다"], ["<ruby>大丈夫<rt>だいじょうぶ</rt></ruby>", "괜찮다"], ["<ruby>横<rt>よこ</rt></ruby>", "옆"], ["<ruby>線<rt>せん</rt></ruby>", "선"]], "grammar": [["生きられる (가능형)", "살아갈 수 있다"], ["~か", "~일까 (의문 종조사)"], ["~たびに", "~할 때마다"], ["~がる", "~한 척하다 / ~해 하다 (강がる)"], ["~んだ", "~거든, ~인 거야 (설명)"], ["繋ごう (의향형)", "~하자 (繋ぐ→繋ごう)"]]}, {"label": "후렴 1 (반복)", "lines": [["<ruby>僕<rt>ぼく</rt></ruby>ら <ruby>見<rt>み</rt></ruby>つけあって <ruby>手繰<rt>たぐ</rt></ruby>りあって <ruby>同<rt>おな</rt></ruby>じ<ruby>空<rt>そら</rt></ruby>", "우리는 서로 찾아내고, 서로 당기며 같은 하늘"], ["<ruby>輝<rt>かがや</rt></ruby>くのだって <ruby>二人<rt>ふたり</rt></ruby>だって <ruby>約束<rt>やくそく</rt></ruby>した", "빛나는 것도 둘일 거라고 약속했어"], ["<ruby>遥<rt>はる</rt></ruby>か<ruby>遠<rt>とお</rt></ruby>く<ruby>終<rt>お</rt></ruby>わらないベテルギウス", "아득히 멀리 끝나지 않는 베텔기우스"], ["<ruby>誰<rt>だれ</rt></ruby>かに<ruby>繋<rt>つな</rt></ruby>ぐ<ruby>魔法<rt>まほう</rt></ruby>", "누군가에게 이어지는 마법"]], "vocab": [["(후렴 1과 동일)", "위 후렴 1의 단어 참고"]], "grammar": [["들을 때 포인트", "마지막으로 한 번 더 반복되는 후렴"]]}, {"label": "후렴 2 (엔딩)", "lines": [["<ruby>僕<rt>ぼく</rt></ruby>ら <ruby>肩並<rt>かたなら</rt></ruby>べ <ruby>手取<rt>てと</rt></ruby>り<ruby>合<rt>あ</rt></ruby>って <ruby>進<rt>すす</rt></ruby>んでく", "우리 어깨를 나란히 서로 손잡고 나아가"], ["<ruby>辛<rt>つら</rt></ruby>い<ruby>時<rt>とき</rt></ruby>だって <ruby>二人<rt>ふたり</rt></ruby>だって <ruby>誓<rt>ちか</rt></ruby>っただろう", "힘들 때라도 둘일 거라고 맹세했잖아"], ["<ruby>遥<rt>はる</rt></ruby>か<ruby>遠<rt>とお</rt></ruby>く<ruby>終<rt>お</rt></ruby>わらないベテルギウス", "아득히 멀리 끝나지 않는 베텔기우스"], ["<ruby>君<rt>きみ</rt></ruby>にも<ruby>見<rt>み</rt></ruby>えるだろう <ruby>祈<rt>いの</rt></ruby>りが", "너에게도 보이겠지, 기도가"]], "vocab": [["(후렴 2와 동일)", "위 후렴 2의 단어 참고"]], "grammar": [["二人だって", "후렴 2의 「泣かないって」 자리에 들어가 혼자의 다짐이 둘의 맹세로 바뀜"]]}, {"label": "아웃트로", "lines": [["<ruby>空<rt>そら</rt></ruby>にある<ruby>何<rt>なに</rt></ruby>かを<ruby>見<rt>み</rt></ruby>つめてたら", "하늘에 있는 무언가를 바라보고 있었더니"], ["それは<ruby>星<rt>ほし</rt></ruby>だって<ruby>君<rt>きみ</rt></ruby>がおしえてくれた", "그건 별이라고 네가 알려 주었어"]], "vocab": [["(1절 A와 동일)", "첫머리 가사로 돌아가 수미상관"]], "grammar": [["수미상관", "노래가 처음 두 줄로 돌아가며 끝남"]]}];
+
+/* build stanza DOM */
+const stanzaContainer = document.getElementById('stanzas');
+stanzaContainer.innerHTML = ''; /* clear static no-JS fallback before rebuilding identically */
+stanzas.forEach(st=>{
+  const sec = document.createElement('section');
+  sec.className='stanza';
+  let linesHtml = st.lines.map(l=>`<div class="line-block"><div class="jp-line">${l[0]}</div><div class="kr-line">${l[1]}</div></div>`).join('');
+  let vocabHtml = st.vocab.map(v=>{
+    const parts = v[0].split(' <rt>');
+    return `<li><span class="w">${v[0]}</span><br><span class="m">${v[1]}</span></li>`;
+  }).join('');
+  let grammarHtml = st.grammar.map(g=>`<li><span class="w">${g[0]}</span><br><span class="m">${g[1]}</span></li>`).join('');
+  sec.innerHTML = `
+    <div class="stanza-label">${st.label}</div>
+    ${linesHtml}
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul>${vocabHtml}</ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul>${grammarHtml}</ul></div>
+    </div>
+  `;
+  stanzaContainer.appendChild(sec);
+});
+
+/* ---------- flashcards ---------- */
+const flashData = [["<ruby>空<rt>そら</rt></ruby>", "하늘"], ["<ruby>何<rt>なに</rt></ruby>か", "무언가"], ["<ruby>見<rt>み</rt></ruby>つめる", "가만히 바라보다"], ["<ruby>星<rt>ほし</rt></ruby>", "별"], ["<ruby>君<rt>きみ</rt></ruby>", "너, 그대"], ["おしえる(<ruby>教<rt>おし</rt></ruby>える)", "알려주다, 가르치다"], ["<ruby>僕<rt>ぼく</rt></ruby>ら", "우리 (남성 화자)"], ["<ruby>寄<rt>よ</rt></ruby>り<ruby>添<rt>そ</rt></ruby>う", "바싹 붙다, 곁에 다가가 있다"], ["<ruby>泣<rt>な</rt></ruby>く", "울다"], ["<ruby>笑<rt>わら</rt></ruby>う", "웃다"], ["<ruby>繋<rt>つな</rt></ruby>ぐ", "잇다, 연결하다"], ["まるで", "마치"], ["<ruby>何十回<rt>なんじゅっかい</rt></ruby>", "몇십 번"], ["<ruby>何百回<rt>なんびゃっかい</rt></ruby>", "몇백 번"], ["ぶつかる", "부딪히다"], ["<ruby>何十年<rt>なんじゅうねん</rt></ruby>", "몇십 년"], ["<ruby>何百年<rt>なんびゃくねん</rt></ruby>", "몇백 년"], ["<ruby>昔<rt>むかし</rt></ruby>", "옛날"], ["<ruby>光<rt>ひかり</rt></ruby>", "빛"], ["<ruby>自身<rt>じしん</rt></ruby>", "자신"], ["<ruby>忘<rt>わす</rt></ruby>れる", "잊다"], ["ころ(頃)", "~할 때, 즈음"], ["<ruby>届<rt>とど</rt></ruby>く", "닿다, 도달하다"], ["<ruby>見<rt>み</rt></ruby>つける", "찾아내다"], ["<ruby>手繰<rt>たぐ</rt></ruby>る", "(실 등을) 끌어당기다"], ["<ruby>同<rt>おな</rt></ruby>じ", "같은"], ["<ruby>輝<rt>かがや</rt></ruby>く", "빛나다"], ["<ruby>二人<rt>ふたり</rt></ruby>", "두 사람"], ["<ruby>約束<rt>やくそく</rt></ruby>", "약속"], ["<ruby>遥<rt>はる</rt></ruby>か", "아득히, 훨씬"], ["<ruby>遠<rt>とお</rt></ruby>く", "멀리"], ["<ruby>終<rt>お</rt></ruby>わる", "끝나다"], ["ベテルギウス", "베텔기우스 (오리온자리의 별)"], ["<ruby>誰<rt>だれ</rt></ruby>か", "누군가"], ["<ruby>魔法<rt>まほう</rt></ruby>", "마법"], ["<ruby>肩<rt>かた</rt></ruby>", "어깨"], ["<ruby>並<rt>なら</rt></ruby>べる", "나란히 하다"], ["<ruby>手<rt>て</rt></ruby>", "손"], ["<ruby>取<rt>と</rt></ruby>り<ruby>合<rt>あ</rt></ruby>う", "서로 잡다"], ["<ruby>進<rt>すす</rt></ruby>む", "나아가다"], ["<ruby>辛<rt>つら</rt></ruby>い", "괴롭다, 힘들다"], ["<ruby>時<rt>とき</rt></ruby>", "때"], ["<ruby>誓<rt>ちか</rt></ruby>う", "맹세하다"], ["<ruby>見<rt>み</rt></ruby>える", "보이다"], ["<ruby>祈<rt>いの</rt></ruby>り", "기도"], ["<ruby>記憶<rt>きおく</rt></ruby>", "기억"], ["<ruby>辿<rt>たど</rt></ruby>る", "더듬어 가다"], ["<ruby>蘇<rt>よみがえ</rt></ruby>る", "되살아나다"], ["いつだって", "언제라도, 항상"], ["<ruby>居<rt>い</rt></ruby>る", "있다"], ["<ruby>今日<rt>きょう</rt></ruby>", "오늘"], ["<ruby>僕<rt>ぼく</rt></ruby>", "나"], ["<ruby>照<rt>て</rt></ruby>らす", "비추다"], ["どこまで", "어디까지"], ["いつまで", "언제까지"], ["<ruby>生<rt>い</rt></ruby>きる", "살다"], ["<ruby>不安<rt>ふあん</rt></ruby>", "불안"], ["<ruby>強<rt>つよ</rt></ruby>がる", "강한 척하다"], ["<ruby>大丈夫<rt>だいじょうぶ</rt></ruby>", "괜찮다"], ["<ruby>横<rt>よこ</rt></ruby>", "옆"], ["<ruby>線<rt>せん</rt></ruby>", "선"]];
+let cardIdx = 0;
+function renderCard(){
+  document.getElementById('flash-jp').innerHTML = flashData[cardIdx][0];
+  document.getElementById('flash-kr').innerHTML = flashData[cardIdx][1];
+  document.getElementById('flash-count').textContent = (cardIdx+1)+' / '+flashData.length;
+  document.getElementById('flashcard').classList.remove('flipped');
+}
+function flipCard(){ document.getElementById('flashcard').classList.toggle('flipped'); }
+function nextCard(){ cardIdx = (cardIdx+1)%flashData.length; renderCard(); }
+function prevCard(){ cardIdx = (cardIdx-1+flashData.length)%flashData.length; renderCard(); }
+renderCard();
+
+/* ---------- quiz ---------- */
+const quiz = [{"q": "「<ruby>寄<rt>よ</rt></ruby>り<ruby>添<rt>そ</rt></ruby>う」의 뜻은?", "opts": ["바싹 붙어 곁에 있다", "멀리 떨어지다", "부딪히다", "잊어버리다"], "answer": 0}, {"q": "「<ruby>見<rt>み</rt></ruby>つめる」의 뜻은?", "opts": ["찾아내다", "가만히 바라보다", "비추다", "더듬다"], "answer": 1}, {"q": "「~てくれる」의 의미는?", "opts": ["상대가 나에게 ~해 주다", "~해 보다", "~해 버리다", "내가 상대에게 ~해 주다"], "answer": 0}, {"q": "「<ruby>泣<rt>な</rt></ruby>いたり<ruby>笑<rt>わら</rt></ruby>ったり」의 문법은?", "opts": ["~てから (~한 후)", "~ために (목적)", "~たり~たり (~하기도 ~하기도)", "~ながら (동시 동작)"], "answer": 2}, {"q": "「<ruby>何十回<rt>なんじゅっかい</rt></ruby>」의 뜻은?", "opts": ["몇십 년", "몇 시", "몇십 번", "몇 명"], "answer": 2}, {"q": "「ぶつかる」의 뜻은?", "opts": ["맹세하다", "잇다", "빛나다", "부딪히다"], "answer": 3}, {"q": "「ぶつかりあう」의 「~あう」는?", "opts": ["~해 버리다", "서로 ~하다", "~하고 싶다", "~하게 하다"], "answer": 1}, {"q": "「<ruby>星<rt>ほし</rt></ruby><ruby>自身<rt>じしん</rt></ruby>」의 「自身」은?", "opts": ["~때문", "~마다", "~쯤", "~자신"], "answer": 3}, {"q": "「<ruby>忘<rt>わす</rt></ruby>れたころに」의 「~たころに」는?", "opts": ["~하는 동안", "~하자마자", "~하기 위해", "~했을 즈음에"], "answer": 3}, {"q": "「<ruby>届<rt>とど</rt></ruby>く」의 뜻은?", "opts": ["붙잡다", "닿다, 도달하다", "더듬다", "보내다"], "answer": 1}, {"q": "「<ruby>手繰<rt>たぐ</rt></ruby>る」의 뜻은?", "opts": ["(실 등을) 끌어당기다", "놓다", "던지다", "자르다"], "answer": 0}, {"q": "「<ruby>輝<rt>かがや</rt></ruby>く」의 뜻은?", "opts": ["울다", "빛나다", "살다", "끝나다"], "answer": 1}, {"q": "「<ruby>遥<rt>はる</rt></ruby>か<ruby>遠<rt>とお</rt></ruby>く」의 「遥か」는?", "opts": ["곧", "아득히, 훨씬", "가끔", "방금"], "answer": 1}, {"q": "「<ruby>魔法<rt>まほう</rt></ruby>」의 뜻은?", "opts": ["기억", "기도", "약속", "마법"], "answer": 3}, {"q": "「<ruby>辛<rt>つら</rt></ruby>い<ruby>時<rt>とき</rt></ruby>だって」의 「~だって」는?", "opts": ["~이니까", "~라도 (~でも의 회화체)", "~하면서", "~부터"], "answer": 1}, {"q": "「<ruby>誓<rt>ちか</rt></ruby>う」의 뜻은?", "opts": ["비추다", "맹세하다", "빌다", "부딪히다"], "answer": 1}, {"q": "「<ruby>誓<rt>ちか</rt></ruby>っただろう」의 뉘앙스는?", "opts": ["~했을까 (모르겠다)", "~하지 마", "~했잖아 (확인·동의 요구)", "~해야지"], "answer": 2}, {"q": "「<ruby>祈<rt>いの</rt></ruby>り」의 뜻은?", "opts": ["약속", "선", "마법", "기도"], "answer": 3}, {"q": "「<ruby>蘇<rt>よみがえ</rt></ruby>る」의 뜻은?", "opts": ["살다", "되살아나다", "잊다", "나아가다"], "answer": 1}, {"q": "「~たび」의 의미는?", "opts": ["~한 적 있다", "~하는 동안", "~하기 전에", "~할 때마다"], "answer": 3}, {"q": "「いつだって」의 뜻은?", "opts": ["가끔", "아직", "언제라도, 항상", "언제부터"], "answer": 2}, {"q": "「<ruby>強<rt>つよ</rt></ruby>がる」의 「~がる」는?", "opts": ["~한 척하다 / ~해 하다", "~할 수 있다", "~하게 하다", "~하려고 하다"], "answer": 0}, {"q": "「<ruby>生<rt>い</rt></ruby>きられる」의 문법 형태는?", "opts": ["수동형", "사역형", "가능형 (살 수 있다)", "명령형"], "answer": 2}, {"q": "「<ruby>繋<rt>つな</rt></ruby>ごう」의 활용 형태는?", "opts": ["과거형", "의향형 (~하자)", "가능형", "수동형"], "answer": 1}, {"q": "「<ruby>進<rt>すす</rt></ruby>んでく」는 무엇의 축약인가?", "opts": ["進んでみる", "進んでいく", "進んでくる", "進んでおく"], "answer": 1}];
+
+const quizContainer = document.getElementById('quiz-container');
+quiz.forEach((item,i)=>{
+  const div = document.createElement('div');
+  div.className='quiz-item';
+  div.dataset.answer = item.answer;
+  div.dataset.answered = "false";
+  const optsHtml = item.opts.map((o,idx)=>`<button class="opt-btn" data-idx="${idx}" onclick="selectOpt(this,${i})">${o}</button>`).join('');
+  div.innerHTML = `<div class="quiz-q"><span class="jp-inline">${i+1}. ${item.q}</span></div><div class="quiz-opts">${optsHtml}</div>`;
+  quizContainer.appendChild(div);
+});
+
+function selectOpt(btn, qIndex){
+  const parent = btn.closest('.quiz-item');
+  if(parent.dataset.answered === "true") return;
+  parent.dataset.answered = "true";
+  const correctIdx = parseInt(parent.dataset.answer);
+  const chosenIdx = parseInt(btn.dataset.idx);
+  const buttons = parent.querySelectorAll('.opt-btn');
+  buttons.forEach(b=>b.disabled=true);
+  buttons[correctIdx].classList.add('correct');
+  if(chosenIdx !== correctIdx){ btn.classList.add('wrong'); }
+}
+
+function gradeQuiz(){
+  const items = document.querySelectorAll('.quiz-item');
+  let correct = 0;
+  items.forEach(item=>{
+    const correctIdx = parseInt(item.dataset.answer);
+    const buttons = item.querySelectorAll('.opt-btn');
+    if(item.dataset.answered === "true"){
+      buttons.forEach(b=>{
+        if(parseInt(b.dataset.idx)===correctIdx && (b.classList.contains('correct'))){
+          // check if that same button was the one clicked correctly (no wrong marked before it in this item)
+        }
+      });
+      const wrongMarked = item.querySelector('.opt-btn.wrong');
+      if(!wrongMarked) correct++;
+    } else {
+      buttons.forEach(b=>b.disabled=true);
+      buttons[correctIdx].classList.add('correct');
+    }
+  });
+  document.getElementById('score-box').textContent = `점수: ${correct} / ${items.length}`;
+}
+
+function toggleNotes(){
+  document.body.classList.toggle('hide-notes');
+  document.getElementById('btn-notes').classList.toggle('active');
+}
+
+/* ---------- auto-compact toolbar: shrink on scroll down, expand on scroll up ---------- */
+(function(){
+  const bar=document.querySelector('.toggle-bar'); if(!bar) return;
+  const handle=document.createElement('span');
+  handle.className='bar-handle';
+  handle.textContent='☰ 메뉴 · 위로 스크롤하면 펼쳐져요';
+  bar.appendChild(handle);
+  let compact=false, last=window.scrollY, ticking=false;
+  function setCompact(c){
+    if(c===compact) return;
+    const before=bar.offsetHeight;
+    bar.classList.toggle('compact',c);
+    const after=bar.offsetHeight;
+    bar.style.marginBottom = c ? (before-after)+'px' : '0px';
+    compact=c;
+  }
+  function stuck(){ return bar.getBoundingClientRect().top<=1; }
+  handle.addEventListener('click',()=>setCompact(false));
+  window.addEventListener('scroll',()=>{
+    if(ticking) return; ticking=true;
+    requestAnimationFrame(()=>{
+      const y=window.scrollY, d=y-last;
+      if(Math.abs(d)>6){
+        if(d>0 && y>60 && stuck()) setCompact(true);
+        else if(d<0) setCompact(false);
+        last=y;
+      }
+      ticking=false;
+    });
+  },{passive:true});
+})();
+</script>
+</body>
+</html>

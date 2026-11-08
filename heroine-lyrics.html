@@ -229,6 +229,13 @@
   footer{
     text-align:center;padding:40px 20px;color:#5c6c88;font-size:0.8rem;
   }
+
+  body.hide-notes .notes{ display:none; }
+
+  .toggle-bar .bar-handle{display:none;font-size:0.85rem;color:var(--ice);cursor:pointer;padding:4px 12px;}
+  .toggle-bar.compact{padding:6px 12px;}
+  .toggle-bar.compact .ui-btn{display:none;}
+  .toggle-bar.compact .bar-handle{display:inline-block;}
 </style>
 </head>
 <body>
@@ -243,10 +250,89 @@
 <div class="toggle-bar">
   <button class="ui-btn active" id="btn-furigana" onclick="toggleFurigana()">후리가나 표시</button>
   <button class="ui-btn active" id="btn-kr" onclick="toggleKr()">한국어 번역 표시</button>
+  <button class="ui-btn active" id="btn-notes" onclick="toggleNotes()">단어·문법 표시</button>
 </div>
+<noscript>
+  <div style="background:#3a2a2a;color:#f4d9d9;text-align:center;padding:14px 20px;font-size:0.95rem;">
+    이 브라우저는 자바스크립트를 실행하지 않아 가사·단어·문법은 보이지만 플래시카드와 퀴즈는 작동하지 않습니다.
+    Safari나 Claude 앱에서 열면 전체 기능을 이용할 수 있어요.
+  </div>
+</noscript>
 
 <main>
-  <div id="stanzas"></div>
+  <div id="stanzas"><section class="stanza">
+    <div class="stanza-label">1절</div>
+    <div class="line-block"><div class="jp-line"><ruby>君<rt>きみ</rt></ruby>の<ruby>毎日<rt>まいにち</rt></ruby>に <ruby>僕<rt>ぼく</rt></ruby>は<ruby>似合<rt>にあ</rt></ruby>わないかな</div><div class="kr-line">너의 매일에 나는 어울리지 않는 걸까</div></div><div class="line-block"><div class="jp-line"><ruby>白<rt>しろ</rt></ruby>い<ruby>空<rt>そら</rt></ruby>から <ruby>雪<rt>ゆき</rt></ruby>が<ruby>落<rt>お</rt></ruby>ちた</div><div class="kr-line">하얀 하늘에서 눈이 내렸어</div></div><div class="line-block"><div class="jp-line"><ruby>別<rt>べつ</rt></ruby>にいいさと <ruby>吐<rt>は</rt></ruby>き<ruby>出<rt>だ</rt></ruby>したため<ruby>息<rt>いき</rt></ruby>が</div><div class="kr-line">그냥 됐다, 하고 내뱉은 한숨이</div></div><div class="line-block"><div class="jp-line"><ruby>少<rt>すこ</rt></ruby>し<ruby>残<rt>のこ</rt></ruby>って <ruby>寂<rt>さび</rt></ruby>しそうに<ruby>消<rt>き</rt></ruby>えた</div><div class="kr-line">조금 남았다가 쓸쓸히 사라졌어</div></div><div class="line-block"><div class="jp-line"><ruby>君<rt>きみ</rt></ruby>の<ruby>街<rt>まち</rt></ruby>にも <ruby>降<rt>ふ</rt></ruby>っているかな</div><div class="kr-line">네가 있는 거리에도 눈이 내리고 있으려나</div></div><div class="line-block"><div class="jp-line">ああ<ruby>今<rt>いま</rt></ruby><ruby>隣<rt>となり</rt></ruby>で</div><div class="kr-line">아아, 지금 내 옆에서</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>似合<rt>にあ</rt></ruby>う</span><br><span class="m">어울리다 (동사)</span></li><li><span class="w"><ruby>吐<rt>は</rt></ruby>き<ruby>出<rt>だ</rt></ruby>す</span><br><span class="m">내뱉다</span></li><li><span class="w"><ruby>寂<rt>さび</rt></ruby>しい</span><br><span class="m">쓸쓸하다</span></li><li><span class="w"><ruby>街<rt>まち</rt></ruby></span><br><span class="m">거리, 동네</span></li><li><span class="w"><ruby>隣<rt>となり</rt></ruby></span><br><span class="m">옆, 이웃</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">~かな</span><br><span class="m">혼잣말로 하는 추측·의문 (~할까)</span></li><li><span class="w">형용사+さ</span><br><span class="m">형용사를 명사화하는 접미사 (여기선 별로+さ=그저 그런 느낌)</span></li><li><span class="w">~そうに + 동사</span><br><span class="m">양태 부사적 용법 (~한 듯이 ~하다)</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">후렴 1</div>
+    <div class="line-block"><div class="jp-line"><ruby>雪<rt>ゆき</rt></ruby>が<ruby>綺麗<rt>きれい</rt></ruby>と<ruby>笑<rt>わら</rt></ruby>うのは<ruby>君<rt>きみ</rt></ruby>がいい</div><div class="kr-line">눈이 예쁘다며 웃는 건 너였으면 좋겠어</div></div><div class="line-block"><div class="jp-line">でも<ruby>寒<rt>さむ</rt></ruby>いねって<ruby>嬉<rt>うれ</rt></ruby>しそうなのも</div><div class="kr-line">그래도 춥네~ 라며 기뻐 보이는 것도</div></div><div class="line-block"><div class="jp-line"><ruby>転<rt>ころ</rt></ruby>びそうになって<ruby>掴<rt>つか</rt></ruby>んだ<ruby>手<rt>て</rt></ruby>のその<ruby>先<rt>さき</rt></ruby>で</div><div class="kr-line">넘어질 뻔해서 붙잡은 손 끝에서</div></div><div class="line-block"><div class="jp-line">ありがとうって<ruby>楽<rt>たの</rt></ruby>しそうなのも</div><div class="kr-line">고맙다며 즐거워 보이는 것도</div></div><div class="line-block"><div class="jp-line">それも<ruby>君<rt>きみ</rt></ruby>がいい</div><div class="kr-line">그것도 너였으면 좋겠어</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>綺麗<rt>きれい</rt></ruby></span><br><span class="m">예쁨, 깨끗함</span></li><li><span class="w"><ruby>転<rt>ころ</rt></ruby>ぶ</span><br><span class="m">넘어지다</span></li><li><span class="w"><ruby>掴<rt>つか</rt></ruby>む</span><br><span class="m">붙잡다, 잡다</span></li><li><span class="w"><ruby>先<rt>さき</rt></ruby></span><br><span class="m">끝, 앞</span></li><li><span class="w"><ruby>楽<rt>たの</rt></ruby>しい</span><br><span class="m">즐겁다</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">~のは…がいい</span><br><span class="m">~하는 건 …가 좋다 (대상을 강조하는 구문)</span></li><li><span class="w">~そうになる</span><br><span class="m">~할 뻔하다 (동작 직전의 상태)</span></li><li><span class="w">って</span><br><span class="m">だって/という의 회화체 축약형 (~라며, ~라고)</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">2절</div>
+    <div class="line-block"><div class="jp-line"><ruby>気付<rt>きづ</rt></ruby>けば<ruby>辺<rt>あた</rt></ruby>りは</div><div class="kr-line">정신을 차려보면 주변은</div></div><div class="line-block"><div class="jp-line">ほとんどが<ruby>白<rt>しろ</rt></ruby>く<ruby>染<rt>そ</rt></ruby>まって</div><div class="kr-line">온통 하얗게 물들어서</div></div><div class="line-block"><div class="jp-line"><ruby>散<rt>ち</rt></ruby>らかってた<ruby>事<rt>こと</rt></ruby> <ruby>忘<rt>わす</rt></ruby>れてしまいそう</div><div class="kr-line">어지럽혀져 있던 일들마저 잊어버릴 것 같아</div></div><div class="line-block"><div class="jp-line"><ruby>意外<rt>いがい</rt></ruby>と<ruby>積<rt>つ</rt></ruby>もったねと</div><div class="kr-line">생각보다 많이 쌓였네, 하고</div></div><div class="line-block"><div class="jp-line">メールを<ruby>送<rt>おく</rt></ruby>ろうとして</div><div class="kr-line">문자를 보내려다</div></div><div class="line-block"><div class="jp-line"><ruby>打<rt>う</rt></ruby>ちかけのまま ポケットに<ruby>入<rt>い</rt></ruby>れた</div><div class="kr-line">보내지 못한 채 주머니에 넣었어</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>気付<rt>きづ</rt></ruby>く</span><br><span class="m">알아차리다</span></li><li><span class="w"><ruby>染<rt>そ</rt></ruby>まる</span><br><span class="m">물들다</span></li><li><span class="w"><ruby>積<rt>つ</rt></ruby>もる</span><br><span class="m">쌓이다</span></li><li><span class="w"><ruby>意外<rt>いがい</rt></ruby>と</span><br><span class="m">의외로, 생각보다</span></li><li><span class="w"><ruby>送<rt>おく</rt></ruby>る</span><br><span class="m">보내다</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">~てしまいそう</span><br><span class="m">~해버릴 것 같다 (아쉬움·안타까움의 뉘앙스)</span></li><li><span class="w">~う/ようとして</span><br><span class="m">~하려고 하다가 (의도했지만 중단)</span></li><li><span class="w">~のまま</span><br><span class="m">~한 채로, 상태 유지</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">3절</div>
+    <div class="line-block"><div class="jp-line"><ruby>好<rt>この</rt></ruby>まれるような <ruby>強<rt>つよ</rt></ruby>く<ruby>優<rt>やさ</rt></ruby>しい<ruby>僕<rt>ぼく</rt></ruby>に</div><div class="kr-line">네가 좋아할 만한 강하고 다정한 나로</div></div><div class="line-block"><div class="jp-line"><ruby>変<rt>か</rt></ruby>われないかな</div><div class="kr-line">변할 순 없는 걸까</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>好<rt>この</rt></ruby>む</span><br><span class="m">좋아하다, 선호하다</span></li><li><span class="w"><ruby>強<rt>つよ</rt></ruby>い</span><br><span class="m">강하다</span></li><li><span class="w"><ruby>優<rt>やさ</rt></ruby>しい</span><br><span class="m">다정하다, 상냥하다</span></li><li><span class="w"><ruby>変<rt>か</rt></ruby>わる</span><br><span class="m">변하다</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">受身形 好まれる</span><br><span class="m">수동형 (~される): 사랑받다, 선호되다</span></li><li><span class="w">~ないかな</span><br><span class="m">~할 순 없을까 (이루어지길 바라는 희망 섞인 의문)</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">후렴 2</div>
+    <div class="line-block"><div class="jp-line"><ruby>雪<rt>ゆき</rt></ruby>が<ruby>綺麗<rt>きれい</rt></ruby>と<ruby>笑<rt>わら</rt></ruby>うのは<ruby>君<rt>きみ</rt></ruby>がいい</div><div class="kr-line">눈이 예쁘다며 웃는 건 너였으면 좋겠어</div></div><div class="line-block"><div class="jp-line"><ruby>出<rt>だ</rt></ruby>しかけた<ruby>答<rt>こた</rt></ruby>え<ruby>胸<rt>むね</rt></ruby>が<ruby>痛<rt>いた</rt></ruby>くて</div><div class="kr-line">꺼내려다 말았던 대답에 가슴이 아파서</div></div><div class="line-block"><div class="jp-line"><ruby>渡<rt>わた</rt></ruby>し<ruby>方<rt>かた</rt></ruby>もどこに<ruby>捨<rt>す</rt></ruby>てればいいかも<ruby>分<rt>わ</rt></ruby>からずに</div><div class="kr-line">어떻게 전해야 할지도, 어디에 버려야 할지도 모른 채</div></div><div class="line-block"><div class="jp-line"><ruby>君<rt>きみ</rt></ruby>から<ruby>見<rt>み</rt></ruby>えてる<ruby>景色<rt>けしき</rt></ruby>に</div><div class="kr-line">너에게서 비치는 풍경에</div></div><div class="line-block"><div class="jp-line">ただ<ruby>怯<rt>おび</rt></ruby>えているんだ</div><div class="kr-line">그저 겁내고 있을 뿐이야</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>答<rt>こた</rt></ruby>え</span><br><span class="m">대답</span></li><li><span class="w"><ruby>胸<rt>むね</rt></ruby></span><br><span class="m">가슴</span></li><li><span class="w"><ruby>渡<rt>わた</rt></ruby>す</span><br><span class="m">건네다</span></li><li><span class="w"><ruby>捨<rt>す</rt></ruby>てる</span><br><span class="m">버리다</span></li><li><span class="w"><ruby>景色<rt>けしき</rt></ruby></span><br><span class="m">풍경</span></li><li><span class="w"><ruby>怯<rt>おび</rt></ruby>える</span><br><span class="m">겁내다, 두려워하다</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">~かけた</span><br><span class="m">~하다 만 (동작 도중에 멈춤)</span></li><li><span class="w">~ばいいか</span><br><span class="m">~하면 좋을지</span></li><li><span class="w">~ずに</span><br><span class="m">~하지 않고 (=~ないで)</span></li><li><span class="w">~ているんだ</span><br><span class="m">~하고 있는 거야 (설명·강조의 の+だ)</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">4절</div>
+    <div class="line-block"><div class="jp-line"><ruby>思<rt>おも</rt></ruby>えばどんな<ruby>映画<rt>えいが</rt></ruby>を<ruby>観<rt>み</rt></ruby>たって</div><div class="kr-line">생각해 보면 어떤 영화를 보든</div></div><div class="line-block"><div class="jp-line">どんな<ruby>小説<rt>しょうせつ</rt></ruby>や<ruby>音楽<rt>おんがく</rt></ruby>だって</div><div class="kr-line">어떤 소설이든 음악이든</div></div><div class="line-block"><div class="jp-line">その<ruby>ヒロイン</ruby>に<ruby>重<rt>かさ</rt></ruby>ねてしまうのは<ruby>君<rt>きみ</rt></ruby>だよ</div><div class="kr-line">그 히로인에 겹쳐 보이는 건 너야</div></div><div class="line-block"><div class="jp-line"><ruby>行<rt>い</rt></ruby>ってみたい<ruby>遠<rt>とお</rt></ruby>い<ruby>場所<rt>ばしょ</rt></ruby>で<ruby>見<rt>み</rt></ruby>たい<ruby>夜空<rt>よぞら</rt></ruby>も</div><div class="kr-line">가 보고 싶은 먼 곳에서 보고 싶은 밤하늘도</div></div><div class="line-block"><div class="jp-line"><ruby>隣<rt>となり</rt></ruby>に<ruby>描<rt>えが</rt></ruby>くのはいつでも</div><div class="kr-line">내 옆에 그리는 건 늘</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>重<rt>かさ</rt></ruby>ねる</span><br><span class="m">겹치다, 포개다</span></li><li><span class="w"><ruby>場所<rt>ばしょ</rt></ruby></span><br><span class="m">장소</span></li><li><span class="w"><ruby>夜空<rt>よぞら</rt></ruby></span><br><span class="m">밤하늘</span></li><li><span class="w"><ruby>描<rt>えが</rt></ruby>く</span><br><span class="m">그리다</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">~たって</span><br><span class="m">~해도 (~ても의 회화체)</span></li><li><span class="w">~てしまう</span><br><span class="m">~해 버리다 (무의식적/자연스러운 결과)</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">5절</div>
+    <div class="line-block"><div class="jp-line"><ruby>見慣<rt>みな</rt></ruby>れたはずの<ruby>街<rt>まち</rt></ruby>がこんなにも</div><div class="kr-line">익숙했을 터인 거리가 이렇게나</div></div><div class="line-block"><div class="jp-line"><ruby>馬鹿<rt>ばか</rt></ruby>だなぁ<ruby>僕<rt>ぼく</rt></ruby>は</div><div class="kr-line">바보구나, 난</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>見慣<rt>みな</rt></ruby>れる</span><br><span class="m">낯익다, 익숙해지다</span></li><li><span class="w"><ruby>馬鹿<rt>ばか</rt></ruby></span><br><span class="m">바보</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">~はずの</span><br><span class="m">~일 터인, 당연히 그럴 (명사 수식)</span></li><li><span class="w">~だなぁ</span><br><span class="m">~구나 (감탄, 혼잣말)</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">6절</div>
+    <div class="line-block"><div class="jp-line"><ruby>君<rt>きみ</rt></ruby>の<ruby>街<rt>まち</rt></ruby>に<ruby>白<rt>しろ</rt></ruby>い<ruby>雪<rt>ゆき</rt></ruby>が<ruby>降<rt>ふ</rt></ruby>った<ruby>時<rt>とき</rt></ruby></div><div class="kr-line">네가 있는 거리에 하얀 눈이 내리면</div></div><div class="line-block"><div class="jp-line"><ruby>君<rt>きみ</rt></ruby>は<ruby>誰<rt>だれ</rt></ruby>に<ruby>会<rt>あ</rt></ruby>いたくなるんだろう</div><div class="kr-line">너는 누굴 보고 싶어 할까</div></div><div class="line-block"><div class="jp-line"><ruby>雪<rt>ゆき</rt></ruby>が<ruby>綺麗<rt>きれい</rt></ruby>だねって<ruby>誰<rt>だれ</rt></ruby>に<ruby>言<rt>い</rt></ruby>いたくなるんだろう</div><div class="kr-line">눈이 예쁘다고 누구에게 말하고 싶어질까</div></div><div class="line-block"><div class="jp-line"><ruby>僕<rt>ぼく</rt></ruby>は やっぱり<ruby>僕<rt>ぼく</rt></ruby>は</div><div class="kr-line">나는, 역시 나는</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>降<rt>ふ</rt></ruby>る</span><br><span class="m">(눈·비가) 내리다</span></li><li><span class="w"><ruby>時<rt>とき</rt></ruby></span><br><span class="m">때</span></li><li><span class="w"><ruby>誰<rt>だれ</rt></ruby></span><br><span class="m">누구</span></li><li><span class="w"><ruby>会<rt>あ</rt></ruby>う</span><br><span class="m">만나다</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">~たくなる</span><br><span class="m">~하고 싶어지다 (자연스러운 욕구 변화)</span></li><li><span class="w">~んだろう</span><br><span class="m">~는 걸까 (추측·혼잣말)</span></li></ul></div>
+    </div>
+  </section>
+<section class="stanza">
+    <div class="stanza-label">후렴 3 (엔딩)</div>
+    <div class="line-block"><div class="jp-line"><ruby>雪<rt>ゆき</rt></ruby>が<ruby>綺麗<rt>きれい</rt></ruby>と<ruby>笑<rt>わら</rt></ruby>うのは<ruby>君<rt>きみ</rt></ruby>がいい</div><div class="kr-line">눈이 예쁘다며 웃는 건 너였으면 좋겠어</div></div><div class="line-block"><div class="jp-line">でも<ruby>寒<rt>さむ</rt></ruby>いねって<ruby>嬉<rt>うれ</rt></ruby>しそうなのも</div><div class="kr-line">그래도 춥네~ 라며 기뻐 보이는 것도</div></div><div class="line-block"><div class="jp-line"><ruby>転<rt>ころ</rt></ruby>びそうになって<ruby>掴<rt>つか</rt></ruby>んだ<ruby>手<rt>て</rt></ruby>のその<ruby>先<rt>さき</rt></ruby>で</div><div class="kr-line">넘어질 뻔해서 붙잡은 손 끝에서</div></div><div class="line-block"><div class="jp-line">ありがとうって<ruby>楽<rt>たの</rt></ruby>しそうなのも</div><div class="kr-line">고맙다며 즐거워 보이는 것도</div></div><div class="line-block"><div class="jp-line"><ruby>全部<rt>ぜんぶ</rt></ruby><ruby>君<rt>きみ</rt></ruby>がいい</div><div class="kr-line">전부 너였으면 좋겠어</div></div>
+    <div class="notes">
+      <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>全部<rt>ぜんぶ</rt></ruby></span><br><span class="m">전부, 모두</span></li></ul></div>
+      <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">반복 후렴 비교</span><br><span class="m">1절 후렴의 「それも」→ 마지막엔 「全部」로 바뀌며 감정이 고조됨</span></li></ul></div>
+    </div>
+  </section>
+</div>
 
   <div class="section-head">
     <div class="eyebrow">FLASHCARDS</div>
@@ -419,6 +505,7 @@ const stanzas = [
 
 /* build stanza DOM */
 const stanzaContainer = document.getElementById('stanzas');
+stanzaContainer.innerHTML = ''; /* clear static no-JS fallback before rebuilding identically */
 stanzas.forEach(st=>{
   const sec = document.createElement('section');
   sec.className='stanza';
@@ -555,6 +642,43 @@ function gradeQuiz(){
   });
   document.getElementById('score-box').textContent = `점수: ${correct} / ${items.length}`;
 }
+
+function toggleNotes(){
+  document.body.classList.toggle('hide-notes');
+  document.getElementById('btn-notes').classList.toggle('active');
+}
+
+/* ---------- auto-compact toolbar: shrink on scroll down, expand on scroll up ---------- */
+(function(){
+  const bar=document.querySelector('.toggle-bar'); if(!bar) return;
+  const handle=document.createElement('span');
+  handle.className='bar-handle';
+  handle.textContent='☰ 메뉴 · 위로 스크롤하면 펼쳐져요';
+  bar.appendChild(handle);
+  let compact=false, last=window.scrollY, ticking=false;
+  function setCompact(c){
+    if(c===compact) return;
+    const before=bar.offsetHeight;
+    bar.classList.toggle('compact',c);
+    const after=bar.offsetHeight;
+    bar.style.marginBottom = c ? (before-after)+'px' : '0px';
+    compact=c;
+  }
+  function stuck(){ return bar.getBoundingClientRect().top<=1; }
+  handle.addEventListener('click',()=>setCompact(false));
+  window.addEventListener('scroll',()=>{
+    if(ticking) return; ticking=true;
+    requestAnimationFrame(()=>{
+      const y=window.scrollY, d=y-last;
+      if(Math.abs(d)>6){
+        if(d>0 && y>60 && stuck()) setCompact(true);
+        else if(d<0) setCompact(false);
+        last=y;
+      }
+      ticking=false;
+    });
+  },{passive:true});
+})();
 </script>
 </body>
 </html>

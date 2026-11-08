@@ -229,6 +229,13 @@
   footer{
     text-align:center;padding:40px 20px;color:#5c6c88;font-size:0.8rem;
   }
+
+  body.hide-notes .notes{ display:none; }
+
+  .toggle-bar .bar-handle{display:none;font-size:0.85rem;color:var(--ice);cursor:pointer;padding:4px 12px;}
+  .toggle-bar.compact{padding:6px 12px;}
+  .toggle-bar.compact .ui-btn{display:none;}
+  .toggle-bar.compact .bar-handle{display:inline-block;}
 </style>
 </head>
 <body>
@@ -243,6 +250,7 @@
 <div class="toggle-bar">
   <button class="ui-btn active" id="btn-furigana" onclick="toggleFurigana()">후리가나 표시</button>
   <button class="ui-btn active" id="btn-kr" onclick="toggleKr()">한국어 번역 표시</button>
+  <button class="ui-btn active" id="btn-notes" onclick="toggleNotes()">단어·문법 표시</button>
   <button class="ui-btn" id="btn-copy-lyrics" onclick="copyLyrics()">📋 가사+번역 전체 복사</button>
 </div>
 <noscript>
@@ -716,6 +724,43 @@ function gradeQuiz(){
   });
   document.getElementById('score-box').textContent = `점수: ${correct} / ${items.length}`;
 }
+
+function toggleNotes(){
+  document.body.classList.toggle('hide-notes');
+  document.getElementById('btn-notes').classList.toggle('active');
+}
+
+/* ---------- auto-compact toolbar: shrink on scroll down, expand on scroll up ---------- */
+(function(){
+  const bar=document.querySelector('.toggle-bar'); if(!bar) return;
+  const handle=document.createElement('span');
+  handle.className='bar-handle';
+  handle.textContent='☰ 메뉴 · 위로 스크롤하면 펼쳐져요';
+  bar.appendChild(handle);
+  let compact=false, last=window.scrollY, ticking=false;
+  function setCompact(c){
+    if(c===compact) return;
+    const before=bar.offsetHeight;
+    bar.classList.toggle('compact',c);
+    const after=bar.offsetHeight;
+    bar.style.marginBottom = c ? (before-after)+'px' : '0px';
+    compact=c;
+  }
+  function stuck(){ return bar.getBoundingClientRect().top<=1; }
+  handle.addEventListener('click',()=>setCompact(false));
+  window.addEventListener('scroll',()=>{
+    if(ticking) return; ticking=true;
+    requestAnimationFrame(()=>{
+      const y=window.scrollY, d=y-last;
+      if(Math.abs(d)>6){
+        if(d>0 && y>60 && stuck()) setCompact(true);
+        else if(d<0) setCompact(false);
+        last=y;
+      }
+      ticking=false;
+    });
+  },{passive:true});
+})();
 </script>
 </body>
 </html>

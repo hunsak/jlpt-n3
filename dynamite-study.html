@@ -230,10 +230,18 @@
 .flash-back .ex{margin-top:10px;font-size:0.95rem;color:#c7d3e6;}
 .summary{font-family:'Noto Serif KR',serif;color:#c7d3e6;font-size:1.1rem;line-height:1.8;margin-bottom:6px;}
 .ex{font-size:0.88em;color:#8fa0bd;display:block;margin-top:2px;}
+
+  body.hide-notes .notes{ display:none; }
+
+  .toggle-bar .bar-handle{display:none;font-size:0.85rem;color:var(--ice);cursor:pointer;padding:4px 12px;}
+  .toggle-bar.compact{padding:6px 12px;}
+  .toggle-bar.compact .ui-btn{display:none;}
+  .toggle-bar.compact .bar-handle{display:inline-block;}
 </style></head><body>
 <div class="snowlayer" id="snow"></div>
 <header><h1 class="jp-title">Dynamite</h1><div class="subtitle">BTS(방탄소년단) · 영어 가사 학습 노트</div></header>
-<div class="toggle-bar"><button class="ui-btn" id="btn-copy-vocab" onclick="copyVocab()">📋 단어+뜻 전체 복사</button></div>
+<div class="toggle-bar">
+  <button class="ui-btn active" id="btn-notes" onclick="toggleNotes()">단어·문법 표시</button><button class="ui-btn" id="btn-copy-vocab" onclick="copyVocab()">📋 단어+뜻 전체 복사</button></div>
 <main>
 <div id="stanzas"><section class="stanza"><div class="stanza-label">인트로 · Verse 1</div>
 <div class="summary">화자가 "오늘 밤을 내가 밝힌다"고 선언하며 시작해요. 아침에 신발을 신고 우유 한 잔을 마시는 평범한 일상이 곧바로 신나는 에너지로 바뀌는 장면이 이어져요.</div>
@@ -297,4 +305,41 @@ function copyVocab(){copyText(flashData.map(v=>v[0]+' - '+v[1]).join('\n'),docum
 function saveLyrics(){const b=document.getElementById('btn-save-lyrics');const o=b.textContent;let ok=true;try{localStorage.setItem('dyn-my-lyrics',document.getElementById('my-lyrics').value);}catch(e){ok=false;}b.textContent=ok?'저장됨 ✓':'저장 실패(브라우저 제한)';setTimeout(()=>b.textContent=o,1600);}
 function clearLyrics(){document.getElementById('my-lyrics').value='';try{localStorage.removeItem('dyn-my-lyrics');}catch(e){}}
 try{const v=localStorage.getItem('dyn-my-lyrics');if(v)document.getElementById('my-lyrics').value=v;}catch(e){}
+
+function toggleNotes(){
+  document.body.classList.toggle('hide-notes');
+  document.getElementById('btn-notes').classList.toggle('active');
+}
+
+/* ---------- auto-compact toolbar: shrink on scroll down, expand on scroll up ---------- */
+(function(){
+  const bar=document.querySelector('.toggle-bar'); if(!bar) return;
+  const handle=document.createElement('span');
+  handle.className='bar-handle';
+  handle.textContent='☰ 메뉴 · 위로 스크롤하면 펼쳐져요';
+  bar.appendChild(handle);
+  let compact=false, last=window.scrollY, ticking=false;
+  function setCompact(c){
+    if(c===compact) return;
+    const before=bar.offsetHeight;
+    bar.classList.toggle('compact',c);
+    const after=bar.offsetHeight;
+    bar.style.marginBottom = c ? (before-after)+'px' : '0px';
+    compact=c;
+  }
+  function stuck(){ return bar.getBoundingClientRect().top<=1; }
+  handle.addEventListener('click',()=>setCompact(false));
+  window.addEventListener('scroll',()=>{
+    if(ticking) return; ticking=true;
+    requestAnimationFrame(()=>{
+      const y=window.scrollY, d=y-last;
+      if(Math.abs(d)>6){
+        if(d>0 && y>60 && stuck()) setCompact(true);
+        else if(d<0) setCompact(false);
+        last=y;
+      }
+      ticking=false;
+    });
+  },{passive:true});
+})();
 </script></body></html>
