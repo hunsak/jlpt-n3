@@ -65,7 +65,7 @@
   section.stanza{margin-bottom:56px;padding-bottom:40px;border-bottom:1px dashed var(--line);}
   .stanza-label{font-family:var(--kr-serif);color:var(--c3);font-size:.8rem;letter-spacing:.2em;margin-bottom:14px;
                 display:flex;align-items:center;gap:10px;}
-  .stanza-label::before{content:"☀";}
+  .stanza-label::before{content:var(--icon,"☀");}
   .line-block{margin-bottom:18px;position:relative;padding-right:40px;}
   .jp-line{font-family:var(--jp-font);font-size:clamp(1.45rem,6vw,1.9rem);letter-spacing:.02em;line-height:2;transition:filter .25s;}
   ruby rt{font-family:var(--kr-sans);font-size:.5em;color:var(--c1);}
@@ -113,6 +113,8 @@
   .section-head .eyebrow{font-family:var(--kr-serif);color:var(--c3);letter-spacing:.3em;font-size:.75rem;}
   .section-head h2{font-family:var(--jp-font);font-size:2rem;margin:8px 0 0;}
   .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center;}
+  select.theme-sel{padding:9px 14px;font-size:.92rem;cursor:pointer;}
+  @media(max-width:520px){select.theme-sel{padding:7px 10px;font-size:.8rem;}}
   select.ui-sel{background:var(--bg2);color:var(--c1);border:1px solid var(--c1);border-radius:999px;padding:7px 12px;font-size:.85rem;}
 
   /* flashcards */
@@ -157,6 +159,24 @@
          border-radius:999px;font-size:.9rem;z-index:20;opacity:0;transition:opacity .25s;pointer-events:none;}
   .toast.on{opacity:1;}
 </style>
+<script>
+/* Themes are baked in; the reader's choice is remembered per page (localStorage) and applied before first paint. */
+window.JLS = (function(){
+  const THEMES = {"snow": {"bg": "#0a1425", "bg2": "#101c33", "fg": "#f4f7fb", "c1": "#8fb4d6", "c2": "#e79a92", "c3": "#cda86e", "kr": "#c7d3e6", "dim": "#a9b8cf", "fx": "snow", "icon": "❄", "scheme": "dark", "name": "눈 (snow)"}, "sakura": {"bg": "#1a0f17", "bg2": "#2a1724", "fg": "#fbf2f5", "c1": "#f2b8cb", "c2": "#ff8fab", "c3": "#e8c39e", "kr": "#e9cfd8", "dim": "#c4a5b1", "fx": "petals", "icon": "🌸", "scheme": "dark", "name": "벚꽃 (sakura)"}, "stars": {"bg": "#07071a", "bg2": "#12122e", "fg": "#eef0ff", "c1": "#a9b4ff", "c2": "#ffd27a", "c3": "#c9b8ff", "kr": "#cdd1f0", "dim": "#a3a8cf", "fx": "stars", "icon": "✦", "scheme": "dark", "name": "별밤 (stars)"}, "rain": {"bg": "#0d1418", "bg2": "#17232a", "fg": "#eef4f6", "c1": "#8fc1cf", "c2": "#b9d98f", "c3": "#d6c38f", "kr": "#c9d7dc", "dim": "#9fb3ba", "fx": "rain", "icon": "☂", "scheme": "dark", "name": "비 (rain)"}, "sunset": {"bg": "#1b0e0a", "bg2": "#2c1712", "fg": "#fff4ec", "c1": "#ffb38a", "c2": "#ff7a6b", "c3": "#ffd28a", "kr": "#f0d6c8", "dim": "#cfae9c", "fx": "glow", "icon": "☀", "scheme": "dark", "name": "노을 (sunset)"}, "paper": {"bg": "#f7f3ea", "bg2": "#ece4d3", "fg": "#2b2620", "c1": "#4f6f8f", "c2": "#b5524a", "c3": "#8a6a2f", "kr": "#4a4339", "dim": "#6d6457", "fx": "none", "icon": "✎", "scheme": "light", "name": "종이 (paper)"}}, DEF = "sunset", SLUG = "zard_lyrics_study_1";
+  const KEY = `jls:${SLUG}:theme`;
+  function saved(){ try{ const v = JSON.parse(localStorage.getItem(KEY)); return THEMES[v] ? v : null; }catch(e){ return null; } }
+  function apply(key){
+    const th = THEMES[key] || THEMES[DEF], r = document.documentElement;
+    ['bg','bg2','fg','c1','c2','c3','kr','dim'].forEach(k => r.style.setProperty('--'+k, th[k]));
+    r.style.setProperty('--icon', JSON.stringify(th.icon));
+    r.style.colorScheme = th.scheme;
+    const m = document.querySelector('meta[name="color-scheme"]'); if(m) m.content = th.scheme;
+    return th;
+  }
+  const cur = saved() || DEF; apply(cur);
+  return {THEMES, DEF, KEY, cur, apply};
+})();
+</script>
 </head>
 <body>
 
@@ -173,6 +193,7 @@
   <button class="ui-btn active" id="btn-notes" aria-pressed="true">단어·문법</button>
   <button class="ui-btn" id="btn-mem">암기: 끔</button>
   <button class="ui-btn" id="btn-rate" hidden>🔊 0.8×</button>
+  <select class="ui-sel theme-sel" id="theme-sel" aria-label="테마 변경"></select>
   <button class="ui-btn" id="btn-copy-lyrics">📋 가사 복사</button>
 </div>
 <div class="mem-hint" id="mem-hint"></div>
@@ -309,9 +330,9 @@ function rng(seed){ let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 
   t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function toast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(t._h); t._h = setTimeout(()=>t.classList.remove('on'), 1500); }
 
-/* ---------- background effect ---------- */
-(function(){
-  const fx = CFG.fx, layer = $('fx'); if(!fx || fx === 'none') return;
+/* ---------- background effect + theme switcher ---------- */
+function buildFx(fx){
+  const layer = $('fx'); layer.innerHTML = ''; if(!fx || fx === 'none') return;
   const n = {snow:40, petals:22, rain:60, stars:70, glow:24}[fx] || 30;
   for(let i=0;i<n;i++){
     const p = document.createElement('div'); p.className = 'p ' + fx;
@@ -324,6 +345,18 @@ function toast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add(
     p.style.animationDelay = (-Math.random()*10)+'s';
     layer.appendChild(p);
   }
+}
+(function(){
+  const sel = $('theme-sel');
+  Object.entries(JLS.THEMES).forEach(([k, th]) => {
+    const o = document.createElement('option'); o.value = k; o.textContent = `🎨 ${th.name}`; sel.appendChild(o);
+  });
+  function set(key, persist){
+    const th = JLS.apply(key); sel.value = key; buildFx(th.fx);
+    if(persist){ store.set('theme', key); }
+  }
+  sel.addEventListener('change', () => set(sel.value, true));
+  set(JLS.cur, false);
 })();
 
 /* ---------- view toggles (remembered) ---------- */
