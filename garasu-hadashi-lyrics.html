@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>硝子の上を裸足のまま – 일본어 가사 학습</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#110a10;--bg2:#20121b;--fg:#eef0ff;--c1:#e9a3b6;--c2:#e0485e;--c3:#c8d3f2;--kr:#e3d3dc;--dim:#b49aa8;}
+  :root{
+    --line:color-mix(in srgb, var(--fg) 13%, transparent);
+    --card:color-mix(in srgb, var(--fg) 5%, transparent);
+    --jp-font:'Shippori Mincho','Hiragino Mincho ProN','Yu Mincho','Noto Serif JP',serif;
+    --kr-serif:'Noto Serif KR','AppleMyungjo','Batang',serif;
+    --kr-sans:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{font-size:18px;background:var(--bg);}
+  @media(max-width:480px){html{font-size:19px;}}
+  body{margin:0;min-height:100vh;background:var(--bg);color:var(--fg);font-family:var(--kr-sans);
+       line-height:1.8;position:relative;overflow-x:hidden;-webkit-text-size-adjust:100%;}
+  button{font-family:inherit;}
+
+  /* ---------- background effects ---------- */
+  .fxlayer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+  .p{position:absolute;top:-12px;will-change:transform;}
+  .p.snow{background:var(--fg);border-radius:50%;opacity:.55;animation:fall linear infinite;}
+  .p.petals{background:var(--c2);border-radius:80% 0 80% 0;opacity:.6;animation:sway linear infinite;}
+  .p.rain{width:1px!important;background:linear-gradient(transparent,var(--c1));opacity:.45;animation:fall linear infinite;}
+  .p.stars{top:auto;background:var(--fg);border-radius:50%;animation:twinkle ease-in-out infinite;}
+  .p.glow{top:auto;bottom:-12px;background:var(--c3);border-radius:50%;opacity:0;filter:blur(1px);animation:rise linear infinite;}
+  @keyframes fall{to{transform:translateY(110vh) translateX(var(--drift,0px));}}
+  @keyframes sway{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(var(--drift),55vh) rotate(200deg)}100%{transform:translate(0,110vh) rotate(400deg)}}
+  @keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.85}}
+  @keyframes rise{0%{opacity:0;transform:translateY(0)}20%{opacity:.6}100%{opacity:0;transform:translateY(-100vh) translateX(var(--drift,0px))}}
+  @media (prefers-reduced-motion: reduce){.fxlayer{display:none;}}
+
+  /* ---------- header & toolbar ---------- */
+  header{position:relative;z-index:1;text-align:center;padding:64px 24px 40px;
+         background:linear-gradient(180deg,var(--bg2) 0%,var(--bg) 100%);border-bottom:1px solid var(--line);}
+  h1.jp-title{font-family:var(--jp-font);font-size:clamp(2.2rem,6vw,4rem);letter-spacing:.12em;margin:0;
+              text-shadow:0 0 24px color-mix(in srgb, var(--c2) 30%, transparent);}
+  .subtitle{font-family:var(--kr-serif);color:var(--c1);margin-top:10px;font-size:1.05rem;letter-spacing:.05em;}
+  .toggle-bar{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding:16px;background:var(--bg2);
+              border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
+  button.ui-btn{background:transparent;border:1px solid var(--c1);color:var(--c1);padding:10px 18px;border-radius:999px;
+                font-size:.92rem;cursor:pointer;transition:background .2s,color .2s;}
+  button.ui-btn:hover{background:var(--c1);color:var(--bg);}
+  button.ui-btn.active{background:var(--c2);border-color:var(--c2);color:var(--bg);}
+  button.ui-btn.small{padding:7px 14px;font-size:.85rem;}
+  @media(max-width:520px){.toggle-bar{gap:7px;padding:12px 10px;} .toggle-bar button.ui-btn{padding:8px 12px;font-size:.8rem;}}
+  .toggle-bar .bar-handle{display:none;font-size:.85rem;color:var(--c1);cursor:pointer;padding:4px 12px;background:none;border:0;}
+  .toggle-bar.compact{padding:6px 12px;}
+  .toggle-bar.compact .ui-btn{display:none;}
+  .toggle-bar.compact .bar-handle{display:inline-block;}
+  .mem-hint{display:none;text-align:center;font-size:.88rem;color:var(--c3);padding:8px 16px;
+            background:color-mix(in srgb, var(--c3) 10%, transparent);border-bottom:1px solid var(--line);position:relative;z-index:1;}
+  body.mem-hide .mem-hint, body.mem-blank .mem-hint{display:block;}
+
+  /* ---------- lyrics ---------- */
+  main{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:40px 20px 100px;}
+  section.stanza{margin-bottom:56px;padding-bottom:40px;border-bottom:1px dashed var(--line);}
+  .stanza-label{font-family:var(--kr-serif);color:var(--c3);font-size:.8rem;letter-spacing:.2em;margin-bottom:14px;
+                display:flex;align-items:center;gap:10px;}
+  .stanza-label::before{content:"🥀";}
+  .line-block{margin-bottom:18px;position:relative;padding-right:40px;}
+  .jp-line{font-family:var(--jp-font);font-size:clamp(1.45rem,6vw,1.9rem);letter-spacing:.02em;line-height:2;transition:filter .25s;}
+  ruby rt{font-family:var(--kr-sans);font-size:.5em;color:var(--c1);}
+  body.hide-furigana ruby rt{display:none;}
+  .kr-line{font-family:var(--kr-serif);color:var(--kr);font-size:1.12rem;margin-top:4px;}
+  body.hide-kr .kr-line{display:none;}
+  .line-note{font-size:.88rem;color:var(--dim);margin-top:4px;}
+  body.hide-notes .line-note{display:none;}
+
+  .say{display:none;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;
+       border:1px solid var(--line);background:var(--card);color:var(--fg);font-size:.85rem;cursor:pointer;padding:0;line-height:1;}
+  body.tts .say{display:inline-flex;}
+  .line-block > .say{position:absolute;right:0;top:12px;}
+  .say.speaking{border-color:var(--c2);box-shadow:0 0 0 3px color-mix(in srgb, var(--c2) 30%, transparent);}
+  .note-card .say, .flash-face .say{width:28px;height:28px;font-size:.75rem;margin-left:8px;vertical-align:middle;}
+
+  /* memorization modes */
+  body.mem-hide .jp-line{filter:blur(8px);cursor:pointer;user-select:none;-webkit-user-select:none;}
+  body.mem-hide .line-block.revealed .jp-line{filter:none;}
+  body.mem-blank ruby.blank:not(.shown){color:transparent;cursor:pointer;border-radius:4px;
+       background:color-mix(in srgb, var(--c1) 16%, transparent);box-shadow:inset 0 -2px 0 var(--c1);}
+  body.mem-blank ruby.blank:not(.shown) rt{visibility:hidden;}
+
+  /* notes */
+  .notes{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:640px){.notes{grid-template-columns:1fr;}}
+  body.hide-notes .notes{display:none;}
+  .note-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
+  .note-card h4{margin:0 0 12px;font-size:.85rem;letter-spacing:.15em;color:var(--c2);}
+  .note-card ul{margin:0;padding:0;list-style:none;}
+  .note-card li{margin-bottom:12px;font-size:1.05rem;line-height:1.6;}
+  .note-card .w{font-weight:500;font-family:var(--jp-font);}
+  .note-card .w rt{color:var(--c3);font-size:.55em;}
+  .note-card .m{color:var(--dim);font-size:.92em;}
+  .note-card .m rt{color:var(--c3);}
+  .lv{display:inline-block;font-size:.66rem;font-family:var(--kr-sans);letter-spacing:.05em;padding:0 7px;border-radius:999px;
+      border:1px solid var(--c3);color:var(--c3);vertical-align:middle;margin-left:6px;line-height:1.6;}
+  .ex{margin-top:6px;padding-left:10px;border-left:2px solid var(--line);font-size:.88em;}
+  .ex-jp{display:block;font-family:var(--jp-font);}
+  .ex-jp rt{color:var(--c3);}
+  .ex-kr{display:block;color:var(--dim);font-size:.92em;}
+
+  /* section heads */
+  .section-head{text-align:center;margin:80px 0 30px;}
+  .section-head .eyebrow{font-family:var(--kr-serif);color:var(--c3);letter-spacing:.3em;font-size:.75rem;}
+  .section-head h2{font-family:var(--jp-font);font-size:2rem;margin:8px 0 0;}
+  .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;align-items:center;}
+  select.ui-sel{background:var(--bg2);color:var(--c1);border:1px solid var(--c1);border-radius:999px;padding:7px 12px;font-size:.85rem;}
+
+  /* flashcards */
+  .flash-wrap{display:flex;flex-direction:column;align-items:center;gap:16px;}
+  .flashcard{width:100%;max-width:440px;height:270px;perspective:1200px;cursor:pointer;outline:none;touch-action:pan-y;}
+  .flashcard:focus-visible .flash-face{border-color:var(--c1);}
+  .flash-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;}
+  .flashcard.flipped .flash-inner{transform:rotateY(180deg);}
+  .flash-face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+              backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;border:1px solid var(--line);padding:20px;text-align:center;}
+  .flash-front{background:linear-gradient(160deg,var(--bg2),var(--bg));}
+  .flash-back{background:linear-gradient(160deg,color-mix(in srgb, var(--c1) 14%, var(--bg2)),var(--bg2));transform:rotateY(180deg);}
+  .fc-jp{font-family:var(--jp-font);font-size:clamp(2rem,9vw,2.8rem);line-height:2.1;}
+  .fc-jp rt{color:var(--c1);font-size:.4em;}
+  .fc-kr{font-family:var(--kr-serif);font-size:1.5rem;color:var(--c2);line-height:1.5;}
+  .fc-sub{margin-top:8px;font-size:.85rem;color:var(--c1);}
+  .fc-known{position:absolute;top:12px;right:16px;font-size:.8rem;color:var(--c3);}
+  .flash-count{font-size:.95rem;color:var(--dim);min-width:70px;text-align:center;}
+  .flash-progress{font-size:.85rem;color:var(--dim);}
+  .flash-empty{color:var(--dim);}
+
+  /* quiz */
+  .quiz-item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:18px;}
+  .quiz-item.hidden{display:none;}
+  .quiz-q{font-size:1.12rem;margin-bottom:16px;line-height:1.7;}
+  .quiz-q rt, .opt-btn rt{color:var(--c3);font-size:.55em;}
+  .quiz-opts{display:grid;gap:10px;}
+  .opt-btn{text-align:left;background:transparent;border:1px solid var(--line);color:var(--fg);padding:12px 16px;border-radius:10px;
+           cursor:pointer;font-size:1.03rem;transition:border-color .15s,background .15s;}
+  .opt-btn:hover:not(:disabled){border-color:var(--c1);}
+  .opt-btn.correct{background:rgba(140,200,160,.2);border-color:#8cc8a0;}
+  .opt-btn.wrong{background:rgba(220,120,120,.2);border-color:#dc7878;}
+  .opt-btn:disabled{cursor:default;}
+  .explain{display:none;margin-top:12px;font-size:.92rem;color:var(--dim);border-left:3px solid var(--c3);padding-left:12px;}
+  .explain rt{color:var(--c3);}
+  .quiz-item.done .explain{display:block;}
+  .quiz-footer{text-align:center;margin-top:24px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--card);}
+  #score-box{font-family:var(--jp-font);font-size:1.2rem;color:var(--c3);}
+  #best-box{font-size:.85rem;color:var(--dim);}
+  footer{text-align:center;padding:40px 20px;color:var(--dim);font-size:.8rem;opacity:.8;}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--c2);color:var(--bg);padding:8px 18px;
+         border-radius:999px;font-size:.9rem;z-index:20;opacity:0;transition:opacity .25s;pointer-events:none;}
+  .toast.on{opacity:1;}
+</style>
+</head>
+<body>
+
+<div class="fxlayer" id="fx"></div>
+
+<header>
+  <h1 class="jp-title">硝子の上を裸足のまま</h1>
+  <div class="subtitle">「유리 위를 맨발인 채로」· 일본어 가사 학습 노트</div>
+</header>
+
+<div class="toggle-bar" id="bar">
+  <button class="ui-btn active" id="btn-furigana" aria-pressed="true">후리가나</button>
+  <button class="ui-btn active" id="btn-kr" aria-pressed="true">한국어 번역</button>
+  <button class="ui-btn active" id="btn-notes" aria-pressed="true">단어·문법</button>
+  <button class="ui-btn" id="btn-mem">암기: 끔</button>
+  <button class="ui-btn" id="btn-rate" hidden>🔊 0.8×</button>
+  <button class="ui-btn" id="btn-copy-lyrics">📋 가사 복사</button>
+</div>
+<div class="mem-hint" id="mem-hint"></div>
+<noscript>
+  <div style="text-align:center;padding:14px 20px;font-size:.95rem;border-bottom:1px solid #8886;">
+    자바스크립트가 실행되지 않는 화면이라 가사·단어·문법만 보입니다. 발음 듣기·암기 모드·플래시카드·퀴즈는 Safari나 Chrome에서 열어 주세요.
+  </div>
+</noscript>
+
+<main>
+  <div id="stanzas">
+<section class="stanza">
+  <div class="stanza-label">인트로</div>
+  <div class="line-block"><div class="jp-line">まるでこの<ruby>世界<rt>せかい</rt></ruby>で<ruby>二人<rt>ふたり</rt></ruby>だけみたいだね</div><button class="say" data-say="まるでこの世界で二人だけみたいだね" aria-label="이 줄 듣기">🔊</button><div class="kr-line">마치 이 세상에 우리 둘뿐인 것 같아</div></div><div class="line-block"><div class="jp-line">なんて<ruby>少<rt>すこ</rt></ruby>しだけ<ruby>夢<rt>ゆめ</rt></ruby>をみてしまっただけ</div><button class="say" data-say="なんて少しだけ夢をみてしまっただけ" aria-label="이 줄 듣기">🔊</button><div class="kr-line">라며 조금 꿈을 꾸고 말았을 뿐이야</div><div class="line-note">💡 문장 첫머리의 なんて가 앞 줄 전체를 받아서 '…라는 (말·생각을) 하며'라는 뜻이 돼요. 두 줄이 한 문장이에요.</div></div>
+  <div class="notes">
+    <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w">まるで</span> <span class="lv">N3</span><button class="say" data-say="まるで" aria-label="발음 듣기">🔊</button><br><span class="m">마치 (뒤에 みたい·ようだ와 짝을 이룸)</span></li><li><span class="w"><ruby>世界<rt>せかい</rt></ruby></span> <span class="lv">N5</span><button class="say" data-say="世界" aria-label="발음 듣기">🔊</button><br><span class="m">세계, 세상</span></li><li><span class="w"><ruby>二人<rt>ふたり</rt></ruby></span> <span class="lv">N5</span><button class="say" data-say="二人" aria-label="발음 듣기">🔊</button><br><span class="m">두 사람, 둘 (불규칙 읽기)</span></li><li><span class="w">〜だけ</span> <span class="lv">N5</span><button class="say" data-say="〜だけ" aria-label="발음 듣기">🔊</button><br><span class="m">~만, ~뿐</span></li><li><span class="w"><ruby>少<rt>すこ</rt></ruby>し</span> <span class="lv">N5</span><button class="say" data-say="少し" aria-label="발음 듣기">🔊</button><br><span class="m">조금, 약간</span></li><li><span class="w"><ruby>夢<rt>ゆめ</rt></ruby></span> <span class="lv">N4</span><button class="say" data-say="夢" aria-label="발음 듣기">🔊</button><br><span class="m">꿈</span></li><li><span class="w"><ruby>夢<rt>ゆめ</rt></ruby>をみる</span> <span class="lv">N4</span><button class="say" data-say="夢をみる" aria-label="발음 듣기">🔊</button><br><span class="m">꿈을 꾸다 (見{み}る를 씀. する가 아님)</span></li></ul></div>
+    <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">まるで〜みたいだ</span><br><span class="m">마치 ~인 것 같다. まるで가 '실제는 아니지만 꼭 그런 느낌'이라는 비유를 강조. みたいだ는 ようだ의 회화체</span><div class="ex"><span class="ex-jp">まるで<ruby>夢<rt>ゆめ</rt></ruby>みたいだ。</span><span class="ex-kr">마치 꿈 같아.</span></div></li><li><span class="w">〜だね</span><br><span class="m">~구나, ~네. 상대에게 공감을 구하는 말투. 여기선 둘만의 순간을 확인하는 느낌</span></li><li><span class="w">〜なんて (인용)</span><br><span class="m">'~라는 둥, ~라며'. 앞의 말·생각을 가볍게(때로는 자조적으로) 받는 표현. 여기선 '둘뿐인 것 같다'는 생각을 스스로 낮추며 '그런 꿈을 꿨을 뿐'이라고 정리</span><div class="ex"><span class="ex-jp"><ruby>合格<rt>ごうかく</rt></ruby>できるなんて<ruby>思<rt>おも</rt></ruby>わなかった。</span><span class="ex-kr">합격할 수 있으리라곤 생각 못 했다.</span></div></li><li><span class="w">〜てしまった</span><br><span class="m">~해 버렸다. 의도치 않게 해 버림·아쉬움. 여기선 '꿈을 꾸고 말았다' — 꾸지 말았어야 할 꿈이라는 뉘앙스</span><div class="ex"><span class="ex-jp">ケーキを<ruby>全部<rt>ぜんぶ</rt></ruby><ruby>食<rt>た</rt></ruby>べてしまった。</span><span class="ex-kr">케이크를 전부 먹어 버렸다.</span></div></li><li><span class="w">〜ただけ</span><br><span class="m">~했을 뿐. 과거형 + だけ로 '그 이상의 의미는 없다'고 축소하는 말투</span></li></ul></div>
+  </div>
+</section>
+<section class="stanza">
+  <div class="stanza-label">1절</div>
+  <div class="line-block"><div class="jp-line">つま<ruby>先<rt>さき</rt></ruby>に<ruby>月明<rt>つきあ</rt></ruby>かり</div><button class="say" data-say="つま先につきあかり" aria-label="이 줄 듣기">🔊</button><div class="kr-line">발끝에 달빛</div></div><div class="line-block"><div class="jp-line"><ruby>花束<rt>はなたば</rt></ruby>の<ruby>香<rt>かお</rt></ruby>り</div><button class="say" data-say="花束の香り" aria-label="이 줄 듣기">🔊</button><div class="kr-line">꽃다발의 향기</div></div><div class="line-block"><div class="jp-line"><ruby>指<rt>ゆび</rt></ruby>に<ruby>触<rt>ふ</rt></ruby>れる<ruby>指<rt>ゆび</rt></ruby></div><button class="say" data-say="指に触れる指" aria-label="이 줄 듣기">🔊</button><div class="kr-line">손가락과 손가락이 맞닿아</div><div class="line-note">💡 직역은 '손가락에 닿는 손가락'. 동사 없이 명사로 끝나는 체언 종지로 장면만 툭툭 보여 주는 가사 기법이에요.</div></div>
+  <div class="notes">
+    <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w">つま<ruby>先<rt>さき</rt></ruby></span> <span class="lv">N2</span><button class="say" data-say="つま先" aria-label="발음 듣기">🔊</button><br><span class="m">발끝 (爪先로도 씀)</span></li><li><span class="w"><ruby>月明<rt>つきあ</rt></ruby>かり</span> <span class="lv">N2</span><button class="say" data-say="つきあかり" aria-label="발음 듣기">🔊</button><br><span class="m">달빛 (달이 비추는 밝음)</span></li><li><span class="w"><ruby>明<rt>あ</rt></ruby>かり</span> <span class="lv">N3</span><button class="say" data-say="明かり" aria-label="발음 듣기">🔊</button><br><span class="m">빛, 불빛</span></li><li><span class="w"><ruby>花束<rt>はなたば</rt></ruby></span> <span class="lv">N2</span><button class="say" data-say="花束" aria-label="발음 듣기">🔊</button><br><span class="m">꽃다발</span></li><li><span class="w"><ruby>香<rt>かお</rt></ruby>り</span> <span class="lv">N3</span><button class="say" data-say="香り" aria-label="발음 듣기">🔊</button><br><span class="m">향기 (좋은 냄새. 匂{にお}い보다 고운 말)</span></li><li><span class="w"><ruby>指<rt>ゆび</rt></ruby></span> <span class="lv">N4</span><button class="say" data-say="指" aria-label="발음 듣기">🔊</button><br><span class="m">손가락</span></li><li><span class="w"><ruby>触<rt>ふ</rt></ruby>れる</span> <span class="lv">N3</span><button class="say" data-say="触れる" aria-label="발음 듣기">🔊</button><br><span class="m">(살짝) 닿다, 접촉하다</span></li></ul></div>
+    <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">체언 종지 (명사로 끝맺기)</span><br><span class="m">つま<ruby>先<rt>さき</rt></ruby>に<ruby>月明<rt>つきあ</rt></ruby>かり처럼 동사(がある 등)를 생략하고 명사로 끝내 여운을 남기는 시적 표현</span></li><li><span class="w">〜に<ruby>触<rt>ふ</rt></ruby>れる</span><br><span class="m">~에 닿다. 닿는 대상에 に를 씀 (を가 아님). <ruby>触<rt>さわ</rt></ruby>る보다 '살짝, 조심스럽게' 닿는 느낌</span><div class="ex"><span class="ex-jp"><ruby>冷<rt>つめ</rt></ruby>たい<ruby>水<rt>みず</rt></ruby>に<ruby>手<rt>て</rt></ruby>が<ruby>触<rt>ふ</rt></ruby>れた。</span><span class="ex-kr">차가운 물에 손이 닿았다.</span></div></li><li><span class="w"><ruby>香<rt>かお</rt></ruby>り vs <ruby>匂<rt>にお</rt></ruby>い</span><br><span class="m"><ruby>香<rt>かお</rt></ruby>り는 좋은 향기에만, <ruby>匂<rt>にお</rt></ruby>い는 냄새 전반(좋든 나쁘든)에 씀</span></li></ul></div>
+  </div>
+</section>
+<section class="stanza">
+  <div class="stanza-label">프리코러스</div>
+  <div class="line-block"><div class="jp-line">さよなら もう<ruby>行<rt>い</rt></ruby>かなきゃ</div><button class="say" data-say="さよなら もう行かなきゃ" aria-label="이 줄 듣기">🔊</button><div class="kr-line">안녕, 이제 가야만 해</div></div><div class="line-block"><div class="jp-line"><ruby>何<rt>なに</rt></ruby>もかも<ruby>忘<rt>わす</rt></ruby>れて</div><button class="say" data-say="何もかも忘れて" aria-label="이 줄 듣기">🔊</button><div class="kr-line">모두 다 잊어버려</div><div class="line-note">💡 〜て로 끝나는 부탁형(<ruby>忘<rt>わす</rt></ruby>れてください의 생략)이에요. 문맥상 '잊어 줘'라고 상대에게 부탁하는 말.</div></div>
+  <div class="notes">
+    <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w">さよなら</span> <span class="lv">N5</span><button class="say" data-say="さよなら" aria-label="발음 듣기">🔊</button><br><span class="m">안녕 (작별 인사. さようなら의 구어형)</span></li><li><span class="w">もう</span> <span class="lv">N5</span><button class="say" data-say="もう" aria-label="발음 듣기">🔊</button><br><span class="m">이제, 벌써</span></li><li><span class="w"><ruby>行<rt>い</rt></ruby>く</span> <span class="lv">N5</span><button class="say" data-say="行く" aria-label="발음 듣기">🔊</button><br><span class="m">가다</span></li><li><span class="w"><ruby>何<rt>なに</rt></ruby>もかも</span> <span class="lv">N2</span><button class="say" data-say="何もかも" aria-label="발음 듣기">🔊</button><br><span class="m">무엇이든 모두, 전부 다</span></li><li><span class="w"><ruby>忘<rt>わす</rt></ruby>れる</span> <span class="lv">N5</span><button class="say" data-say="忘れる" aria-label="발음 듣기">🔊</button><br><span class="m">잊다</span></li></ul></div>
+    <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">〜なきゃ</span><br><span class="m">~なければならない의 축약. '~해야 해'. <ruby>行<rt>い</rt></ruby>かなければ → <ruby>行<rt>い</rt></ruby>かなきゃ</span><div class="ex"><span class="ex-jp"><ruby>明日<rt>あした</rt></ruby>は<ruby>早<rt>はや</rt></ruby>く<ruby>起<rt>お</rt></ruby>きなきゃ。</span><span class="ex-kr">내일은 일찍 일어나야 해.</span></div></li><li><span class="w">〜て (부탁)</span><br><span class="m">て형으로 끝내면 '~해 줘'라는 가벼운 부탁·명령. <ruby>忘<rt>わす</rt></ruby>れて = 잊어 줘</span></li><li><span class="w"><ruby>何<rt>なに</rt></ruby>もかも vs <ruby>何<rt>なに</rt></ruby>も</span><br><span class="m"><ruby>何<rt>なに</rt></ruby>も+부정은 '아무것도 (~않다)', <ruby>何<rt>なに</rt></ruby>もかも는 긍정문에서 '모조리 전부'</span></li></ul></div>
+  </div>
+</section>
+<section class="stanza">
+  <div class="stanza-label">후렴 1</div>
+  <div class="line-block"><div class="jp-line"><ruby>硝子<rt>ガラス</rt></ruby>の<ruby>上<rt>うえ</rt></ruby>を<ruby>裸足<rt>はだし</rt></ruby>のまま<ruby>歩<rt>ある</rt></ruby>く</div><button class="say" data-say="硝子の上を裸足のまま歩く" aria-label="이 줄 듣기">🔊</button><div class="kr-line">유리 위를 맨발인 채로 걸어가</div><div class="line-note">💡 <ruby>硝子<rt>ガラス</rt></ruby>는 ガラス로 읽는 한자 표기(옛 표기)예요. 소리는 가타카나 ガラス와 같아요.</div></div><div class="line-block"><div class="jp-line"><ruby>痛<rt>いた</rt></ruby>むごとに<ruby>血<rt>ち</rt></ruby>が<ruby>流<rt>なが</rt></ruby>れて<ruby>落<rt>お</rt></ruby>ちていく</div><button class="say" data-say="痛むごとに血が流れて落ちていく" aria-label="이 줄 듣기">🔊</button><div class="kr-line">아플 때마다 피가 흘러 내려가</div></div><div class="line-block"><div class="jp-line">お<ruby>願<rt>ねが</rt></ruby>い その<ruby>赤<rt>あか</rt></ruby>い<ruby>足跡<rt>あしあと</rt></ruby>を<ruby>辿<rt>たど</rt></ruby>って</div><button class="say" data-say="お願い その赤いあしあとを辿って" aria-label="이 줄 듣기">🔊</button><div class="kr-line">부탁이야, 그 붉은 발자국을 따라서</div></div><div class="line-block"><div class="jp-line"><ruby>会<rt>あ</rt></ruby>いにきて</div><button class="say" data-say="会いにきて" aria-label="이 줄 듣기">🔊</button><div class="kr-line">만나러 와줘</div></div>
+  <div class="notes">
+    <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>硝子<rt>ガラス</rt></ruby></span> <span class="lv">N1</span><button class="say" data-say="硝子" aria-label="발음 듣기">🔊</button><br><span class="m">유리 (한자 표기)</span></li><li><span class="w"><ruby>上<rt>うえ</rt></ruby></span> <span class="lv">N5</span><button class="say" data-say="上" aria-label="발음 듣기">🔊</button><br><span class="m">위</span></li><li><span class="w"><ruby>裸足<rt>はだし</rt></ruby></span> <span class="lv">N2</span><button class="say" data-say="裸足" aria-label="발음 듣기">🔊</button><br><span class="m">맨발 (불규칙 읽기)</span></li><li><span class="w">〜まま</span> <span class="lv">N3</span><button class="say" data-say="〜まま" aria-label="발음 듣기">🔊</button><br><span class="m">~한 채로, ~인 그대로</span></li><li><span class="w"><ruby>歩<rt>ある</rt></ruby>く</span> <span class="lv">N5</span><button class="say" data-say="歩く" aria-label="발음 듣기">🔊</button><br><span class="m">걷다</span></li><li><span class="w"><ruby>痛<rt>いた</rt></ruby>む</span> <span class="lv">N3</span><button class="say" data-say="痛む" aria-label="발음 듣기">🔊</button><br><span class="m">아프다, 쑤시다 (동사. 痛{いた}い는 형용사)</span></li><li><span class="w">〜ごとに</span> <span class="lv">N3</span><button class="say" data-say="〜ごとに" aria-label="발음 듣기">🔊</button><br><span class="m">~할 때마다, ~마다</span></li><li><span class="w"><ruby>血<rt>ち</rt></ruby></span> <span class="lv">N3</span><button class="say" data-say="血" aria-label="발음 듣기">🔊</button><br><span class="m">피</span></li><li><span class="w"><ruby>流<rt>なが</rt></ruby>れる</span> <span class="lv">N4</span><button class="say" data-say="流れる" aria-label="발음 듣기">🔊</button><br><span class="m">흐르다</span></li><li><span class="w"><ruby>落<rt>お</rt></ruby>ちる</span> <span class="lv">N4</span><button class="say" data-say="落ちる" aria-label="발음 듣기">🔊</button><br><span class="m">떨어지다</span></li><li><span class="w">お<ruby>願<rt>ねが</rt></ruby>い</span> <span class="lv">N5</span><button class="say" data-say="お願い" aria-label="발음 듣기">🔊</button><br><span class="m">부탁 (お願{ねが}い 단독으로 '부탁이야')</span></li><li><span class="w"><ruby>赤<rt>あか</rt></ruby>い</span> <span class="lv">N5</span><button class="say" data-say="赤い" aria-label="발음 듣기">🔊</button><br><span class="m">빨갛다, 붉다</span></li><li><span class="w"><ruby>足跡<rt>あしあと</rt></ruby></span> <span class="lv">N2</span><button class="say" data-say="あしあと" aria-label="발음 듣기">🔊</button><br><span class="m">발자국</span></li><li><span class="w"><ruby>辿<rt>たど</rt></ruby>る</span> <span class="lv">N1</span><button class="say" data-say="辿る" aria-label="발음 듣기">🔊</button><br><span class="m">(길·자취를) 더듬어 따라가다</span></li><li><span class="w"><ruby>会<rt>あ</rt></ruby>う</span> <span class="lv">N5</span><button class="say" data-say="会う" aria-label="발음 듣기">🔊</button><br><span class="m">만나다 (〜に会{あ}う)</span></li></ul></div>
+    <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">명사 + のまま</span><br><span class="m">~인 채로, ~인 그대로. 상태가 바뀌지 않고 이어짐. <ruby>裸足<rt>はだし</rt></ruby>のまま = 맨발인 채로</span><div class="ex"><span class="ex-jp"><ruby>靴<rt>くつ</rt></ruby>のまま<ruby>部屋<rt>へや</rt></ruby>に<ruby>入<rt>はい</rt></ruby>らないで。</span><span class="ex-kr">신발 신은 채로 방에 들어오지 마.</span></div></li><li><span class="w">〜を<ruby>歩<rt>ある</rt></ruby>く</span><br><span class="m">이동하는 '장소'에는 を를 씀. <ruby>道<rt>みち</rt></ruby>を<ruby>歩<rt>ある</rt></ruby>く, <ruby>硝子<rt>ガラス</rt></ruby>の<ruby>上<rt>うえ</rt></ruby>を<ruby>歩<rt>ある</rt></ruby>く</span></li><li><span class="w">동사 사전형 + ごとに</span><br><span class="m">~할 때마다 (매번). 〜たびに와 비슷하지만 ごとに가 조금 더 문어적이고 '반복될 때마다 하나씩'이라는 느낌</span><div class="ex"><span class="ex-jp"><ruby>会<rt>あ</rt></ruby>うごとに<ruby>好<rt>す</rt></ruby>きになる。</span><span class="ex-kr">만날 때마다 좋아지게 돼.</span></div></li><li><span class="w"><ruby>痛<rt>いた</rt></ruby>む vs <ruby>痛<rt>いた</rt></ruby>い</span><br><span class="m"><ruby>痛<rt>いた</rt></ruby>い는 '아프다'(형용사, 상태), <ruby>痛<rt>いた</rt></ruby>む는 '아파 오다·쑤시다'(동사, 통증이 일어남). ごとに 앞에는 동사가 와야 하니 <ruby>痛<rt>いた</rt></ruby>む</span></li><li><span class="w">〜ていく</span><br><span class="m">~해 가다. 화자로부터 멀어지거나 변화가 계속 진행됨. <ruby>落<rt>お</rt></ruby>ちていく = 계속 떨어져 내려가다</span><div class="ex"><span class="ex-jp"><ruby>雪<rt>ゆき</rt></ruby>が<ruby>溶<rt>と</rt></ruby>けていく。</span><span class="ex-kr">눈이 녹아 간다.</span></div></li><li><span class="w">〜て (부탁) + <ruby>辿<rt>たど</rt></ruby>って</span><br><span class="m"><ruby>辿<rt>たど</rt></ruby>って는 '따라서'(이어지는 て)로, <ruby>会<rt>あ</rt></ruby>いにきて는 '와 줘'(부탁의 て)로 쓰였어요. 같은 て형이 역할이 달라요</span></li><li><span class="w">동사 ます형 + に<ruby>来<rt>く</rt></ruby>る</span><br><span class="m">~하러 오다 (목적). <ruby>会<rt>あ</rt></ruby>い + に + きて = 만나러 와 줘</span><div class="ex"><span class="ex-jp"><ruby>週末<rt>しゅうまつ</rt></ruby>、<ruby>遊<rt>あそ</rt></ruby>びに<ruby>来<rt>き</rt></ruby>てね。</span><span class="ex-kr">주말에 놀러 와.</span></div></li></ul></div>
+  </div>
+</section>
+<section class="stanza">
+  <div class="stanza-label">2절</div>
+  <div class="line-block"><div class="jp-line"><ruby>錆<rt>さ</rt></ruby>びたプールに<ruby>放<rt>はな</rt></ruby>たれていく<ruby>金魚<rt>きんぎょ</rt></ruby></div><button class="say" data-say="錆びたプールにはなたれていく金魚" aria-label="이 줄 듣기">🔊</button><div class="kr-line">녹슨 수영장에 풀려나는 금붕어</div></div><div class="line-block"><div class="jp-line"><ruby>靴箱<rt>くつばこ</rt></ruby>の<ruby>中<rt>なか</rt></ruby><ruby>隠<rt>かく</rt></ruby>した<ruby>林檎<rt>りんご</rt></ruby></div><button class="say" data-say="靴箱の中隠した林檎" aria-label="이 줄 듣기">🔊</button><div class="kr-line">신발장 속에 숨겨둔 사과</div><div class="line-note">💡 <ruby>靴箱<rt>くつばこ</rt></ruby>の<ruby>中<rt>なか</rt></ruby>(に) — 조사 に가 생략됐어요.</div></div><div class="line-block"><div class="jp-line"><ruby>萎<rt>しな</rt></ruby>びた<ruby>君<rt>きみ</rt></ruby>の<ruby>肌<rt>はだ</rt></ruby>に<ruby>残<rt>のこ</rt></ruby>る<ruby>傷跡<rt>きずあと</rt></ruby></div><button class="say" data-say="萎びた君の肌に残る傷跡" aria-label="이 줄 듣기">🔊</button><div class="kr-line">쭈그러든 너의 피부에 남은 흉터</div></div><div class="line-block"><div class="jp-line"><ruby>犬<rt>いぬ</rt></ruby>のように<ruby>泳<rt>およ</rt></ruby>いだ<ruby>迷子<rt>まいご</rt></ruby></div><button class="say" data-say="犬のように泳いだ迷子" aria-label="이 줄 듣기">🔊</button><div class="kr-line">개처럼 헤엄친 미아</div><div class="line-note">💡 <ruby>犬<rt>いぬ</rt></ruby>のように<ruby>泳<rt>およ</rt></ruby>ぐ는 개헤엄(<ruby>犬<rt>いぬ</rt></ruby>かき)을 떠올리게 하는 표현이에요.</div></div>
+  <div class="notes">
+    <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w"><ruby>錆<rt>さ</rt></ruby>びる</span> <span class="lv">N1</span><button class="say" data-say="錆びる" aria-label="발음 듣기">🔊</button><br><span class="m">녹슬다 (錆{さ}び = 녹)</span></li><li><span class="w">プール</span> <span class="lv">N5</span><button class="say" data-say="プール" aria-label="발음 듣기">🔊</button><br><span class="m">수영장 (pool)</span></li><li><span class="w"><ruby>放<rt>はな</rt></ruby>つ</span> <span class="lv">N1</span><button class="say" data-say="はなつ" aria-label="발음 듣기">🔊</button><br><span class="m">놓아주다, 풀어놓다 (문어적)</span></li><li><span class="w"><ruby>金魚<rt>きんぎょ</rt></ruby></span> <span class="lv">N2</span><button class="say" data-say="金魚" aria-label="발음 듣기">🔊</button><br><span class="m">금붕어</span></li><li><span class="w"><ruby>靴箱<rt>くつばこ</rt></ruby></span> <span class="lv">N2</span><button class="say" data-say="靴箱" aria-label="발음 듣기">🔊</button><br><span class="m">신발장 (현관·학교의 신발 넣는 곳)</span></li><li><span class="w"><ruby>中<rt>なか</rt></ruby></span> <span class="lv">N5</span><button class="say" data-say="中" aria-label="발음 듣기">🔊</button><br><span class="m">안, 속</span></li><li><span class="w"><ruby>隠<rt>かく</rt></ruby>す</span> <span class="lv">N3</span><button class="say" data-say="隠す" aria-label="발음 듣기">🔊</button><br><span class="m">숨기다 (타동사. 隠{かく}れる는 '숨다')</span></li><li><span class="w"><ruby>林檎<rt>りんご</rt></ruby></span> <span class="lv">N5</span><button class="say" data-say="林檎" aria-label="발음 듣기">🔊</button><br><span class="m">사과 (보통 りんご로 씀)</span></li><li><span class="w"><ruby>萎<rt>しな</rt></ruby>びる</span> <span class="lv">N1</span><button class="say" data-say="萎びる" aria-label="발음 듣기">🔊</button><br><span class="m">시들어 쭈글쭈글해지다 (수분이 빠져 오그라듦)</span></li><li><span class="w"><ruby>君<rt>きみ</rt></ruby></span> <span class="lv">N4</span><button class="say" data-say="君" aria-label="발음 듣기">🔊</button><br><span class="m">너 (가사에서 자주 쓰는 2인칭)</span></li><li><span class="w"><ruby>肌<rt>はだ</rt></ruby></span> <span class="lv">N3</span><button class="say" data-say="肌" aria-label="발음 듣기">🔊</button><br><span class="m">피부, 살결</span></li><li><span class="w"><ruby>残<rt>のこ</rt></ruby>る</span> <span class="lv">N4</span><button class="say" data-say="残る" aria-label="발음 듣기">🔊</button><br><span class="m">남다 (자동사. 残{のこ}す는 '남기다')</span></li><li><span class="w"><ruby>傷跡<rt>きずあと</rt></ruby></span> <span class="lv">N2</span><button class="say" data-say="傷跡" aria-label="발음 듣기">🔊</button><br><span class="m">흉터, 상처 자국</span></li><li><span class="w"><ruby>犬<rt>いぬ</rt></ruby></span> <span class="lv">N5</span><button class="say" data-say="犬" aria-label="발음 듣기">🔊</button><br><span class="m">개</span></li><li><span class="w">〜のように</span> <span class="lv">N4</span><button class="say" data-say="〜のように" aria-label="발음 듣기">🔊</button><br><span class="m">~처럼</span></li><li><span class="w"><ruby>泳<rt>およ</rt></ruby>ぐ</span> <span class="lv">N5</span><button class="say" data-say="泳ぐ" aria-label="발음 듣기">🔊</button><br><span class="m">헤엄치다, 수영하다</span></li><li><span class="w"><ruby>迷子<rt>まいご</rt></ruby></span> <span class="lv">N3</span><button class="say" data-say="迷子" aria-label="발음 듣기">🔊</button><br><span class="m">미아, 길 잃은 아이 (불규칙 읽기)</span></li></ul></div>
+    <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">た형 + 명사 (연체 수식)</span><br><span class="m"><ruby>錆<rt>さ</rt></ruby>びたプール(녹슨 수영장), <ruby>隠<rt>かく</rt></ruby>した<ruby>林檎<rt>りんご</rt></ruby>(숨긴 사과), <ruby>萎<rt>しな</rt></ruby>びた<ruby>君<rt>きみ</rt></ruby>(시든 너). 과거형이 명사를 꾸며 '~한 상태의'라는 뜻이 됨</span><div class="ex"><span class="ex-jp"><ruby>割<rt>わ</rt></ruby>れた<ruby>窓<rt>まど</rt></ruby>を<ruby>直<rt>なお</rt></ruby>した。</span><span class="ex-kr">깨진 창문을 고쳤다.</span></div></li><li><span class="w">수동형 <ruby>放<rt>はな</rt></ruby>たれる + ていく</span><br><span class="m"><ruby>放<rt>はな</rt></ruby>つ(놓아주다)의 수동 <ruby>放<rt>はな</rt></ruby>たれる(풀려나다) + ていく(멀어져 가다). 금붕어가 누군가에게 풀려나 사라져 가는 장면</span><div class="ex"><span class="ex-jp"><ruby>鳥<rt>とり</rt></ruby>が<ruby>空<rt>そら</rt></ruby>に<ruby>放<rt>はな</rt></ruby>たれた。</span><span class="ex-kr">새가 하늘로 풀려났다.</span></div></li><li><span class="w">자동사·타동사 짝</span><br><span class="m"><ruby>隠<rt>かく</rt></ruby>す(숨기다)/<ruby>隠<rt>かく</rt></ruby>れる(숨다), <ruby>残<rt>のこ</rt></ruby>す(남기다)/<ruby>残<rt>のこ</rt></ruby>る(남다). 이 가사에선 <ruby>林檎<rt>りんご</rt></ruby>を<ruby>隠<rt>かく</rt></ruby>した(타동), <ruby>傷跡<rt>きずあと</rt></ruby>が<ruby>残<rt>のこ</rt></ruby>る(자동)</span></li><li><span class="w">〜のように + 동사</span><br><span class="m">명사 + のように = ~처럼 (방식). <ruby>犬<rt>いぬ</rt></ruby>のように<ruby>泳<rt>およ</rt></ruby>いだ = 개처럼 헤엄쳤다</span><div class="ex"><span class="ex-jp"><ruby>子<rt>こ</rt></ruby>どものように<ruby>笑<rt>わら</rt></ruby>った。</span><span class="ex-kr">아이처럼 웃었다.</span></div></li><li><span class="w">명사 나열 (체언 종지)</span><br><span class="m">4줄 모두 명사(<ruby>金魚<rt>きんぎょ</rt></ruby>·<ruby>林檎<rt>りんご</rt></ruby>·<ruby>傷跡<rt>きずあと</rt></ruby>·<ruby>迷子<rt>まいご</rt></ruby>)로 끝나요. 낯설고 불안한 이미지를 사진처럼 이어 붙이는 구성</span></li></ul></div>
+  </div>
+</section>
+<section class="stanza">
+  <div class="stanza-label">브릿지</div>
+  <div class="line-block"><div class="jp-line">どこにいるの (ここにいるよ)</div><button class="say" data-say="どこにいるの (ここにいるよ)" aria-label="이 줄 듣기">🔊</button><div class="kr-line">어디 있어? (여기 있어)</div></div><div class="line-block"><div class="jp-line"><ruby>何<rt>なに</rt></ruby>をしているの (ずっと<ruby>見<rt>み</rt></ruby>てるよ)</div><button class="say" data-say="何をしているの (ずっと見てるよ)" aria-label="이 줄 듣기">🔊</button><div class="kr-line">뭐 하고 있어? (계속 보고 있어)</div></div><div class="line-block"><div class="jp-line">この<ruby>世<rt>よ</rt></ruby>を<ruby>間違<rt>まちが</rt></ruby>いで<ruby>満<rt>み</rt></ruby>たそう</div><button class="say" data-say="この世を間違いで満たそう" aria-label="이 줄 듣기">🔊</button><div class="kr-line">이 세상을 틀린 것으로 채워버리자</div><div class="line-note">💡 <ruby>世<rt>よ</rt></ruby>는 단독으로 쓰면 よ로 읽어요 (この<ruby>世<rt>よ</rt></ruby> = 이승, 이 세상). <ruby>世界<rt>せかい</rt></ruby>의 せ와 구별!</div></div><div class="line-block"><div class="jp-line"><ruby>側<rt>そば</rt></ruby>にいてよ <ruby>遊<rt>あそ</rt></ruby>びに<ruby>行<rt>い</rt></ruby>こうよ</div><button class="say" data-say="そばにいてよ 遊びに行こうよ" aria-label="이 줄 듣기">🔊</button><div class="kr-line">곁에 있어 줘, 놀러 가자</div></div><div class="line-block"><div class="jp-line">どこにいるの</div><button class="say" data-say="どこにいるの" aria-label="이 줄 듣기">🔊</button><div class="kr-line">어디에 있는 거야?</div></div>
+  <div class="notes">
+    <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w">どこ</span> <span class="lv">N5</span><button class="say" data-say="どこ" aria-label="발음 듣기">🔊</button><br><span class="m">어디</span></li><li><span class="w">ここ</span> <span class="lv">N5</span><button class="say" data-say="ここ" aria-label="발음 듣기">🔊</button><br><span class="m">여기</span></li><li><span class="w">いる</span> <span class="lv">N5</span><button class="say" data-say="いる" aria-label="발음 듣기">🔊</button><br><span class="m">(사람·동물이) 있다</span></li><li><span class="w">ずっと</span> <span class="lv">N4</span><button class="say" data-say="ずっと" aria-label="발음 듣기">🔊</button><br><span class="m">계속, 쭉</span></li><li><span class="w"><ruby>見<rt>み</rt></ruby>る</span> <span class="lv">N5</span><button class="say" data-say="見る" aria-label="발음 듣기">🔊</button><br><span class="m">보다</span></li><li><span class="w">この<ruby>世<rt>よ</rt></ruby></span> <span class="lv">N2</span><button class="say" data-say="この世" aria-label="발음 듣기">🔊</button><br><span class="m">이 세상, 이승 (あの世{よ} = 저승)</span></li><li><span class="w"><ruby>間違<rt>まちが</rt></ruby>い</span> <span class="lv">N4</span><button class="say" data-say="間違い" aria-label="발음 듣기">🔊</button><br><span class="m">잘못, 틀림, 실수</span></li><li><span class="w"><ruby>満<rt>み</rt></ruby>たす</span> <span class="lv">N2</span><button class="say" data-say="満たす" aria-label="발음 듣기">🔊</button><br><span class="m">채우다 (문어적. 가득 차게 하다)</span></li><li><span class="w"><ruby>側<rt>そば</rt></ruby></span> <span class="lv">N4</span><button class="say" data-say="そば" aria-label="발음 듣기">🔊</button><br><span class="m">곁, 옆 (보통 そば로 씀)</span></li><li><span class="w"><ruby>遊<rt>あそ</rt></ruby>ぶ</span> <span class="lv">N5</span><button class="say" data-say="遊ぶ" aria-label="발음 듣기">🔊</button><br><span class="m">놀다</span></li></ul></div>
+    <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">〜の? (의문)</span><br><span class="m">どこにいるの? / <ruby>何<rt>なに</rt></ruby>をしているの? 문말의 の를 올려 말하면 부드러운 질문. 친한 사이 말투</span></li><li><span class="w">〜てる (〜ている 축약)</span><br><span class="m"><ruby>見<rt>み</rt></ruby>ている → <ruby>見<rt>み</rt></ruby>てる. 회화·가사에서 い가 빠짐. 반대로 <ruby>何<rt>なに</rt></ruby>をしているの는 축약하지 않은 형태</span></li><li><span class="w">〜よ</span><br><span class="m">상대가 모르는 정보를 알려 줄 때 붙는 종조사. ここにいるよ = '(나) 여기 있어'</span></li><li><span class="w">의지형 〜そう / 〜こう</span><br><span class="m"><ruby>満<rt>み</rt></ruby>たす → <ruby>満<rt>み</rt></ruby>たそう, <ruby>行<rt>い</rt></ruby>く → <ruby>行<rt>い</rt></ruby>こう. '~하자/~해야지' (권유·의지). 5단 동사는 끝 음을 お단 + う로</span><div class="ex"><span class="ex-jp"><ruby>一緒<rt>いっしょ</rt></ruby>に<ruby>帰<rt>かえ</rt></ruby>ろう。</span><span class="ex-kr">같이 돌아가자.</span></div></li><li><span class="w">〜で<ruby>満<rt>み</rt></ruby>たす</span><br><span class="m">~으로 채우다. 채우는 재료에 で. <ruby>間違<rt>まちが</rt></ruby>いで<ruby>満<rt>み</rt></ruby>たそう = 잘못으로 가득 채우자</span><div class="ex"><span class="ex-jp">コップを<ruby>水<rt>みず</rt></ruby>で<ruby>満<rt>み</rt></ruby>たす。</span><span class="ex-kr">컵을 물로 채우다.</span></div></li><li><span class="w">〜てよ</span><br><span class="m">て형(부탁) + よ. '~해 줘'를 조르듯 강조. <ruby>側<rt>そば</rt></ruby>にいてよ = 곁에 있어 줘</span></li><li><span class="w">ます형 + に<ruby>行<rt>い</rt></ruby>く</span><br><span class="m">~하러 가다 (목적). <ruby>遊<rt>あそ</rt></ruby>び + に + <ruby>行<rt>い</rt></ruby>こう = 놀러 가자. 후렴의 <ruby>会<rt>あ</rt></ruby>いにきて와 같은 구조</span></li></ul></div>
+  </div>
+</section>
+<section class="stanza">
+  <div class="stanza-label">후렴 2</div>
+  <div class="line-block"><div class="jp-line"><ruby>硝子<rt>ガラス</rt></ruby>の<ruby>上<rt>うえ</rt></ruby>を<ruby>裸足<rt>はだし</rt></ruby>のまま<ruby>歩<rt>ある</rt></ruby>く</div><button class="say" data-say="硝子の上を裸足のまま歩く" aria-label="이 줄 듣기">🔊</button><div class="kr-line">유리 위를 맨발인 채로 걸어가</div></div><div class="line-block"><div class="jp-line"><ruby>痛<rt>いた</rt></ruby>むごとに<ruby>血<rt>ち</rt></ruby>が<ruby>流<rt>なが</rt></ruby>れて<ruby>落<rt>お</rt></ruby>ちていく</div><button class="say" data-say="痛むごとに血が流れて落ちていく" aria-label="이 줄 듣기">🔊</button><div class="kr-line">아플 때마다 피가 흘러 내려가</div></div><div class="line-block"><div class="jp-line">お<ruby>願<rt>ねが</rt></ruby>い その<ruby>赤<rt>あか</rt></ruby>い<ruby>足跡<rt>あしあと</rt></ruby>を<ruby>辿<rt>たど</rt></ruby>って</div><button class="say" data-say="お願い その赤いあしあとを辿って" aria-label="이 줄 듣기">🔊</button><div class="kr-line">부탁이야, 그 붉은 발자국을 따라서</div></div><div class="line-block"><div class="jp-line"><ruby>会<rt>あ</rt></ruby>いにきて</div><button class="say" data-say="会いにきて" aria-label="이 줄 듣기">🔊</button><div class="kr-line">만나러 와줘</div></div>
+  <div class="notes">
+    <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w">(후렴 1과 동일)</span><br><span class="m">위 후렴 1의 단어 참고</span></li></ul></div>
+    <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">후렴 1과 동일</span><br><span class="m">가사가 후렴 1과 완전히 같아요. 브릿지의 '어디 있어?' 다음에 다시 나오면서 '발자국을 따라 만나러 와 줘'가 브릿지의 질문에 대한 대답처럼 들려요</span></li></ul></div>
+  </div>
+</section>
+<section class="stanza">
+  <div class="stanza-label">아웃트로</div>
+  <div class="line-block"><div class="jp-line">まるでこの<ruby>世界<rt>せかい</rt></ruby>で<ruby>二人<rt>ふたり</rt></ruby>だけみたいだね</div><button class="say" data-say="まるでこの世界で二人だけみたいだね" aria-label="이 줄 듣기">🔊</button><div class="kr-line">마치 이 세상에 우리 둘뿐인 것 같아</div></div><div class="line-block"><div class="jp-line">なんて<ruby>少<rt>すこ</rt></ruby>しだけ<ruby>夢<rt>ゆめ</rt></ruby>をみてしまっただけ</div><button class="say" data-say="なんて少しだけ夢をみてしまっただけ" aria-label="이 줄 듣기">🔊</button><div class="kr-line">라며 조금 꿈을 꾸고 말았을 뿐이야</div></div>
+  <div class="notes">
+    <div class="note-card"><h4>주요 단어</h4><ul><li><span class="w">(인트로와 동일)</span><br><span class="m">위 인트로의 단어 참고</span></li></ul></div>
+    <div class="note-card"><h4>문법 포인트</h4><ul><li><span class="w">인트로와 동일</span><br><span class="m">처음 두 줄이 그대로 돌아와 곡 전체가 '잠깐 꾼 꿈'이었다는 액자 구조가 돼요. この<ruby>世界<rt>せかい</rt></ruby>(せかい)와 브릿지의 この<ruby>世<rt>よ</rt></ruby>(よ) 읽기 차이도 다시 확인해 보세요</span></li></ul></div>
+  </div>
+</section>
+
+  </div>
+
+  <div class="section-head">
+    <div class="eyebrow">FLASHCARDS</div>
+    <h2>단어 플래시카드</h2>
+  </div>
+  <div class="flash-wrap" id="flash-wrap">
+    <div class="row">
+      <select class="ui-sel" id="fc-filter" aria-label="카드 범위"></select>
+      <button class="ui-btn small" id="fc-dir">일 → 한</button>
+      <button class="ui-btn small" id="fc-shuffle">🔀 섞기</button>
+      <button class="ui-btn small" id="btn-copy-vocab">📋 단어+뜻 복사</button>
+    </div>
+    <div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="카드 뒤집기">
+      <div class="flash-inner">
+        <div class="flash-face flash-front" id="fc-front"></div>
+        <div class="flash-face flash-back" id="fc-back"></div>
+      </div>
+    </div>
+    <div class="row">
+      <button class="ui-btn small" id="fc-prev" aria-label="이전 카드">←</button>
+      <span class="flash-count" id="fc-count"></span>
+      <button class="ui-btn small" id="fc-next" aria-label="다음 카드">→</button>
+    </div>
+    <div class="row">
+      <button class="ui-btn" id="fc-no">✗ 몰라요</button>
+      <button class="ui-btn" id="fc-yes">✓ 알아요</button>
+    </div>
+    <div class="flash-progress" id="fc-progress"></div>
+  </div>
+
+  <div class="section-head">
+    <div class="eyebrow">QUIZ</div>
+    <h2>단어 · 문법 퀴즈</h2>
+  </div>
+  <div id="quiz-container"></div>
+  <div class="quiz-footer">
+    <div id="score-box"></div>
+    <div id="best-box"></div>
+    <div class="row" style="margin-top:8px;">
+      <button class="ui-btn small" id="qz-retry" hidden>틀린 문제만 다시 풀기</button>
+      <button class="ui-btn small" id="qz-reset">처음부터 다시</button>
+    </div>
+  </div>
+</main>
+
+<footer>
+  硝子の上を裸足のまま — 가사 학습 자료 · 개인 학습용<br>
+  <span id="tts-note"></span>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+const CFG = {"slug": "garasu-hadashi-lyrics", "fx": "stars", "seed": 11, "copy": "[인트로]\nまるでこの世界(せかい)で二人(ふたり)だけみたいだね\n마치 이 세상에 우리 둘뿐인 것 같아\n\nなんて少(すこ)しだけ夢(ゆめ)をみてしまっただけ\n라며 조금 꿈을 꾸고 말았을 뿐이야\n\n[1절]\nつま先(さき)に月明(つきあ)かり\n발끝에 달빛\n\n花束(はなたば)の香(かお)り\n꽃다발의 향기\n\n指(ゆび)に触(ふ)れる指(ゆび)\n손가락과 손가락이 맞닿아\n\n[프리코러스]\nさよなら もう行(い)かなきゃ\n안녕, 이제 가야만 해\n\n何(なに)もかも忘(わす)れて\n모두 다 잊어버려\n\n[후렴 1]\n硝子(ガラス)の上(うえ)を裸足(はだし)のまま歩(ある)く\n유리 위를 맨발인 채로 걸어가\n\n痛(いた)むごとに血(ち)が流(なが)れて落(お)ちていく\n아플 때마다 피가 흘러 내려가\n\nお願(ねが)い その赤(あか)い足跡(あしあと)を辿(たど)って\n부탁이야, 그 붉은 발자국을 따라서\n\n会(あ)いにきて\n만나러 와줘\n\n[2절]\n錆(さ)びたプールに放(はな)たれていく金魚(きんぎょ)\n녹슨 수영장에 풀려나는 금붕어\n\n靴箱(くつばこ)の中(なか)隠(かく)した林檎(りんご)\n신발장 속에 숨겨둔 사과\n\n萎(しな)びた君(きみ)の肌(はだ)に残(のこ)る傷跡(きずあと)\n쭈그러든 너의 피부에 남은 흉터\n\n犬(いぬ)のように泳(およ)いだ迷子(まいご)\n개처럼 헤엄친 미아\n\n[브릿지]\nどこにいるの (ここにいるよ)\n어디 있어? (여기 있어)\n\n何(なに)をしているの (ずっと見(み)てるよ)\n뭐 하고 있어? (계속 보고 있어)\n\nこの世(よ)を間違(まちが)いで満(み)たそう\n이 세상을 틀린 것으로 채워버리자\n\n側(そば)にいてよ 遊(あそ)びに行(い)こうよ\n곁에 있어 줘, 놀러 가자\n\nどこにいるの\n어디에 있는 거야?\n\n[후렴 2]\n硝子(ガラス)の上(うえ)を裸足(はだし)のまま歩(ある)く\n유리 위를 맨발인 채로 걸어가\n\n痛(いた)むごとに血(ち)が流(なが)れて落(お)ちていく\n아플 때마다 피가 흘러 내려가\n\nお願(ねが)い その赤(あか)い足跡(あしあと)を辿(たど)って\n부탁이야, 그 붉은 발자국을 따라서\n\n会(あ)いにきて\n만나러 와줘\n\n[아웃트로]\nまるでこの世界(せかい)で二人(ふたり)だけみたいだね\n마치 이 세상에 우리 둘뿐인 것 같아\n\nなんて少(すこ)しだけ夢(ゆめ)をみてしまっただけ\n라며 조금 꿈을 꾸고 말았을 뿐이야\n"};
+const FLASH = [["まるで", "마치 (뒤에 みたい·ようだ와 짝을 이룸)", "まるで", "N3", "まるで"], ["<ruby>世界<rt>せかい<\/rt><\/ruby>", "세계, 세상", "世界", "N5", "世界(せかい)"], ["<ruby>二人<rt>ふたり<\/rt><\/ruby>", "두 사람, 둘 (불규칙 읽기)", "二人", "N5", "二人(ふたり)"], ["〜だけ", "~만, ~뿐", "〜だけ", "N5", "〜だけ"], ["<ruby>少<rt>すこ<\/rt><\/ruby>し", "조금, 약간", "少し", "N5", "少(すこ)し"], ["<ruby>夢<rt>ゆめ<\/rt><\/ruby>", "꿈", "夢", "N4", "夢(ゆめ)"], ["<ruby>夢<rt>ゆめ<\/rt><\/ruby>をみる", "꿈을 꾸다 (見{み}る를 씀. する가 아님)", "夢をみる", "N4", "夢(ゆめ)をみる"], ["つま<ruby>先<rt>さき<\/rt><\/ruby>", "발끝 (爪先로도 씀)", "つま先", "N2", "つま先(さき)"], ["<ruby>月明<rt>つきあ<\/rt><\/ruby>かり", "달빛 (달이 비추는 밝음)", "つきあかり", "N2", "月明(つきあ)かり"], ["<ruby>明<rt>あ<\/rt><\/ruby>かり", "빛, 불빛", "明かり", "N3", "明(あ)かり"], ["<ruby>花束<rt>はなたば<\/rt><\/ruby>", "꽃다발", "花束", "N2", "花束(はなたば)"], ["<ruby>香<rt>かお<\/rt><\/ruby>り", "향기 (좋은 냄새. 匂{にお}い보다 고운 말)", "香り", "N3", "香(かお)り"], ["<ruby>指<rt>ゆび<\/rt><\/ruby>", "손가락", "指", "N4", "指(ゆび)"], ["<ruby>触<rt>ふ<\/rt><\/ruby>れる", "(살짝) 닿다, 접촉하다", "触れる", "N3", "触(ふ)れる"], ["さよなら", "안녕 (작별 인사. さようなら의 구어형)", "さよなら", "N5", "さよなら"], ["もう", "이제, 벌써", "もう", "N5", "もう"], ["<ruby>行<rt>い<\/rt><\/ruby>く", "가다", "行く", "N5", "行(い)く"], ["<ruby>何<rt>なに<\/rt><\/ruby>もかも", "무엇이든 모두, 전부 다", "何もかも", "N2", "何(なに)もかも"], ["<ruby>忘<rt>わす<\/rt><\/ruby>れる", "잊다", "忘れる", "N5", "忘(わす)れる"], ["<ruby>硝子<rt>ガラス<\/rt><\/ruby>", "유리 (한자 표기)", "硝子", "N1", "硝子(ガラス)"], ["<ruby>上<rt>うえ<\/rt><\/ruby>", "위", "上", "N5", "上(うえ)"], ["<ruby>裸足<rt>はだし<\/rt><\/ruby>", "맨발 (불규칙 읽기)", "裸足", "N2", "裸足(はだし)"], ["〜まま", "~한 채로, ~인 그대로", "〜まま", "N3", "〜まま"], ["<ruby>歩<rt>ある<\/rt><\/ruby>く", "걷다", "歩く", "N5", "歩(ある)く"], ["<ruby>痛<rt>いた<\/rt><\/ruby>む", "아프다, 쑤시다 (동사. 痛{いた}い는 형용사)", "痛む", "N3", "痛(いた)む"], ["〜ごとに", "~할 때마다, ~마다", "〜ごとに", "N3", "〜ごとに"], ["<ruby>血<rt>ち<\/rt><\/ruby>", "피", "血", "N3", "血(ち)"], ["<ruby>流<rt>なが<\/rt><\/ruby>れる", "흐르다", "流れる", "N4", "流(なが)れる"], ["<ruby>落<rt>お<\/rt><\/ruby>ちる", "떨어지다", "落ちる", "N4", "落(お)ちる"], ["お<ruby>願<rt>ねが<\/rt><\/ruby>い", "부탁 (お願{ねが}い 단독으로 '부탁이야')", "お願い", "N5", "お願(ねが)い"], ["<ruby>赤<rt>あか<\/rt><\/ruby>い", "빨갛다, 붉다", "赤い", "N5", "赤(あか)い"], ["<ruby>足跡<rt>あしあと<\/rt><\/ruby>", "발자국", "あしあと", "N2", "足跡(あしあと)"], ["<ruby>辿<rt>たど<\/rt><\/ruby>る", "(길·자취를) 더듬어 따라가다", "辿る", "N1", "辿(たど)る"], ["<ruby>会<rt>あ<\/rt><\/ruby>う", "만나다 (〜に会{あ}う)", "会う", "N5", "会(あ)う"], ["<ruby>錆<rt>さ<\/rt><\/ruby>びる", "녹슬다 (錆{さ}び = 녹)", "錆びる", "N1", "錆(さ)びる"], ["プール", "수영장 (pool)", "プール", "N5", "プール"], ["<ruby>放<rt>はな<\/rt><\/ruby>つ", "놓아주다, 풀어놓다 (문어적)", "はなつ", "N1", "放(はな)つ"], ["<ruby>金魚<rt>きんぎょ<\/rt><\/ruby>", "금붕어", "金魚", "N2", "金魚(きんぎょ)"], ["<ruby>靴箱<rt>くつばこ<\/rt><\/ruby>", "신발장 (현관·학교의 신발 넣는 곳)", "靴箱", "N2", "靴箱(くつばこ)"], ["<ruby>中<rt>なか<\/rt><\/ruby>", "안, 속", "中", "N5", "中(なか)"], ["<ruby>隠<rt>かく<\/rt><\/ruby>す", "숨기다 (타동사. 隠{かく}れる는 '숨다')", "隠す", "N3", "隠(かく)す"], ["<ruby>林檎<rt>りんご<\/rt><\/ruby>", "사과 (보통 りんご로 씀)", "林檎", "N5", "林檎(りんご)"], ["<ruby>萎<rt>しな<\/rt><\/ruby>びる", "시들어 쭈글쭈글해지다 (수분이 빠져 오그라듦)", "萎びる", "N1", "萎(しな)びる"], ["<ruby>君<rt>きみ<\/rt><\/ruby>", "너 (가사에서 자주 쓰는 2인칭)", "君", "N4", "君(きみ)"], ["<ruby>肌<rt>はだ<\/rt><\/ruby>", "피부, 살결", "肌", "N3", "肌(はだ)"], ["<ruby>残<rt>のこ<\/rt><\/ruby>る", "남다 (자동사. 残{のこ}す는 '남기다')", "残る", "N4", "残(のこ)る"], ["<ruby>傷跡<rt>きずあと<\/rt><\/ruby>", "흉터, 상처 자국", "傷跡", "N2", "傷跡(きずあと)"], ["<ruby>犬<rt>いぬ<\/rt><\/ruby>", "개", "犬", "N5", "犬(いぬ)"], ["〜のように", "~처럼", "〜のように", "N4", "〜のように"], ["<ruby>泳<rt>およ<\/rt><\/ruby>ぐ", "헤엄치다, 수영하다", "泳ぐ", "N5", "泳(およ)ぐ"], ["<ruby>迷子<rt>まいご<\/rt><\/ruby>", "미아, 길 잃은 아이 (불규칙 읽기)", "迷子", "N3", "迷子(まいご)"], ["どこ", "어디", "どこ", "N5", "どこ"], ["ここ", "여기", "ここ", "N5", "ここ"], ["いる", "(사람·동물이) 있다", "いる", "N5", "いる"], ["ずっと", "계속, 쭉", "ずっと", "N4", "ずっと"], ["<ruby>見<rt>み<\/rt><\/ruby>る", "보다", "見る", "N5", "見(み)る"], ["この<ruby>世<rt>よ<\/rt><\/ruby>", "이 세상, 이승 (あの世{よ} = 저승)", "この世", "N2", "この世(よ)"], ["<ruby>間違<rt>まちが<\/rt><\/ruby>い", "잘못, 틀림, 실수", "間違い", "N4", "間違(まちが)い"], ["<ruby>満<rt>み<\/rt><\/ruby>たす", "채우다 (문어적. 가득 차게 하다)", "満たす", "N2", "満(み)たす"], ["<ruby>側<rt>そば<\/rt><\/ruby>", "곁, 옆 (보통 そば로 씀)", "そば", "N4", "側(そば)"], ["<ruby>遊<rt>あそ<\/rt><\/ruby>ぶ", "놀다", "遊ぶ", "N5", "遊(あそ)ぶ"]];   /* [jpHtml, kr, sayText, level, plainText] */
+const QUIZ = [{"q": "「<ruby>触<rt>ふ<\/rt><\/ruby>れる」의 뜻은?", "opts": ["(살짝) 닿다", "흔들다", "떨어지다", "부르다"], "answer": 0, "explain": "<ruby>触<rt>ふ<\/rt><\/ruby>れる는 살짝 닿다·접촉하다. <ruby>指<rt>ゆび<\/rt><\/ruby>に<ruby>触<rt>ふ<\/rt><\/ruby>れる<ruby>指<rt>ゆび<\/rt><\/ruby> = 손가락에 닿는 손가락."}, {"q": "「<ruby>足跡<rt>あしあと<\/rt><\/ruby>」의 뜻은?", "opts": ["발끝", "발자국", "발목", "맨발"], "answer": 1, "explain": "<ruby>足<rt>あし<\/rt><\/ruby>(발)+<ruby>跡<rt>あと<\/rt><\/ruby>(자국) = 발자국. 발끝은 つま<ruby>先<rt>さき<\/rt><\/ruby>, 맨발은 <ruby>裸足<rt>はだし<\/rt><\/ruby>."}, {"q": "「<ruby>辿<rt>たど<\/rt><\/ruby>る」의 뜻은?", "opts": ["(자취를) 더듬어 따라가다", "지워 버리다", "되돌아가다", "뛰어넘다"], "answer": 0, "explain": "<ruby>辿<rt>たど<\/rt><\/ruby>る는 길이나 흔적을 따라가는 것. <ruby>赤<rt>あか<\/rt><\/ruby>い<ruby>足跡<rt>あしあと<\/rt><\/ruby>を<ruby>辿<rt>たど<\/rt><\/ruby>って = 붉은 발자국을 따라."}, {"q": "「<ruby>萎<rt>しな<\/rt><\/ruby>びる」의 뜻은?", "opts": ["부풀어 오르다", "차갑게 식다", "시들어 쭈글쭈글해지다", "반짝이다"], "answer": 2, "explain": "수분이 빠져 오그라드는 것. <ruby>萎<rt>しな<\/rt><\/ruby>びた<ruby>君<rt>きみ<\/rt><\/ruby>の<ruby>肌<rt>はだ<\/rt><\/ruby> = 쭈그러든 너의 피부."}, {"q": "「<ruby>錆<rt>さ<\/rt><\/ruby>びた」의 뜻은?", "opts": ["깨진", "텅 빈", "녹슨", "젖은"], "answer": 2, "explain": "<ruby>錆<rt>さ<\/rt><\/ruby>びる(녹슬다)의 た형이 명사를 꾸며 '녹슨'. <ruby>錆<rt>さ<\/rt><\/ruby>びたプール = 녹슨 수영장."}, {"q": "「<ruby>迷子<rt>まいご<\/rt><\/ruby>」의 뜻은?", "opts": ["고아원", "막내", "쌍둥이", "미아, 길 잃은 아이"], "answer": 3, "explain": "<ruby>迷<rt>まよ<\/rt><\/ruby>う(헤매다)+<ruby>子<rt>こ<\/rt><\/ruby>. 읽기가 まいご로 불규칙해요."}, {"q": "「<ruby>香<rt>かお<\/rt><\/ruby>り」와 「<ruby>匂<rt>にお<\/rt><\/ruby>い」의 차이로 맞는 것은?", "opts": ["<ruby>香<rt>かお<\/rt><\/ruby>り는 나쁜 냄새에만 쓴다", "<ruby>香<rt>かお<\/rt><\/ruby>り는 좋은 향기, <ruby>匂<rt>にお<\/rt><\/ruby>い는 냄새 전반", "둘은 완전히 같은 말이다", "<ruby>匂<rt>にお<\/rt><\/ruby>い는 꽃에만 쓴다"], "answer": 1, "explain": "<ruby>花束<rt>はなたば<\/rt><\/ruby>の<ruby>香<rt>かお<\/rt><\/ruby>り처럼 좋은 향에는 <ruby>香<rt>かお<\/rt><\/ruby>り가 어울려요. <ruby>匂<rt>にお<\/rt><\/ruby>い는 좋든 나쁘든 쓸 수 있어요."}, {"q": "「<ruby>何<rt>なに<\/rt><\/ruby>もかも」의 뜻은?", "opts": ["아무것도 (~않다)", "무엇 때문에", "무엇인가", "모조리 전부"], "answer": 3, "explain": "<ruby>何<rt>なに<\/rt><\/ruby>もかも는 긍정문에서 '전부 다'. '아무것도 ~않다'는 <ruby>何<rt>なに<\/rt><\/ruby>も+부정이에요."}, {"q": "「硝子」는 이 가사에서 어떻게 읽나요?", "opts": ["しょうし", "はり", "ひかり", "ガラス"], "answer": 3, "explain": "硝子는 '유리'를 한자로 쓴 표기로 ガラス라고 읽어요."}, {"q": "「裸足」의 읽기는?", "opts": ["はだかあし", "はだし", "はだあし", "らそく"], "answer": 1, "explain": "裸足는 はだし로 읽는 숙자훈(불규칙 읽기)이에요."}, {"q": "브릿지의 「この世を」에서 「世」는 어떻게 읽나요?", "opts": ["よ", "せい", "せ", "せかい"], "answer": 0, "explain": "世가 단독으로 쓰이면 よ (この<ruby>世<rt>よ<\/rt><\/ruby> = 이 세상). <ruby>世界<rt>せかい<\/rt><\/ruby>처럼 한자어 안에서는 せ로 읽어요."}, {"q": "「月明かり」의 읽기는?", "opts": ["がつあかり", "つきあかり", "つきめいかり", "げつめいかり"], "answer": 1, "explain": "<ruby>月<rt>つき<\/rt><\/ruby>(달)+<ruby>明<rt>あ<\/rt><\/ruby>かり(빛) = つきあかり. 훈독끼리 이어진 말이에요."}, {"q": "「<ruby>行<rt>い<\/rt><\/ruby>かなきゃ」는 무엇의 축약인가요?", "opts": ["<ruby>行<rt>い<\/rt><\/ruby>かなかった", "<ruby>行<rt>い<\/rt><\/ruby>かなければならない", "<ruby>行<rt>い<\/rt><\/ruby>かないで", "<ruby>行<rt>い<\/rt><\/ruby>こうとする"], "answer": 1, "explain": "〜なければ(ならない)가 〜なきゃ로 줄어든 것. '가야만 해'."}, {"q": "「<ruby>痛<rt>いた<\/rt><\/ruby>むごとに」의 「〜ごとに」의 뜻은?", "opts": ["~하더라도", "~하기 전에", "~하는 대신에", "~할 때마다"], "answer": 3, "explain": "동사 사전형 + ごとに = ~할 때마다. 〜たびに와 비슷해요."}, {"q": "「<ruby>裸足<rt>はだし<\/rt><\/ruby>のまま」의 「〜のまま」의 뜻은?", "opts": ["~처럼", "~인 채로", "~하기 위해", "~뿐만 아니라"], "answer": 1, "explain": "상태가 바뀌지 않고 그대로 이어짐. 맨발인 채로 유리 위를 걷는 장면."}, {"q": "「<ruby>会<rt>あ<\/rt><\/ruby>いにきて」에서 「に」의 역할은?", "opts": ["시간 (~에)", "목적 (~하러)", "장소 (~에서)", "대상 (~에게)"], "answer": 1, "explain": "ます형 + に + <ruby>来<rt>く<\/rt><\/ruby>る/<ruby>行<rt>い<\/rt><\/ruby>く = ~하러 오다/가다. <ruby>遊<rt>あそ<\/rt><\/ruby>びに<ruby>行<rt>い<\/rt><\/ruby>こう도 같은 구조."}, {"q": "「<ruby>放<rt>はな<\/rt><\/ruby>たれていく」는 어떤 형태인가요?", "opts": ["사역형 + ていく", "의지형 + ていく", "수동형 + ていく", "가능형 + ている"], "answer": 2, "explain": "<ruby>放<rt>はな<\/rt><\/ruby>つ → <ruby>放<rt>はな<\/rt><\/ruby>たれる(수동, 풀려나다) + ていく(멀어져 가다)."}, {"q": "「<ruby>満<rt>み<\/rt><\/ruby>たそう」는 「<ruby>満<rt>み<\/rt><\/ruby>たす」의 어떤 형태인가요?", "opts": ["수동형", "명령형", "가능형", "의지형 (~하자)"], "answer": 3, "explain": "5단 동사 す → そう. <ruby>満<rt>み<\/rt><\/ruby>たそう = 채우자. <ruby>行<rt>い<\/rt><\/ruby>こう도 같은 의지형."}, {"q": "「<ruby>落<rt>お<\/rt><\/ruby>ちていく」의 「〜ていく」가 나타내는 것은?", "opts": ["가까이 다가오는 동작", "변화·이동이 계속 진행되어 멀어짐", "이미 끝난 동작의 결과", "미리 해 두는 동작"], "answer": 1, "explain": "〜ていく는 멀어지거나 계속 진행. 다가오는 쪽은 〜てくる예요."}, {"q": "「なんて<ruby>少<rt>すこ<\/rt><\/ruby>しだけ<ruby>夢<rt>ゆめ<\/rt><\/ruby>をみてしまっただけ」의 「なんて」는 무엇을 받나요?", "opts": ["뒤의 <ruby>夢<rt>ゆめ<\/rt><\/ruby>만", "의문 '무엇'", "감탄 '얼마나'", "앞 줄의 말·생각 전체 ('~라며')"], "answer": 3, "explain": "앞 줄 '마치 둘뿐인 것 같아'를 인용해 '…라며 꿈을 꿨을 뿐'이라고 낮추는 쓰임이에요."}, {"q": "「<ruby>指<rt>ゆび<\/rt><\/ruby>に（　）<ruby>指<rt>ゆび<\/rt><\/ruby>」에 들어갈 말은?", "opts": ["<ruby>隠<rt>かく<\/rt><\/ruby>す", "<ruby>残<rt>のこ<\/rt><\/ruby>る", "<ruby>触<rt>ふ<\/rt><\/ruby>れる", "<ruby>流<rt>なが<\/rt><\/ruby>れる"], "answer": 2, "explain": "손가락에 닿는 손가락 — <ruby>触<rt>ふ<\/rt><\/ruby>れる. 닿는 대상에 に를 써요."}, {"q": "「<ruby>靴箱<rt>くつばこ<\/rt><\/ruby>の<ruby>中<rt>なか<\/rt><\/ruby>（　）<ruby>林檎<rt>りんご<\/rt><\/ruby>」에 들어갈 말은?", "opts": ["<ruby>隠<rt>かく<\/rt><\/ruby>した", "<ruby>残<rt>のこ<\/rt><\/ruby>った", "<ruby>隠<rt>かく<\/rt><\/ruby>れた", "<ruby>泳<rt>およ<\/rt><\/ruby>いだ"], "answer": 0, "explain": "사과를 '숨긴' 것이므로 타동사 <ruby>隠<rt>かく<\/rt><\/ruby>す의 た형. <ruby>隠<rt>かく<\/rt><\/ruby>れた는 '숨은'이에요."}, {"q": "「この<ruby>世<rt>よ<\/rt><\/ruby>を<ruby>間違<rt>まちが<\/rt><\/ruby>い（　）<ruby>満<rt>み<\/rt><\/ruby>たそう」에 들어갈 조사는?", "opts": ["を", "が", "で", "へ"], "answer": 2, "explain": "채우는 재료에는 で. 〜で<ruby>満<rt>み<\/rt><\/ruby>たす = ~으로 채우다."}, {"q": "「<ruby>萎<rt>しな<\/rt><\/ruby>びた<ruby>君<rt>きみ<\/rt><\/ruby>の<ruby>肌<rt>はだ<\/rt><\/ruby>に（　）<ruby>傷跡<rt>きずあと<\/rt><\/ruby>」에 들어갈 말은?", "opts": ["<ruby>辿<rt>たど<\/rt><\/ruby>る", "<ruby>残<rt>のこ<\/rt><\/ruby>る", "<ruby>残<rt>のこ<\/rt><\/ruby>す", "<ruby>放<rt>はな<\/rt><\/ruby>つ"], "answer": 1, "explain": "흉터가 '남는' 것이므로 자동사 <ruby>残<rt>のこ<\/rt><\/ruby>る. <ruby>残<rt>のこ<\/rt><\/ruby>す는 '남기다'(타동사)."}];
+const $ = id => document.getElementById(id);
+
+/* ---------- storage (per page; survives reloads on GitHub Pages / any http(s) host) ---------- */
+const store = {
+  k: k => `jls:${CFG.slug}:${k}`,
+  get(k, d){ try{ const v = localStorage.getItem(this.k(k)); return v === null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(this.k(k), JSON.stringify(v)); }catch(e){} }
+};
+function rng(seed){ let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ t >>> 15, t | 1);
+  t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function toast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(t._h); t._h = setTimeout(()=>t.classList.remove('on'), 1500); }
+
+/* ---------- background effect ---------- */
+(function(){
+  const fx = CFG.fx, layer = $('fx'); if(!fx || fx === 'none') return;
+  const n = {snow:40, petals:22, rain:60, stars:70, glow:24}[fx] || 30;
+  for(let i=0;i<n;i++){
+    const p = document.createElement('div'); p.className = 'p ' + fx;
+    const s = fx === 'petals' ? 6+Math.random()*6 : fx === 'stars' ? 1+Math.random()*2.5 : fx === 'rain' ? 0 : 2+Math.random()*4;
+    p.style.width = s+'px'; p.style.height = (fx === 'rain' ? 14+Math.random()*20 : s)+'px';
+    p.style.left = Math.random()*100+'vw';
+    if(fx === 'stars') p.style.top = Math.random()*100+'vh';
+    p.style.setProperty('--drift', (Math.random()*80-40)+'px');
+    p.style.animationDuration = (fx === 'rain' ? 0.8+Math.random()*0.8 : fx === 'stars' ? 2+Math.random()*4 : 8+Math.random()*10)+'s';
+    p.style.animationDelay = (-Math.random()*10)+'s';
+    layer.appendChild(p);
+  }
+})();
+
+/* ---------- view toggles (remembered) ---------- */
+const VIEW = store.get('view', {furigana:true, kr:true, notes:true});
+function applyView(){
+  [['furigana','hide-furigana'],['kr','hide-kr'],['notes','hide-notes']].forEach(([k,cls])=>{
+    document.body.classList.toggle(cls, !VIEW[k]);
+    const b = $('btn-'+k); b.classList.toggle('active', VIEW[k]); b.setAttribute('aria-pressed', VIEW[k]);
+  });
+}
+['furigana','kr','notes'].forEach(k => $('btn-'+k).addEventListener('click', ()=>{ VIEW[k] = !VIEW[k]; store.set('view', VIEW); applyView(); }));
+applyView();
+
+/* ---------- memorization mode ---------- */
+const MEM = [
+  {key:'off',   label:'끔',        hint:''},
+  {key:'hide',  label:'가사 가리기', hint:'번역을 보고 일본어 가사를 떠올린 뒤, 흐린 줄을 탭하면 보여요.'},
+  {key:'blank', label:'단어 빈칸',  hint:'빈칸에 들어갈 단어를 떠올린 뒤, 빈칸을 탭하면 보여요.'}
+];
+let memIdx = 0;
+(function markBlanks(){
+  const r = rng(CFG.seed || 7);
+  document.querySelectorAll('.jp-line').forEach(line=>{
+    const rubies = [...line.querySelectorAll('ruby')]; if(!rubies.length) return;
+    let any = false;
+    rubies.forEach(rb=>{ if(r() < 0.5){ rb.classList.add('blank'); any = true; } });
+    if(!any) rubies[Math.floor(r()*rubies.length)].classList.add('blank');
+  });
+})();
+function setMem(i){
+  memIdx = i; const m = MEM[i];
+  document.body.classList.remove('mem-hide','mem-blank');
+  if(m.key !== 'off') document.body.classList.add('mem-'+m.key);
+  document.querySelectorAll('.line-block.revealed').forEach(e=>e.classList.remove('revealed'));
+  document.querySelectorAll('ruby.shown').forEach(e=>e.classList.remove('shown'));
+  $('btn-mem').textContent = '암기: ' + m.label;
+  $('btn-mem').classList.toggle('active', m.key !== 'off');
+  $('mem-hint').textContent = m.hint;
+}
+$('btn-mem').addEventListener('click', ()=> setMem((memIdx+1) % MEM.length));
+$('stanzas').addEventListener('click', e=>{
+  if(e.target.closest('.say')) return;
+  const mode = MEM[memIdx].key;
+  if(mode === 'hide'){ const lb = e.target.closest('.line-block'); if(lb && e.target.closest('.jp-line')) lb.classList.toggle('revealed'); }
+  if(mode === 'blank'){ const rb = e.target.closest('ruby.blank'); if(rb) rb.classList.add('shown'); }
+});
+
+/* ---------- speech (Web Speech API, ja-JP) ---------- */
+const TTS = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+let voice = null, rate = store.get('rate', 0.8);
+const RATES = [0.6, 0.8, 1.0];
+function pickVoice(){
+  const vs = speechSynthesis.getVoices().filter(v => /^ja/i.test(v.lang)); if(!vs.length) return;
+  const pref = ['Kyoko','O-ren','Otoya','Nanami','Google 日本語','Google'];
+  voice = pref.map(p => vs.find(v => v.name.includes(p))).find(Boolean) || vs[0];
+}
+function speak(text, btn){
+  if(!TTS || !text) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ja-JP'; u.rate = rate; if(voice) u.voice = voice;
+  document.querySelectorAll('.say.speaking').forEach(b=>b.classList.remove('speaking'));
+  if(btn){ btn.classList.add('speaking'); u.onend = u.onerror = ()=>btn.classList.remove('speaking'); }
+  speechSynthesis.speak(u);
+}
+if(TTS){
+  document.body.classList.add('tts');
+  pickVoice(); speechSynthesis.addEventListener && speechSynthesis.addEventListener('voiceschanged', pickVoice);
+  const rb = $('btn-rate'); rb.hidden = false;
+  const lab = ()=> rb.textContent = `🔊 ${rate}×`; lab();
+  rb.addEventListener('click', ()=>{ rate = RATES[(RATES.indexOf(rate)+1) % RATES.length]; store.set('rate', rate); lab(); });
+  if(/iPhone|iPad|iPod/.test(navigator.userAgent))
+    $('tts-note').textContent = 'iPhone/iPad에서는 브라우저가 기본 일본어 음성만 쓸 수 있어요 (고품질 Kyoko 음성은 웹페이지에서 선택 불가).';
+} else {
+  $('tts-note').textContent = '이 브라우저는 음성 합성을 지원하지 않아 발음 듣기 버튼이 숨겨졌어요.';
+}
+document.addEventListener('click', e=>{
+  const b = e.target.closest('.say'); if(!b) return;
+  e.stopPropagation(); e.preventDefault(); speak(b.dataset.say, b);
+}, true);
+
+/* ---------- clipboard ---------- */
+function copyText(text, btn){
+  const original = btn.textContent;
+  const done = ok => { btn.textContent = ok ? '복사됨! ✓' : '복사 실패'; setTimeout(()=>btn.textContent = original, 1600); };
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.setAttribute('readonly',''); ta.style.cssText = 'position:fixed;left:-9999px;top:0;';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  let ok = false; try{ ok = document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta);
+  if(ok) done(true);
+  else if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(()=>done(true), ()=>done(false));
+  else done(false);
+}
+$('btn-copy-lyrics').addEventListener('click', e=> copyText(CFG.copy, e.currentTarget));
+$('btn-copy-vocab').addEventListener('click', e=> copyText(FLASH.map(v => `${v[4]} - ${v[1].replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>')}`).join('\n'), e.currentTarget));
+
+/* ---------- flashcards ---------- */
+const FC = {
+  known: new Set(store.get('known', [])),
+  dir: store.get('dir', 'jk'), filter: store.get('filter', 'all'),
+  deck: [], pos: 0, swiped: false
+};
+(function buildFilter(){
+  const sel = $('fc-filter');
+  const levels = [...new Set(FLASH.map(f=>f[3]).filter(Boolean))].sort().reverse();
+  const opts = [['all','전체 카드'],['unknown','모르는 카드만']].concat(levels.map(l=>[l, `${l} 단어만`]));
+  sel.innerHTML = opts.map(([v,t])=>`<option value="${v}">${t}</option>`).join('');
+  if(!opts.some(o=>o[0]===FC.filter)) FC.filter = 'all';
+  sel.value = FC.filter;
+  sel.addEventListener('change', ()=>{ FC.filter = sel.value; store.set('filter', FC.filter); buildDeck(false); });
+})();
+function buildDeck(shuffle){
+  FC.deck = FLASH.map((_,i)=>i).filter(i=>{
+    const f = FLASH[i];
+    if(FC.filter === 'unknown') return !FC.known.has(f[4]);
+    if(FC.filter !== 'all') return f[3] === FC.filter;
+    return true;
+  });
+  if(shuffle) for(let i=FC.deck.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [FC.deck[i],FC.deck[j]]=[FC.deck[j],FC.deck[i]]; }
+  FC.pos = 0; renderCard();
+}
+function renderCard(){
+  const card = $('flashcard'); card.classList.remove('flipped');
+  $('fc-progress').textContent = `외운 단어 ${[...FC.known].filter(k=>FLASH.some(f=>f[4]===k)).length} / ${FLASH.length}`;
+  $('fc-dir').textContent = FC.dir === 'jk' ? '일 → 한' : '한 → 일';
+  if(!FC.deck.length){
+    $('fc-front').innerHTML = `<div class="flash-empty">${FC.filter==='unknown' ? '모든 카드를 외웠어요! 🎉' : '카드가 없어요'}</div>`;
+    $('fc-back').innerHTML = ''; $('fc-count').textContent = '0 / 0'; return;
+  }
+  const f = FLASH[FC.deck[FC.pos]];
+  const sayBtn = f[2] ? `<button class="say" data-say="${f[2].replace(/"/g,'&quot;')}" aria-label="발음 듣기">🔊</button>` : '';
+  const mark = FC.known.has(f[4]) ? '<span class="fc-known">✓ 외움</span>' : '';
+  const lv = f[3] ? `<div class="fc-sub">${f[3]}</div>` : '';
+  const jp = `<div class="fc-jp">${f[0]}</div>${sayBtn}`, kr = `<div class="fc-kr">${f[1]}</div>`;
+  $('fc-front').innerHTML = mark + (FC.dir === 'jk' ? jp : kr);
+  $('fc-back').innerHTML = mark + (FC.dir === 'jk' ? kr + lv : jp + lv);
+  $('fc-count').textContent = `${FC.pos+1} / ${FC.deck.length}`;
+}
+function flip(){ if(FC.deck.length) $('flashcard').classList.toggle('flipped'); }
+function step(d){ if(!FC.deck.length) return; FC.pos = (FC.pos + d + FC.deck.length) % FC.deck.length; renderCard(); }
+function mark(isKnown){
+  if(!FC.deck.length) return;
+  const key = FLASH[FC.deck[FC.pos]][4];
+  isKnown ? FC.known.add(key) : FC.known.delete(key);
+  store.set('known', [...FC.known]);
+  if(FC.filter === 'unknown' && isKnown){
+    FC.deck.splice(FC.pos, 1); if(FC.pos >= FC.deck.length) FC.pos = 0; renderCard();
+  } else step(1);
+}
+$('flashcard').addEventListener('click', ()=>{ if(FC.swiped){ FC.swiped = false; return; } flip(); });
+$('flashcard').addEventListener('keydown', e=>{ if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); flip(); } });
+$('fc-prev').addEventListener('click', ()=>step(-1));
+$('fc-next').addEventListener('click', ()=>step(1));
+$('fc-yes').addEventListener('click', ()=>mark(true));
+$('fc-no').addEventListener('click', ()=>mark(false));
+$('fc-shuffle').addEventListener('click', ()=>{ buildDeck(true); toast('카드를 섞었어요'); });
+$('fc-dir').addEventListener('click', ()=>{ FC.dir = FC.dir === 'jk' ? 'kj' : 'jk'; store.set('dir', FC.dir); renderCard(); });
+document.addEventListener('keydown', e=>{
+  if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+  if(e.key === 'ArrowRight') step(1); else if(e.key === 'ArrowLeft') step(-1);
+});
+(function swipe(){
+  let x0 = null, y0 = null; const c = $('flashcard');
+  c.addEventListener('touchstart', e=>{ x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, {passive:true});
+  c.addEventListener('touchend', e=>{
+    if(x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+    if(Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)){ FC.swiped = true; step(dx < 0 ? 1 : -1); setTimeout(()=>FC.swiped=false, 400); }
+  }, {passive:true});
+})();
+buildDeck(false);
+
+/* ---------- quiz ---------- */
+const QS = QUIZ.map(()=>null);   /* chosen option index per question */
+const qc = $('quiz-container');
+qc.innerHTML = QUIZ.map((q,i)=>`
+  <div class="quiz-item" id="q${i}">
+    <div class="quiz-q">${i+1}. ${q.q}</div>
+    <div class="quiz-opts">${q.opts.map((o,j)=>`<button class="opt-btn" data-q="${i}" data-o="${j}">${o}</button>`).join('')}</div>
+    ${q.explain ? `<div class="explain">💡 ${q.explain}</div>` : ''}
+  </div>`).join('');
+qc.addEventListener('click', e=>{
+  const b = e.target.closest('.opt-btn'); if(!b || b.disabled) return;
+  const i = +b.dataset.q, j = +b.dataset.o; if(QS[i] !== null) return;
+  QS[i] = j; paintQ(i); updateScore();
+});
+function paintQ(i){
+  const item = $('q'+i), btns = item.querySelectorAll('.opt-btn'), a = QUIZ[i].answer;
+  btns.forEach(b=>{ b.classList.remove('correct','wrong'); b.disabled = QS[i] !== null; });
+  item.classList.toggle('done', QS[i] !== null);
+  if(QS[i] === null) return;
+  btns[a].classList.add('correct');
+  if(QS[i] !== a) btns[QS[i]].classList.add('wrong');
+}
+function updateScore(){
+  const answered = QS.filter(x=>x!==null).length;
+  const correct = QS.filter((x,i)=>x===QUIZ[i].answer).length;
+  $('score-box').textContent = `정답 ${correct} · 푼 문제 ${answered} / ${QUIZ.length}`;
+  const allDone = answered === QUIZ.length;
+  $('qz-retry').hidden = !(allDone && correct < QUIZ.length);
+  let best = store.get('best', null);
+  if(allDone && (best === null || correct > best)){ best = correct; store.set('best', best); if(QUIZ.length) toast('최고 기록 갱신!'); }
+  $('best-box').textContent = best === null ? '' : `최고 기록 ${best} / ${QUIZ.length}`;
+}
+$('qz-retry').addEventListener('click', ()=>{
+  QUIZ.forEach((q,i)=>{
+    const ok = QS[i] === q.answer;
+    $('q'+i).classList.toggle('hidden', ok);
+    if(!ok){ QS[i] = null; paintQ(i); }
+  });
+  updateScore();
+  const first = QUIZ.findIndex((q,i)=>QS[i]===null); if(first >= 0) $('q'+first).scrollIntoView({behavior:'smooth', block:'center'});
+});
+$('qz-reset').addEventListener('click', ()=>{
+  QUIZ.forEach((q,i)=>{ QS[i] = null; $('q'+i).classList.remove('hidden'); paintQ(i); });
+  updateScore(); $('q0') && $('q0').scrollIntoView({behavior:'smooth', block:'center'});
+});
+updateScore();
+
+/* ---------- toolbar: compact on scroll down, expand on scroll up ---------- */
+(function(){
+  const bar = $('bar');
+  const handle = document.createElement('button');
+  handle.className = 'bar-handle'; handle.textContent = '☰ 메뉴 · 위로 스크롤하면 펼쳐져요';
+  bar.appendChild(handle);
+  let compact = false, last = window.scrollY, ticking = false;
+  function setCompact(c){
+    if(c === compact) return;
+    const before = bar.offsetHeight; bar.classList.toggle('compact', c);
+    bar.style.marginBottom = c ? (before - bar.offsetHeight) + 'px' : '0px'; compact = c;
+  }
+  handle.addEventListener('click', ()=>setCompact(false));
+  window.addEventListener('scroll', ()=>{
+    if(ticking) return; ticking = true;
+    requestAnimationFrame(()=>{
+      const y = window.scrollY, d = y - last;
+      if(Math.abs(d) > 6){ if(d > 0 && y > 60 && bar.getBoundingClientRect().top <= 1) setCompact(true); else if(d < 0) setCompact(false); last = y; }
+      ticking = false;
+    });
+  }, {passive:true});
+})();
+</script>
+</body>
+</html>
