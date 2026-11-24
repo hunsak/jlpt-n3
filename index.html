@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f1115">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="일본어 학습">
+<link rel="apple-touch-icon" href="icon.png">
+<title>일본어 학습</title>
+<style>
+  :root{color-scheme:dark}
+  *{box-sizing:border-box}
+  body{margin:0;background:#0f1115;color:#eef0f4;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;
+       padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+  .wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+  h1{font-size:1.4rem;margin:8px 0 14px}
+  input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #2a2f3a;background:#181b22;color:inherit;font-size:1rem;margin-bottom:18px}
+  h2{font-size:.8rem;letter-spacing:.06em;color:#8b93a3;margin:22px 4px 8px;font-weight:600}
+  a.card{display:flex;align-items:center;gap:14px;padding:14px 16px;margin-bottom:10px;border-radius:14px;text-decoration:none;
+         color:var(--fg,#eef0f4);background:var(--bg,#181b22);border:1px solid color-mix(in srgb,var(--c,#8b93a3) 40%,transparent)}
+  a.card:active{transform:scale(.98)}
+  .ic{font-size:1.5rem;width:2rem;text-align:center;color:var(--c,#8b93a3)}
+  .t{font-size:1.05rem;font-weight:600}
+  .f{font-size:.72rem;opacity:.55;margin-top:2px}
+  .msg{color:#8b93a3;text-align:center;padding:30px 0;font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎌 일본어 학습</h1>
+  <input id="q" type="search" placeholder="검색" autocomplete="off">
+  <div id="list"><div class="msg">불러오는 중…</div></div>
+</div>
+<script>
+const REPO = "hunsak/jlpt-n3", SKIP = new Set(["index.html"]);
+const KEY = "jlpt-index-v1";
+const cache = JSON.parse(localStorage.getItem(KEY) || "{}");   // {file: {sha, title, kind, bg, fg, c, icon}}
+const save = () => localStorage.setItem(KEY, JSON.stringify(cache));
+let items = [];
+
+async function listFiles() {
+  const r = await fetch(`https://api.github.com/repos/${REPO}/git/trees/main?recursive=1`);
+  if (!r.ok) throw new Error(r.status);
+  const j = await r.json();
+  return j.tree.filter(x => x.type === "blob" && /\.html$/i.test(x.path) && !x.path.includes("/") && !SKIP.has(x.path))
+               .map(x => ({file: x.path, sha: x.sha}));
+}
+
+function parse(text, file) {
+  const m = text.match(/<title>([^<]*)<\/title>/i);
+  const raw = m ? m[1].trim() : file.replace(/\.html$/i, "");
+  const title = raw.replace(/\s*[–-]\s*(일본어|영어) 가사 학습\s*$/, "");
+  const lyric = / 가사 학습\s*$/.test(raw);
+  const o = {title, kind: lyric ? "songs" : "etc"};
+  const t = text.match(/const THEMES = (\{.*?\}), DEF = "([^"]+)"/s);
+  if (t) try { const th = JSON.parse(t[1])[t[2]]; Object.assign(o, {bg: th.bg, fg: th.fg, c: th.c1, icon: th.icon}); } catch (e) {}
+  if (!o.bg) { const tc = text.match(/theme-color"\s+content="([^"]+)"/); if (tc) Object.assign(o, {bg: tc[1], fg: "#fff", c: "#9fb4ff"}); }
+  return o;
+}
+
+async function load(f) {
+  const c = cache[f.file];
+  if (c && c.sha === f.sha) return {...c, file: f.file};
+  try {
+    const text = await (await fetch(f.file)).text();
+    const o = {sha: f.sha, ...parse(text, f.file)};
+    cache[f.file] = o; save();
+    return {...o, file: f.file};
+  } catch (e) {
+    return {file: f.file, title: f.file.replace(/\.html$/i, ""), kind: "etc"};
+  }
+}
+
+function render() {
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  const el = document.getElementById("list");
+  const show = items.filter(i => !q || (i.title + " " + i.file).toLowerCase().includes(q));
+  if (!show.length) { el.innerHTML = '<div class="msg">결과 없음</div>'; return; }
+  const sec = {songs: "노래", etc: "기타"};
+  el.innerHTML = ["songs", "etc"].map(k => {
+    const g = show.filter(i => i.kind === k).sort((a, b) => a.title.localeCompare(b.title, "ja"));
+    if (!g.length) return "";
+    return `<h2>${sec[k]} · ${g.length}</h2>` + g.map(i => {
+      const st = i.bg ? `style="--bg:${i.bg};--fg:${i.fg};--c:${i.c}"` : "";
+      const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+      return `<a class="card" ${st} href="${encodeURI(i.file)}"><span class="ic">${i.icon || "📄"}</span><span><div class="t">${esc(i.title)}</div><div class="f">${esc(i.file)}</div></span></a>`;
+    }).join("");
+  }).join("");
+}
+
+(async () => {
+  try {
+    const files = await listFiles();
+    items = await Promise.all(files.map(load));
+    for (const k of Object.keys(cache)) if (!files.some(f => f.file === k)) delete cache[k];
+    save();
+  } catch (e) {
+    // API 실패(요청 제한/오프라인) 시 마지막 캐시로 표시
+    items = Object.entries(cache).map(([file, v]) => ({...v, file}));
+  }
+  render();
+})();
+document.getElementById("q").addEventListener("input", render);
+</script>
+</body>
+</html>
